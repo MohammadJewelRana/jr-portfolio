@@ -37,7 +37,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <div className="p-2 border border-gray-600 rounded-full cursor-pointer transition-colors duration-200 hover:bg-main hover:text-white hover:border-transparent">
+                <div className="p-2 border border-gray-600 rounded-full cursor-e-resize transition-colors duration-200 hover:bg-main hover:text-white hover:border-transparent">
                   {social.icon}
                 </div>
               </Link>
