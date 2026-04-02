@@ -20,7 +20,8 @@
 
 /* ===== Base Global Style ===== */
 body {
-  background-color: var(--bg-color);
+  /* background-color: var(--bg-color); */
+  
   color: #ffffff;
   font-family: var(--font-sans);
   margin: 0;

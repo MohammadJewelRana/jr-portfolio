@@ -49,7 +49,7 @@ export default function RootLayout({
           color="40, 233, 140"
           outerAlpha={0.3}
           innerScale={1}
-          outerScale={1} // 👈 slight grow = clickable feel
+          outerScale={1.5} // 👈 slight grow = clickable feel
           clickables={["a", "button", ".cursor-pointer"]}
         />
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
