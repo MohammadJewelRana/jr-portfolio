@@ -80,6 +80,25 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
+          {siteConfig.navItems.map((item, index) => (
+            <Button
+              key={`${item}-${index}`}
+              as={NextLink}
+              className="
+              text-sm font-normal
+              text-default-600
+              bg-transparent
+              hover:bg-white/10 dark:hover:bg-white/5
+            "
+              variant="light"
+              href={item.href}
+            >
+              {item.label}
+            </Button>
+          ))}
+        </NavbarItem>
+
+        <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
 
@@ -119,7 +138,7 @@ export const Navbar = () => {
                       ? "danger"
                       : "foreground"
                 }
-                href="#"
+                href={item.href}
                 size="lg"
               >
                 {item.label}
