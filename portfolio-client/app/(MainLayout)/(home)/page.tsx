@@ -6,7 +6,7 @@ const page = () => {
     <div>
       {/* <HeroSection /> */}
       <div className=" mx-auto max-w-7xl  px-4">
- 
+ lorem10000
       </div>
     </div>
   );
