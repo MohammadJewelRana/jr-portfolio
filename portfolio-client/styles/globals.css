@@ -7,8 +7,33 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-sans: "font", sans-serif;
-    --font-mono: "monospace", monospace;
+  --font-sans: "font", sans-serif;
+  --font-mono: "monospace", monospace;
 }
 
- 
+/* ===== Custom Color ===== */
+:root {
+  --main-color: #28E98C;
+}
+
+/* Base utilities */
+.text-main {
+  color: var(--main-color);
+}
+
+.bg-main {
+  background-color: var(--main-color);
+}
+
+.border-main {
+  border-color: var(--main-color);
+}
+
+/* 🔥 IMPORTANT: hover support */
+.hover\:bg-main:hover {
+  background-color: var(--main-color);
+}
+
+.hover\:text-white:hover {
+  color: white;
+}
