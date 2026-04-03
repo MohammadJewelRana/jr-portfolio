@@ -1,6 +1,7 @@
 import React from "react";
 import HeroSection from "./_components/HeroSection";
 import About from "./_components/About";
+import Experience from "./_components/Experience";
  
  
 const page = () => {
@@ -12,6 +13,7 @@ const page = () => {
 
  
       </div>
+<Experience/>
     </div>
   );
 };
