@@ -28,14 +28,9 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <HeroUIProvider navigate={router.push}>
       <ReduxProvider>
-        <NextThemesProvider {...themeProps}>
-          {children}
-        </NextThemesProvider>
+        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
       </ReduxProvider>
-      <Toaster
-  position="top-right"
-  reverseOrder={false}
-/>
+      <Toaster position="top-right" reverseOrder={false} />
     </HeroUIProvider>
   );
 }

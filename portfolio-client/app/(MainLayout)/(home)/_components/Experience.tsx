@@ -38,12 +38,19 @@ const Experience = () => {
   ];
 
   return (
-    <div className="bg-[#0f1117] text-white py-16 px-4 md:px-10 ">
+    <div className="bg-[#0f1117] text-white py-16 px-4 md:px-10  ">
       {/* Heading */}
       <div className="text-center space-y-3 mb-12">
-        <div className="flex items-center justify-center gap-2 text-main text-sm">
+        <div
+          className="inline-flex items-center gap-2 
+text-main text-sm 
+px-4 py-1.5 
+rounded-full 
+border border-main 
+bg-main/10"
+        >
           <FaStar />
-          <span>My Experience</span>
+          <span>Experience</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">

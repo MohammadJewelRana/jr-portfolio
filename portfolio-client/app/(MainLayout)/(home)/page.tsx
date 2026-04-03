@@ -2,18 +2,18 @@ import React from "react";
 import HeroSection from "./_components/HeroSection";
 import About from "./_components/About";
 import Experience from "./_components/Experience";
- 
- 
+import Skills from "./_components/Skills";
+
 const page = () => {
   return (
     <div>
-      {/* <HeroSection /> */}
+      <HeroSection />
       <div className=" mx-auto max-w-7xl  px-4">
-<About/>
-
- 
+        <About />
       </div>
-<Experience/>
+      <Experience />
+       <About />
+      <Skills/>
     </div>
   );
 };
