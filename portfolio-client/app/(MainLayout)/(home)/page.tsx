@@ -3,6 +3,7 @@ import HeroSection from "./_components/HeroSection";
 import About from "./_components/About";
 import Experience from "./_components/Experience";
 import Skills from "./_components/Skills";
+import Process from "./_components/Process";
 
 const page = () => {
   return (
@@ -11,9 +12,10 @@ const page = () => {
       <div className=" mx-auto max-w-7xl  px-4">
         <About />
       </div>
+       
       <Experience />
-       <About />
-      <Skills/>
+   <Process/>
+      <Skills />
     </div>
   );
 };
