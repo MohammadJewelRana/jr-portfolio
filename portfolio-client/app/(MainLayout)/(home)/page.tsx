@@ -4,12 +4,15 @@ import About from "./_components/About";
 import Experience from "./_components/Experience";
 import Skills from "./_components/Skills";
 import Process from "./_components/Process";
+import Contact from "./_components/Contact";
 
 const page = () => {
   return (
     <div>
+           <Contact/>
       <HeroSection />
       <div className=" mx-auto max-w-7xl  px-4">
+    
         <About />
       </div>
        
