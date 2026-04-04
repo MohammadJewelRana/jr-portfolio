@@ -41,7 +41,7 @@ const item = {
 const Process = () => {
   return (
     <div className="bg-white py-16 sm:py-20">
-      <div className="max-w-6xl mx-auto px-4 text-center">
+      <div className="max-w-7xl mx-auto px-4 text-center">
         {/* Badge */}
         <div
           className="inline-flex items-center gap-2 

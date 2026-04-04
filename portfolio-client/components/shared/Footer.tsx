@@ -25,7 +25,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="w-full mt-10 bg-[#1C1D20]">
+    <footer className="w-full   bg-[#0f1117] md:pt-12">
       <div className="max-w-7xl mx-auto px-4">
         {/* Top section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 py-6">

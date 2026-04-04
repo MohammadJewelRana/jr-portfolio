@@ -59,7 +59,7 @@ bg-main/10"
       </div>
 
       {/* Timeline */}
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6 ">
         {data.map((item, i) => (
           <div
             key={i}
@@ -109,7 +109,7 @@ bg-main/10"
 
       {/* Skills */}
       <div
-        className="max-w-4xl mx-auto mt-12 border border-white/10 rounded-xl p-4 md:p-6 
+        className="max-w-7xl mx-auto mt-12 border border-white/10 rounded-xl p-4 md:p-6 
       grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center"
       >
         {[

@@ -5,20 +5,23 @@ import Experience from "./_components/Experience";
 import Skills from "./_components/Skills";
 import Process from "./_components/Process";
 import Contact from "./_components/Contact";
+import Blog from "./_components/Blog";
 
 const page = () => {
   return (
     <div>
-           <Contact/>
-      <HeroSection />
+ 
+      {/* <HeroSection /> */}
       <div className=" mx-auto max-w-7xl  px-4">
     
         <About />
       </div>
        
-      <Experience />
-   <Process/>
       <Skills />
+   <Process/>
+      <Experience />
+      <Blog/>
+                 <Contact/>
     </div>
   );
 };

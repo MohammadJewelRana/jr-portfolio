@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 import React from "react";
-import { FaStar, FaPhoneAlt } from "react-icons/fa";
+import { FaStar, FaPhoneAlt, FaWhatsapp, FaEnvelope } from "react-icons/fa";
 import img from "@/assets/hero/jewel_rana.jpg";
 
 const Contact = () => {
   return (
-    <div className="py-16 bg-[#0f1117] text-white">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div className="py-16 bg-[#0f1117] text-white ">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-start   ">
         {/* LEFT */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Badge */}
           <div
             className="inline-flex items-center gap-2 
@@ -25,30 +25,45 @@ const Contact = () => {
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+          <h1 className="text-3xl sm:text-2xl md:text-4xl font-bold leading-tight">
             Building Something Great Together
           </h1>
 
           {/* Description */}
-          <p className="text-gray-400 text-sm sm:text-base max-w-md leading-relaxed">
+          <p className="text-gray-400 text-sm sm:text-base max-w-md leading-relaxed ">
             Each demo built with Teba will look different. You customize almost
-            anything in the appearance of your website with only a few clicks.
           </p>
 
           {/* Call */}
-          <div className="flex items-center gap-4 pt-4">
-            {/* Image */}
+          <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-main">
               <Image src={img} alt="Jewel Rana" className="object-cover" />
             </div>
 
-            {/* Text */}
-            <div>
-              <p className="text-gray-400 text-sm">Call Now</p>
-              <p className="font-semibold text-lg flex items-center gap-2">
-                <FaPhoneAlt className="text-main text-sm" />
-                +880 1533850435
-              </p>
+            <div className="flex flex-col gap-3">
+              <div>
+                <p className="text-gray-400 text-sm">Call Now</p>
+                <p className="font-semibold text-lg flex items-center gap-2">
+                  <FaPhoneAlt className="text-main text-sm" />
+                  +880 1533850435
+                </p>
+              </div>
+
+              {/* <div className="">
+                <p className="text-gray-400 text-sm">WhatsApp</p>
+                <p className="font-semibold text-lg flex items-center gap-2">
+                  <FaWhatsapp className="text-main text-sm" />
+                  +880 01983623034
+                </p>
+              </div> */}
+
+              <div>
+                <p className="text-gray-400 text-sm">Email</p>
+                <p className="font-semibold text-lg flex items-center gap-2">
+                  <FaEnvelope className="text-main text-sm" />
+                  js.rana0326@email.com
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -99,7 +114,7 @@ const Contact = () => {
           text-sm sm:text-base
           transition-all duration-300
           hover:scale-105 
-          hover:shadow-[0_10px_30px_rgba(40,233,140,0.4)]
+          hover:shadow-[0_10px_30px_rgba(40,233,140,0.4)]  cursor-pointer
           "
           >
             Send Message
