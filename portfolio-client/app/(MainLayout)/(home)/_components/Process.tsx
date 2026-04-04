@@ -40,7 +40,7 @@ const item = {
 
 const Process = () => {
   return (
-    <div className="bg-white py-16 sm:py-20">
+    <div className="bg-[#F5F5F5] py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 text-center">
         {/* Badge */}
         <div

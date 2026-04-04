@@ -5,8 +5,8 @@ import { FaCheckCircle, FaQuoteLeft, FaUser } from "react-icons/fa";
 import img from "@/assets/hero/2.png";
 
 const About = () => (
-  <div className="text-black  p-5 md:p-8   mt-10 bg-white/5 backdrop-blur-lg">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+  <div className="text-black  py-12    mt-10 bg-white/5 backdrop-blur-lg  ">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center  ">
       {/* Image */}
       <div className="flex justify-center">
         <Image

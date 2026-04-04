@@ -38,17 +38,10 @@ const Experience = () => {
   ];
 
   return (
-    <div className="bg-[#0f1117] text-white py-16 px-4 md:px-10  ">
+    <div className="bg-[#1C1D20] text-white py-16 px-4 md:px-10  ">
       {/* Heading */}
       <div className="text-center space-y-3 mb-12">
-        <div
-          className="inline-flex items-center gap-2 
-text-main text-sm 
-px-4 py-1.5 
-rounded-full 
-border border-main 
-bg-main/10"
-        >
+        <div className="inline-flex items-center gap-2 text-main text-sm px-4 py-1.5 rounded-full border border-main bg-main/10">
           <FaStar />
           <span>Experience</span>
         </div>

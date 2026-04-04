@@ -74,7 +74,7 @@ const item = {
 
 const Skills = () => {
   return (
-    <div className="bg-[#0f1117] text-white py-16 sm:py-20">
+    <div className="bg-[#1C1D20] text-white py-16 sm:py-20">
       
       <div className="mx-auto max-w-7xl px-4">
 

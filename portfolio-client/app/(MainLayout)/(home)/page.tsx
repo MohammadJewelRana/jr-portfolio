@@ -6,6 +6,7 @@ import Skills from "./_components/Skills";
 import Process from "./_components/Process";
 import Contact from "./_components/Contact";
 import Blog from "./_components/Blog";
+import Project from "./_components/Project";
 
 const page = () => {
   return (
@@ -13,7 +14,7 @@ const page = () => {
  
       {/* <HeroSection /> */}
       <div className=" mx-auto max-w-7xl  px-4">
-    
+    <Project/>
         <About />
       </div>
        

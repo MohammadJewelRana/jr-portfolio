@@ -7,7 +7,7 @@ import img from "@/assets/hero/jewel_rana.jpg";
 
 const Contact = () => {
   return (
-    <div className="py-16 bg-[#0f1117] text-white ">
+    <div className="py-16 bg-[#1C1D20] text-white ">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-start   ">
         {/* LEFT */}
         <div className="space-y-4">
@@ -69,7 +69,7 @@ const Contact = () => {
         </div>
 
         {/* RIGHT FORM */}
-        <div className="border border-main rounded-2xl p-6 sm:p-8 bg-[#111318] shadow-[0_0_40px_rgba(40,233,140,0.15)]">
+        <div className="border border-main rounded-2xl p-6 sm:p-8 bg-[#1C1D20] shadow-[0_0_40px_rgba(40,233,140,0.15)]">
           <h2 className="text-xl sm:text-2xl font-semibold mb-6">
             Get In Touch
           </h2>
