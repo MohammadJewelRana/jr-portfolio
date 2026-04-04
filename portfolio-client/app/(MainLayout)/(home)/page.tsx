@@ -12,7 +12,7 @@ const page = () => {
   return (
     <div>
  
-      {/* <HeroSection /> */}
+      <HeroSection />
       <div className=" mx-auto max-w-7xl  px-4">
     <Project/>
         <About />
