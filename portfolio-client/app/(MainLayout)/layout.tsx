@@ -9,6 +9,7 @@ import { fontSans } from "@/config/fonts";
 import Footer from "@/components/shared/Footer";
 import { Navbar } from "@/components/shared/Navbar";
 import { Providers } from "../providers";
+import AnimatedCursor from "react-animated-cursor";
 
 export const metadata: Metadata = {
   title: {
@@ -42,11 +43,20 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
+        {/* <AnimatedCursor
+          innerSize={8}
+          outerSize={35}
+          color="40, 233, 140"
+          outerAlpha={0.3}
+          innerScale={1}
+          outerScale={1.5} // 👈 slight grow = clickable feel
+          clickables={["a", "button", ".cursor-pointer"]}
+        /> */}
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="relative flex flex-col h-screen">
-            <Navbar />
+          <div className="relative flex flex-col ">
+            {/* <Navbar /> */}
 
-            <main className="    flex-grow">
+            <main className="     ">
               {/* <main className="container mx-auto max-w-7xl   flex-grow"> */}
               {children}
             </main>
