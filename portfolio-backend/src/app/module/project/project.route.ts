@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { JobController } from "./job.controller";
-import { JobValidation } from "./job.validation.zod";
+import { JobController } from "./project.controller";
+import { JobValidation } from "./project.validation.zod";
 import validateRequest from "../../middleware/validateRequest";
 
 const router = Router();
@@ -17,4 +17,4 @@ router.get("/:id", JobController.getSingleJob);
 
 router.delete("/:id", JobController.deleteSingleJob);
 
-export const JobRoutes = router;
+export const ProjectRoutes = router;

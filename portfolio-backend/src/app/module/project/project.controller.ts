@@ -1,6 +1,6 @@
 import { catchAsync } from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
-import { JobServices } from "./job.service";
+import { JobServices } from "./project.service";
 import httpStatus from "http-status";
 
 //  Create Job

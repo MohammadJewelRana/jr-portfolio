@@ -35,7 +35,7 @@ app.use("/api", router);
 app.get("/api", (_req: Request, res: Response) => {
   res.status(200).json({
     success: true,
-    message: "Quick Hire Backend Server is running ",
+    message: "Portfolio Backend Server is running ",
   });
 });
 

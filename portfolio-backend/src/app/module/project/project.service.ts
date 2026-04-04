@@ -1,5 +1,5 @@
-import { IJob } from "./job.interface";
-import { JobModel } from "./job.model";
+import { IJob } from "./project.interface";
+import { JobModel } from "./project.model";
 
 //  Create Job
 const createJobIntoDB = async (payload: IJob) => {
