@@ -6,35 +6,41 @@ import heroImg from "@/assets/hero/1.png";
 
 const HeroSection = () => {
   return (
-    <section className="relative w-full overflow-hidden pt-32 pb-20">
+    <section className="relative isolate w-full overflow-hidden pt-32 pb-20 bg-white">
 
-      {/* 🔥 EXACT BACKGROUND GRADIENT */}
-      <div className="absolute inset-0 -z-10 
-        bg-gradient-to-br 
-        from-[#ffffff] 
-        via-[#f8f8f8] 
-        to-[#cfeaf3]"
-      />
+      {/* 🔥 TOP RIGHT GRADIENT */}
+      <div className="
+        absolute top-0 right-0 
+        w-[800px] h-[400px]
+        bg-gradient-to-br from-[#aef3d9] to-transparent
+        rounded-full blur-3xl opacity-80
+        -z-10
+      " />
 
-      {/* subtle green overlay */}
-      <div className="absolute left-0 bottom-0 w-[400px] h-[400px] bg-main/20 rounded-full blur-2xl -z-10" />
+      {/* 🔥 BOTTOM LEFT GRADIENT */}
+      <div className="
+        absolute bottom-0 left-0 
+        w-[400px] h-[400px]
+        bg-gradient-to-tr from-[#cfeaf3] to-transparent
+        rounded-full blur-3xl opacity-80
+        -z-10
+      " />
 
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 items-center gap-10">
 
         {/* LEFT IMAGE */}
         <motion.div
-          initial={{ opacity: 0, x: -80 }}
+          initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
           className="relative flex justify-center"
         >
-
-          {/* green shape (like design) */}
+          {/* green shape */}
           <div className="
             absolute 
-            w-[380px] h-[380px] 
+            w-[360px] h-[360px] 
             bg-main 
-            rounded-[50%] 
+            rounded-full 
             left-10 top-16 
             -z-10
           " />
@@ -42,18 +48,16 @@ const HeroSection = () => {
           <Image
             src={heroImg}
             alt="hero"
-            className="w-[350px] md:w-[420px] relative z-10"
+            className="w-[340px] md:w-[420px]"
           />
-
         </motion.div>
 
         {/* RIGHT CONTENT */}
         <motion.div
-          initial={{ opacity: 0, x: 80 }}
+          initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-
           {/* small text */}
           <p className="text-main mb-3 flex items-center gap-2">
             ✨ <span className="font-medium">Hey There!</span>
@@ -62,7 +66,7 @@ const HeroSection = () => {
           {/* heading */}
           <h1 className="text-4xl md:text-6xl font-bold leading-tight text-black">
             I'm Rachel Davis <br />
-            <span className="text-black">Web Developer</span>
+            <span>Web Developer</span>
           </h1>
 
           {/* description */}
@@ -74,7 +78,6 @@ const HeroSection = () => {
           {/* buttons */}
           <div className="flex items-center gap-4 mt-8">
 
-            {/* primary button */}
             <button className="
               bg-main text-black 
               px-7 py-3 
@@ -87,7 +90,6 @@ const HeroSection = () => {
               Get Started →
             </button>
 
-            {/* play button */}
             <button className="flex items-center gap-3 text-gray-700 group">
 
               <div className="
@@ -108,22 +110,20 @@ const HeroSection = () => {
             </button>
 
           </div>
-
         </motion.div>
 
       </div>
 
-      {/* 🔥 floating stars (exact vibe) */}
+      {/* floating shape */}
       <motion.div
-        className="absolute top-20 right-16 text-main text-2xl"
+        className="absolute top-20 right-36 text-main text-3xl"
         animate={{ y: [0, -15, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
         ✦
       </motion.div>
-
       <motion.div
-        className="absolute top-16 right-24 text-main text-4xl opacity-70"
+        className="absolute top-24 right-40 text-main text-6xl"
         animate={{ y: [0, -15, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
