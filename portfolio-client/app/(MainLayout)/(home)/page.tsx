@@ -11,18 +11,20 @@ import Project from "./_components/Project";
 const page = () => {
   return (
     <div>
- 
-      {/* <HeroSection /> */}
+      <HeroSection />
+
       <div className=" mx-auto max-w-7xl  px-4">
-    <Project/>
         <About />
       </div>
-       
       <Skills />
-   <Process/>
       <Experience />
-      <Blog/>
-                 <Contact/>
+
+      <Project />
+
+      <Process />
+
+      <Blog />
+      <Contact />
     </div>
   );
 };
