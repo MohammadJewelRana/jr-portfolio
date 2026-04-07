@@ -54,39 +54,33 @@ const Project = () => {
           </h1>
         </div>
         {/* GRID */}
-     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col gap-6">
+            {/* 1 */}
+            <div className="h-[250px] md:h-[66.666%]">
+              <ProjectCard project={projects[0]} />
+            </div>
 
-  {/* LEFT COLUMN */}
-  <div className="flex flex-col gap-6">
+            {/* 3 */}
+            <div className="h-[250px] md:h-[33.333%]">
+              <ProjectCard project={projects[2]} />
+            </div>
+          </div>
 
-    {/* 1 */}
-    <div className="h-[250px] md:h-[66.666%]">
-      <ProjectCard project={projects[0]} />
-    </div>
+          {/* RIGHT COLUMN */}
+          <div className="flex flex-col gap-6">
+            {/* 2 */}
+            <div className="h-[250px] md:h-[33.333%]">
+              <ProjectCard project={projects[1]} />
+            </div>
 
-    {/* 3 */}
-    <div className="h-[250px] md:h-[33.333%]">
-      <ProjectCard project={projects[2]} />
-    </div>
-
-  </div>
-
-  {/* RIGHT COLUMN */}
-  <div className="flex flex-col gap-6">
-
-    {/* 2 */}
-    <div className="h-[250px] md:h-[33.333%]">
-      <ProjectCard project={projects[1]} />
-    </div>
-
-    {/* 4 */}
-    <div className="h-[250px] md:h-[66.666%]">
-      <ProjectCard project={projects[3]} />
-    </div>
-
-  </div>
-
-</div>
+            {/* 4 */}
+            <div className="h-[250px] md:h-[66.666%]">
+              <ProjectCard project={projects[3]} />
+            </div>
+          </div>
+        </div>
 
         {/* Bottom Button */}
         <div className="text-center mt-10">

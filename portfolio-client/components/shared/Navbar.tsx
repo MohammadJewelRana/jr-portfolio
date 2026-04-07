@@ -18,7 +18,12 @@ import { useState } from "react";
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItems = ["Home", "Project", "Blog"];
+  // ✅ Fixed routes (plural)
+  const navItems = [
+    { name: "Home", href: "/" },
+    { name: "Project", href: "/project" },
+    { name: "Blog", href: "/blog" },
+  ];
 
   return (
     <HeroUINavbar
@@ -33,8 +38,7 @@ export const Navbar = () => {
       backdrop-blur-xl
       "
     >
-
-      {/* LEFT LOGO */}
+      {/* 🔹 LOGO */}
       <NavbarContent justify="start">
         <NavbarBrand>
           <NextLink href="/" className="flex items-center gap-2">
@@ -44,12 +48,12 @@ export const Navbar = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      {/* CENTER MENU (DESKTOP) */}
+      {/* 🔹 DESKTOP MENU */}
       <NavbarContent justify="center" className="hidden md:flex gap-8">
         {navItems.map((item) => (
-          <NavbarItem key={item}>
+          <NavbarItem key={item.name}>
             <NextLink
-              href="#"
+              href={item.href}
               className="
               relative 
               text-black/80 
@@ -65,16 +69,14 @@ export const Navbar = () => {
               hover:after:w-full
               "
             >
-              {item}
+              {item.name}
             </NextLink>
           </NavbarItem>
         ))}
       </NavbarContent>
 
-      {/* RIGHT SIDE */}
+      {/* 🔹 RIGHT SIDE */}
       <NavbarContent justify="end" className="gap-3">
-
-        {/* 🔥 PREMIUM HAMBURGER */}
         <NavbarMenuToggle
           className="
           md:hidden 
@@ -87,7 +89,6 @@ export const Navbar = () => {
           "
         />
 
-        {/* DESKTOP BUTTON */}
         <Button
           className="
           hidden md:flex
@@ -100,35 +101,30 @@ export const Navbar = () => {
         >
           Download CV →
         </Button>
-
       </NavbarContent>
 
-      {/* 🔥 PREMIUM MOBILE MENU */}
+      {/* 🔹 MOBILE MENU */}
       <NavbarMenu className="pt-10 px-6 bg-white/95 backdrop-blur-xl">
-
         <div className="flex flex-col gap-6">
-
-          {navItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+          {navItems.map((item) => (
+            <NavbarMenuItem key={item.name}>
               <NextLink
-                href="#"
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
                 className="
                 text-xl font-semibold 
                 text-black/80
                 transition-all duration-300
                 hover:text-main
                 "
-                onClick={() => setIsMenuOpen(false)}
               >
-                {item}
+                {item.name}
               </NextLink>
             </NavbarMenuItem>
           ))}
 
-          {/* Divider */}
           <div className="border-t border-gray-200 my-4" />
 
-          {/* Button */}
           <Button
             className="
             w-full bg-main text-white 
@@ -141,11 +137,8 @@ export const Navbar = () => {
           >
             Download CV →
           </Button>
-
         </div>
-
       </NavbarMenu>
-
     </HeroUINavbar>
   );
 };
