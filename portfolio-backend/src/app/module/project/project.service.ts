@@ -104,7 +104,7 @@ const updateProject = async (id: string, payload: Partial<IProject>) => {
     throw new Error("Project not found");
   }
 
-  // ❗ slug update check
+  // 🔒 slug unique check
   if (payload.slug) {
     const slugExists = await ProjectModel.findOne({
       slug: payload.slug,
@@ -116,9 +116,33 @@ const updateProject = async (id: string, payload: Partial<IProject>) => {
     }
   }
 
-  const result = await ProjectModel.findByIdAndUpdate(id, payload, {
-    new: true,
+  // 🔥 Dynamic update object
+  const updateData: any = {};
+  const pushData: any = {};
+
+  Object.entries(payload).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      // 👉 array replace (default)
+      updateData[key] = value;
+
+      // ⚡ OPTIONAL: push mode (if needed)
+      // pushData[key] = { $each: value };
+    } else if (value !== undefined) {
+      updateData[key] = value;
+    }
   });
+
+  const result = await ProjectModel.findByIdAndUpdate(
+    id,
+    {
+      ...(Object.keys(updateData).length && { $set: updateData }),
+      ...(Object.keys(pushData).length && { $push: pushData }),
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   return result;
 };
