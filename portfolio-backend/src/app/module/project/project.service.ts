@@ -28,7 +28,7 @@ const createProjectIntoDB = async (payload: IProject) => {
   // ✅ slug uniqueness check
   const existing = await ProjectModel.findOne({ slug });
   if (existing) {
-    throw new Error("Slug already exists");
+    throw new Error("Project already exists");
   }
 
   // ✅ status validation (extra safety)
@@ -40,7 +40,6 @@ const createProjectIntoDB = async (payload: IProject) => {
   const result = await ProjectModel.create(payload);
   return result;
 };
-
 
 // 🔹 Get All Projects
 const getAllProjects = async (query: Record<string, unknown>) => {
@@ -75,7 +74,6 @@ const getAllProjects = async (query: Record<string, unknown>) => {
   return result;
 };
 
-
 // 🔹 Get Single Project (by ID or slug)
 const getSingleProject = async (idOrSlug: string) => {
   if (!idOrSlug) throw new Error("Project identifier missing");
@@ -97,12 +95,8 @@ const getSingleProject = async (idOrSlug: string) => {
   return result;
 };
 
-
 // 🔹 Update Project
-const updateProject = async (
-  id: string,
-  payload: Partial<IProject>
-) => {
+const updateProject = async (id: string, payload: Partial<IProject>) => {
   if (!id) throw new Error("Project ID missing");
 
   const existing = await ProjectModel.findById(id);
@@ -122,15 +116,12 @@ const updateProject = async (
     }
   }
 
-  const result = await ProjectModel.findByIdAndUpdate(
-    id,
-    payload,
-    { new: true }
-  );
+  const result = await ProjectModel.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
 
   return result;
 };
-
 
 // 🔹 Soft Delete
 const deleteProject = async (id: string) => {
@@ -145,7 +136,6 @@ const deleteProject = async (id: string) => {
   return result;
 };
 
-
 // 🔹 Like Project (future feature)
 const likeProject = async (id: string) => {
   if (!id) throw new Error("Project ID missing");
@@ -158,7 +148,6 @@ const likeProject = async (id: string) => {
 
   return result;
 };
-
 
 export const ProjectServices = {
   createProjectIntoDB,
