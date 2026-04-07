@@ -7,7 +7,7 @@ const router = Router();
 
 // 🔹 Create Project
 router.post(
-  "/",
+  "/create-project",
   validateRequest(ProjectValidation.createProjectZodSchema),
   ProjectControllers.createProject
 );
