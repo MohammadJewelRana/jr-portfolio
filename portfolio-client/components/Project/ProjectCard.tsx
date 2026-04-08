@@ -8,14 +8,12 @@ import Link from "next/link";
 const ProjectCard = ({ project }: any) => {
   return (
     <Link href={`/project/${project.slug}`} className="block h-full">
-
       <motion.div
         initial="rest"
         whileHover="hover"
         animate="rest"
         className="relative w-full h-full overflow-hidden rounded-xl border border-gray-200 bg-white group cursor-pointer"
       >
-
         {/* Image */}
         <motion.div
           variants={{
@@ -29,12 +27,23 @@ const ProjectCard = ({ project }: any) => {
           className="w-full h-full"
         >
           <Image
-            src={'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d'}
+            src={"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d"}
             // src={project.img}
             alt={project.title}
             fill
             className="object-cover"
           />
+          {/* 🔥 STACK TYPE BADGE */}
+          <div className="absolute top-3 right-3 z-10">
+            <div
+              className="px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide text-white 
+  bg-gradient-to-r from-main via-green-400 to-emerald-500 
+  shadow-[0_8px_25px_rgba(40,233,140,0.5)] backdrop-blur-md"
+            >
+              {project.stackType?.charAt(0).toUpperCase() +
+                project.stackType?.slice(1)}
+            </div>
+          </div>
         </motion.div>
 
         {/* Overlay */}
@@ -42,9 +51,7 @@ const ProjectCard = ({ project }: any) => {
 
         {/* Content */}
         <div className="absolute bottom-0 left-0 w-full p-4">
-
           <div className="backdrop-blur-md bg-black/30 rounded-lg px-3 py-2 flex items-center justify-between">
-
             {/* LEFT TEXT */}
             <div className="space-y-1">
               <p className="text-[10px] text-gray-300 font-medium tracking-wide">
@@ -58,7 +65,6 @@ const ProjectCard = ({ project }: any) => {
 
             {/* RIGHT ACTION */}
             <div className="flex items-center gap-2">
-
               {/* Arrow */}
               <motion.div
                 variants={{
@@ -88,13 +94,9 @@ const ProjectCard = ({ project }: any) => {
               >
                 View Project →
               </motion.span>
-
             </div>
-
           </div>
-
         </div>
-
       </motion.div>
     </Link>
   );
