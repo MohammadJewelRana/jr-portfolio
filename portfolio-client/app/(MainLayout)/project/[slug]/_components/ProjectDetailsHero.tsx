@@ -3,7 +3,8 @@ import Image from "next/image";
 const fallbackImg = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d";
 
 const ProjectHero = ({ project }: any) => {
-  const heroImg = project?.images?.[0] || fallbackImg;
+  const heroImg =  fallbackImg;
+//   const heroImg = project?.images?.[0] || fallbackImg;
 
   return (
     <>

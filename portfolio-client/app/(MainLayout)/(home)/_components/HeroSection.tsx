@@ -1,135 +1,140 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import heroImg from "@/assets/hero/1.png";
+import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
 
 const HeroSection = () => {
   return (
-    <section className="relative isolate w-full overflow-hidden pt-32 pb-20 bg-white">
+    <section className="relative bg-[#0c0f14] text-white overflow-hidden">
 
-      {/* 🔥 TOP RIGHT GRADIENT */}
-      <div className="
-        absolute top-0 right-0 
-        w-[800px] h-[400px]
-        bg-gradient-to-br from-[#aef3d9] to-transparent
-        rounded-full blur-3xl opacity-80
-        -z-10
-      " />
+      {/* BG Glow */}
+      <div className="absolute left-10 md:left-20 top-10 md:top-20 w-32 md:w-40 h-32 md:h-40 bg-green-500/20 blur-3xl rounded-full" />
+      <div className="absolute right-10 md:right-20 bottom-10 w-40 md:w-60 h-40 md:h-60 bg-green-400/10 blur-3xl rounded-full" />
 
-      {/* 🔥 BOTTOM LEFT GRADIENT */}
-      <div className="
-        absolute bottom-0 left-0 
-        w-[400px] h-[400px]
-        bg-gradient-to-tr from-[#cfeaf3] to-transparent
-        rounded-full blur-3xl opacity-80
-        -z-10
-      " />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 lg:px-16 pt-8   md:pt-20 lg:pt-24 relative">
 
-      <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 items-center gap-10">
+        {/* ===== MOBILE STACK (TEXT FIRST) ===== */}
+        <div className="md:hidden space-y-6 text-center">
 
-        {/* LEFT IMAGE */}
-        <motion.div
-          initial={{ opacity: 0, x: -60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative flex justify-center"
-        >
-          {/* green shape */}
-          <div className="
-            absolute 
-            w-[360px] h-[360px] 
-            bg-main 
-            rounded-full 
-            left-10 top-16 
-            -z-10
-          " />
+          <div className="inline-flex items-center gap-2 px-4 py-1 border border-green-400/30 rounded-full text-green-400 text-xs">
+            ✨ Hi, I’m George Holdbrook
+          </div>
 
-          <Image
-            src={heroImg}
-            alt="hero"
-            className="w-[340px] md:w-[420px]"
-          />
-        </motion.div>
-
-        {/* RIGHT CONTENT */}
-        <motion.div
-          initial={{ opacity: 0, x: 60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          {/* small text */}
-          <p className="text-main mb-3 flex items-center gap-2">
-            ✨ <span className="font-medium">Hey There!</span>
-          </p>
-
-          {/* heading */}
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight text-black">
-            I'm Rachel Davis <br />
-            <span>Web Developer</span>
+          <h1 className="text-3xl font-bold leading-snug">
+            Code The Future With <br />
+            Innovative Development
           </h1>
 
-          {/* description */}
-          <p className="text-gray-500 mt-5 max-w-md leading-relaxed">
-            We're a team of strategic working globally with largest brands,
-            We believe that progress only you to play things safe.
+          <p className="text-gray-400 text-sm">
+            Unlock the power of innovation with cutting-edge development
+            solutions.
           </p>
 
-          {/* buttons */}
-          <div className="flex items-center gap-4 mt-8">
-
-            <button className="
-              bg-main text-black 
-              px-7 py-3 
-              rounded-full 
-              font-medium
-              transition-all duration-300
-              hover:scale-105
-              hover:shadow-[0_10px_30px_rgba(40,233,140,0.4)]
-            ">
-              Get Started →
+          <div className="flex justify-center gap-4 flex-wrap">
+            <button className="px-5 py-2.5 bg-green-400 text-black rounded-full text-sm font-medium">
+              Let’s Talk →
             </button>
 
-            <button className="flex items-center gap-3 text-gray-700 group">
-
-              <div className="
-                w-10 h-10 
-                rounded-full 
-                border border-gray-300 
-                flex items-center justify-center
-                transition-all duration-300
-                group-hover:bg-main group-hover:text-white group-hover:border-main
-              ">
-                ▶
+            <div className="flex gap-2">
+              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
+                <FaFacebookF />
               </div>
-
-              <span className="group-hover:text-main transition">
-                Show Reel
-              </span>
-
-            </button>
-
+              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
+                <FaTwitter />
+              </div>
+              <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
+                <FaLinkedinIn />
+              </div>
+            </div>
           </div>
-        </motion.div>
 
+          {/* IMAGE AFTER TEXT */}
+          <div className="flex justify-center pt-4">
+            <div className="relative">
+
+              <div className="absolute w-32 h-32 bg-green-400 rotate-45 rounded-2xl blur-xl opacity-70" />
+
+              <Image
+                src={heroImg}
+                alt="hero"
+                width={250}
+                height={300}
+                className="relative z-10"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ===== DESKTOP ORIGINAL (UNCHANGED) ===== */}
+        <div className="hidden md:block text-center relative">
+
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1 border border-green-400/30 rounded-full text-green-400 text-xs mb-6">
+            ✨ Hi, I’m George Holdbrook
+          </div>
+
+          {/* Title */}
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-3xl mx-auto">
+            Code The Future With <br />
+            Innovative Development
+          </h1>
+
+          {/* LEFT CONTENT */}
+          <div className="absolute left-0 top-[55%] -translate-y-1/2 hidden md:block text-left max-w-sm px-2">
+
+            <p className="text-gray-400 text-sm mb-6">
+              Unlock the power of innovation with cutting-edge development
+              solutions. From web and mobile apps to AI and blockchain.
+            </p>
+
+            <div className="flex items-center gap-4 flex-wrap">
+              <button className="px-6 py-3 bg-green-400 text-black rounded-full font-semibold">
+                Let’s Talk →
+              </button>
+
+              <div className="flex gap-3">
+                <div className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10">
+                  <FaFacebookF />
+                </div>
+                <div className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10">
+                  <FaTwitter />
+                </div>
+                <div className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10">
+                  <FaLinkedinIn />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CENTER IMAGE */}
+          <div className="relative flex justify-center mt-10">
+
+            <div className="absolute w-48 h-48 bg-green-400 rotate-45 rounded-2xl blur-xl opacity-70" />
+
+            <Image
+              src={heroImg}
+              alt="hero"
+              width={350}
+              height={420}
+              className="relative z-10"
+            />
+
+            {/* RIGHT CARD */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden md:block pr-2">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-4 rounded-xl text-sm w-[220px]">
+                <p className="text-green-400 font-semibold mb-1">
+                  ✨ My Tech Stacks
+                </p>
+                <p className="text-gray-400 text-xs">
+                  Expert in modern tech stacks: React, Node.js, Python, and more.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-
-      {/* floating shape */}
-      <motion.div
-        className="absolute top-20 right-36 text-main text-3xl"
-        animate={{ y: [0, -15, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      >
-        ✦
-      </motion.div>
-      <motion.div
-        className="absolute top-24 right-40 text-main text-6xl"
-        animate={{ y: [0, -15, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      >
-        ✦
-      </motion.div>
-
     </section>
   );
 };

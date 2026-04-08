@@ -1,18 +1,17 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const fallbackImg =
-  "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d";
+const fallbackImg = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d";
 
 const ProjectGallery = ({ project }: any) => {
-  const images =
-    project?.images?.length > 0
-      ? project.images
-      : [fallbackImg, fallbackImg, fallbackImg];
+  const images = [fallbackImg, fallbackImg, fallbackImg];
+  //   const images =
+  //     project?.images?.length > 0
+  //       ? project.images
+  //       : [fallbackImg, fallbackImg, fallbackImg];
 
   return (
     <section className="space-y-6">
-
       {/* Heading */}
       <div className="space-y-2">
         <p className="text-sm uppercase tracking-widest text-main font-medium">
