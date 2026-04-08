@@ -11,7 +11,10 @@ import Project from "./_components/Project";
 const page = () => {
   return (
     <div>
+      <div className="">
       <HeroSection />
+
+      </div>
 
       <div className=" mx-auto max-w-7xl  px-4">
         <About />

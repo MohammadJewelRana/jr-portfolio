@@ -34,7 +34,9 @@ const page = () => {
   return (
     <div>
 
-      <ProjectHero total={projects?.length || 0} />
+   <div className="">
+        <ProjectHero total={projects?.length || 0} />
+   </div>
 
       <div className="max-w-7xl mx-auto px-4 pb-8">
 

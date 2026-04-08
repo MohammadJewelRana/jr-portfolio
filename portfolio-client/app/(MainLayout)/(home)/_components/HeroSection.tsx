@@ -7,7 +7,7 @@ import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
 
 const HeroSection = () => {
   return (
-    <section className="relative bg-[#0c0f14] text-white overflow-hidden">
+    <section className="relative bg-[#0c0f14] text-white overflow-hidden  pt-16">
       {/* BG Glow */}
       <div className="absolute left-10 md:left-20 top-10 md:top-20 w-32 md:w-40 h-32 md:h-40 bg-green-500/20 blur-3xl rounded-full" />
       <div className="absolute right-10 md:right-20 bottom-10 w-40 md:w-60 h-40 md:h-60 bg-green-400/10 blur-3xl rounded-full" />
