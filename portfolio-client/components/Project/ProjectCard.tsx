@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const ProjectCard = ({ project }: any) => {
   return (
-    <Link href={`/project/${'food-delivery-app'}`} className="block h-full">
+    <Link href={`/project/${project.slug}`} className="block h-full">
 
       <motion.div
         initial="rest"
@@ -29,7 +29,8 @@ const ProjectCard = ({ project }: any) => {
           className="w-full h-full"
         >
           <Image
-            src={project.img}
+            src={'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d'}
+            // src={project.img}
             alt={project.title}
             fill
             className="object-cover"
