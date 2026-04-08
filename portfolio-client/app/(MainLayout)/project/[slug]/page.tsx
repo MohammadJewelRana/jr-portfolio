@@ -30,10 +30,8 @@ const project = {
 const Page = () => {
   return (
     <div className="bg-[#f8fffb] text-black">
-
       {/* 🔥 HERO */}
       <div className="relative h-[65vh] overflow-hidden">
-
         <Image
           src={project.images[0]}
           alt="project"
@@ -49,9 +47,7 @@ const Page = () => {
 
         {/* content */}
         <div className="absolute bottom-0 w-full px-6 md:px-20 pb-16 text-white">
-
           <div className="backdrop-blur-xl bg-white/5 p-6 md:p-10 rounded-3xl shadow-[0_20px_80px_rgba(0,0,0,0.5)]">
-
             <p className="text-main text-sm tracking-widest uppercase">
               {project.category}
             </p>
@@ -60,9 +56,7 @@ const Page = () => {
               {project.title}
             </h1>
 
-            <p className="text-white/70 mt-4 max-w-xl">
-              {project.description}
-            </p>
+            <p className="text-white/70 mt-4 max-w-xl">{project.description}</p>
 
             <div className="flex gap-4 mt-8 flex-wrap">
               <button className="px-8 py-3 bg-main text-black rounded-full font-semibold shadow-[0_15px_40px_rgba(40,233,140,0.5)] hover:scale-105 transition">
@@ -73,17 +67,14 @@ const Page = () => {
                 💻 Code
               </button>
             </div>
-
           </div>
         </div>
       </div>
 
       {/* 🔥 MAIN */}
       <div className="max-w-7xl mx-auto px-4 py-32 grid grid-cols-1 md:grid-cols-3 gap-16">
-
         {/* LEFT */}
         <div className="md:col-span-2 space-y-20">
-
           {/* Overview */}
           <div>
             <h2 className="text-4xl font-bold">Overview</h2>
@@ -105,9 +96,7 @@ const Page = () => {
                   whileHover={{ scale: 1.05 }}
                   className="p-6 rounded-3xl bg-white/60 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(40,233,140,0.2)] transition"
                 >
-                  <p className="text-gray-800 font-medium">
-                    ✨ {f}
-                  </p>
+                  <p className="text-gray-800 font-medium">✨ {f}</p>
                 </motion.div>
               ))}
             </div>
@@ -137,12 +126,10 @@ const Page = () => {
               ))}
             </div>
           </div>
-
         </div>
 
         {/* RIGHT SIDEBAR */}
         <div className="space-y-8 sticky top-24 h-fit">
-
           {/* Tech */}
           <div className="p-6 rounded-3xl bg-white/70 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
             <h3 className="font-semibold mb-4 text-lg">Tech Stack</h3>
@@ -161,14 +148,19 @@ const Page = () => {
 
           {/* Info */}
           <div className="p-6 rounded-3xl bg-white/70 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] space-y-2 text-sm">
-            <p><b>Status:</b> {project.status}</p>
-            <p><b>Client:</b> {project.client}</p>
-            <p><b>Duration:</b> {project.duration}</p>
+            <p>
+              <b>Status:</b> {project.status}
+            </p>
+            <p>
+              <b>Client:</b> {project.client}
+            </p>
+            <p>
+              <b>Duration:</b> {project.duration}
+            </p>
           </div>
 
           {/* Action */}
           <div className="p-6 rounded-3xl bg-main text-black shadow-[0_20px_80px_rgba(40,233,140,0.4)] space-y-4">
-
             <h3 className="font-bold text-lg">Explore Project</h3>
 
             <button className="w-full py-3 bg-black text-white rounded-full hover:scale-105 transition">
@@ -178,11 +170,8 @@ const Page = () => {
             <button className="w-full py-3 bg-white/20 rounded-full hover:bg-white/30 transition">
               💻 Source Code
             </button>
-
           </div>
-
         </div>
-
       </div>
     </div>
   );
