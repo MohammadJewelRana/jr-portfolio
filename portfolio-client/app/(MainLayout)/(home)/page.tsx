@@ -16,7 +16,7 @@ const page = () => {
 
       </div>
 
-      <div className=" mx-auto max-w-7xl  px-4">
+      <div className=" mx-auto max-w-7xl px-4 ">
         <About />
       </div>
       <Skills />
