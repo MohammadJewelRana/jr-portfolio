@@ -50,10 +50,11 @@ const ProjectCard = ({ project }: any) => {
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-500" />
 
         {/* Content */}
+
         <div className="absolute bottom-0 left-0 w-full p-4">
-          <div className="backdrop-blur-md bg-black/30 rounded-lg px-3 py-2 flex items-center justify-between">
-            {/* LEFT TEXT */}
-            <div className="space-y-1">
+          <div className="backdrop-blur-md bg-black/30 rounded-lg px-3 py-2 flex items-center justify-between ">
+            {/* 🔥 LEFT TEXT */}
+            <div className="space-y-1 ">
               <p className="text-[10px] text-gray-300 font-medium tracking-wide">
                 {project.category}
               </p>
@@ -63,24 +64,9 @@ const ProjectCard = ({ project }: any) => {
               </h3>
             </div>
 
-            {/* RIGHT ACTION */}
+            {/* 🔥 RIGHT ACTION */}
             <div className="flex items-center gap-2">
-              {/* Arrow */}
-              <motion.div
-                variants={{
-                  rest: { rotate: 45, scale: 1 },
-                  hover: { rotate: 90, scale: 1.15 },
-                }}
-                transition={{
-                  duration: 0.4,
-                  ease: [0.25, 1, 0.5, 1],
-                }}
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-white/70 text-white"
-              >
-                <FaArrowUp className="text-xs" />
-              </motion.div>
-
-              {/* Text */}
+              {/* 🔥 Text (Desktop only) */}
               <motion.span
                 variants={{
                   rest: { opacity: 0, x: -10 },
@@ -90,10 +76,34 @@ const ProjectCard = ({ project }: any) => {
                   duration: 0.4,
                   ease: [0.25, 1, 0.5, 1],
                 }}
-                className="text-xs text-white font-medium tracking-wide whitespace-nowrap"
+                className="
+      hidden md:inline-block
+      text-xs text-white font-medium tracking-wide whitespace-nowrap
+      md:opacity-0 md:group-hover:opacity-100
+      md:-translate-x-2 md:group-hover:translate-x-0
+    "
               >
-                View Project →
+                View →
               </motion.span>
+
+              {/* 🔥 Arrow */}
+              <motion.div
+                variants={{
+                  rest: { rotate: 45, scale: 1 },
+                  hover: { rotate: 90, scale: 1.15 },
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: [0.25, 1, 0.5, 1],
+                }}
+                className="
+      w-9 h-9 flex items-center justify-center rounded-full 
+      border border-white/70 text-white shrink-0
+      ml-auto md:ml-0
+    "
+              >
+                <FaArrowUp className="text-xs" />
+              </motion.div>
             </div>
           </div>
         </div>
