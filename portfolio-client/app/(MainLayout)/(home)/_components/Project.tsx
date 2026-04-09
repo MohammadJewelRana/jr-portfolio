@@ -2,49 +2,29 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { FaArrowUp, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import ProjectCard from "@/components/Project/ProjectCard";
-
-const projects = [
-  {
-    id: 1,
-    title: "Food Delivery App Development",
-    category: "App / Development",
-    img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d",
-    span: "big-left",
-  },
-  {
-    id: 2,
-    title: "Mobile App Development Projects",
-    category: "App / Development",
-    img: "https://images.unsplash.com/photo-1559027615-cd4628902d4a",
-    span: "small-top-right",
-  },
-  {
-    id: 3,
-    title: "Business Landing Page",
-    category: "App / Development",
-    img: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d",
-    span: "small-bottom-left",
-  },
-  {
-    id: 4,
-    title: "Architecture & Interior Design",
-    category: "App / Development",
-    img: "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
-    span: "big-right",
-  },
-];
+import { useGetAllProjects } from "@/store/hooks/project.hook";
+import Link from "next/link";
 
 const Project = () => {
-  return (
-    <div className="  py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
+  const { projects: allProject, isLoading } = useGetAllProjects(undefined);
 
+  if (isLoading) {
+    return (
+      <div className="text-center py-20 text-gray-500">Loading projects...</div>
+    );
+  }
+
+  // 👉 Ensure max 4 project for layout (optional)
+  const displayProjects = allProject?.slice(0, 4) || [];
+
+  return (
+    <div className="py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* 🔥 Header */}
         <div className="text-center space-y-3 mb-12">
-          <div className="inline-flex items-center gap-2 text-main text-sm px-4 py-1.5 rounded-full border border-main bg-main/10">
+          <div className="inline-flex items-center gap-2 text-main text-sm px-4 py-1.5 rounded-full bg-main/10 backdrop-blur-md">
             <FaStar />
             <span>Project</span>
           </div>
@@ -53,61 +33,59 @@ const Project = () => {
             My <span className="text-main">Work</span> Projects
           </h1>
         </div>
-        {/* GRID */}
-     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
 
-  {/* LEFT COLUMN */}
-  <div className="flex flex-col gap-6">
+        {/* 🔥 GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
+          {/* LEFT */}
+          <div className="flex flex-col gap-6">
+            {displayProjects[0] && (
+              <div className="h-[250px] md:h-[66.666%]">
+                <ProjectCard project={displayProjects[0]} />
+              </div>
+            )}
 
-    {/* 1 */}
-    <div className="h-[250px] md:h-[66.666%]">
-      <ProjectCard project={projects[0]} />
-    </div>
+            {displayProjects[2] && (
+              <div className="h-[250px] md:h-[33.333%]">
+                <ProjectCard project={displayProjects[2]} />
+              </div>
+            )}
+          </div>
 
-    {/* 3 */}
-    <div className="h-[250px] md:h-[33.333%]">
-      <ProjectCard project={projects[2]} />
-    </div>
+          {/* RIGHT */}
+          <div className="flex flex-col gap-6">
+            {displayProjects[1] && (
+              <div className="h-[250px] md:h-[33.333%]">
+                <ProjectCard project={displayProjects[1]} />
+              </div>
+            )}
 
-  </div>
+            {displayProjects[3] && (
+              <div className="h-[250px] md:h-[66.666%]">
+                <ProjectCard project={displayProjects[3]} />
+              </div>
+            )}
+          </div>
+        </div>
 
-  {/* RIGHT COLUMN */}
-  <div className="flex flex-col gap-6">
-
-    {/* 2 */}
-    <div className="h-[250px] md:h-[33.333%]">
-      <ProjectCard project={projects[1]} />
-    </div>
-
-    {/* 4 */}
-    <div className="h-[250px] md:h-[66.666%]">
-      <ProjectCard project={projects[3]} />
-    </div>
-
-  </div>
-
-</div>
-
-        {/* Bottom Button */}
-        <div className="text-center mt-10">
-          <motion.button
-            // onClick={() => router.push("/blog")}
-            whileHover={{
-              scale: 1.08,
-              boxShadow: "0px 15px 40px rgba(40,233,140,0.35)",
-            }}
-            whileTap={{
-              scale: 0.96,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 20,
-            }}
-            className="px-6 py-3 rounded-full bg-main text-black font-medium text-sm sm:text-base cursor-pointer"
-          >
-            All Projects ↗
-          </motion.button>
+        {/* 🔥 Button */}
+        <div className="text-center mt-12">
+          <Link href="/project">
+            <motion.button
+              whileHover={{
+                scale: 1.08,
+                boxShadow: "0px 15px 40px rgba(40,233,140,0.35)",
+              }}
+              whileTap={{ scale: 0.96 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20,
+              }}
+              className="px-8 py-3 rounded-full bg-main text-black font-semibold text-sm sm:text-base cursor-pointer"
+            >
+              All Projects ↗
+            </motion.button>
+          </Link>
         </div>
       </div>
     </div>

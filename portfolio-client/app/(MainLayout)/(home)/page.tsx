@@ -11,15 +11,17 @@ import Project from "./_components/Project";
 const page = () => {
   return (
     <div>
-      <HeroSection />
+      <div className="">
+        <HeroSection />
+      </div>
 
-      <div className=" mx-auto max-w-7xl  px-4">
+      <div className=" mx-auto max-w-7xl px-4 ">
         <About />
       </div>
       <Skills />
+      <Project />
       <Experience />
 
-      <Project />
 
       <Process />
 

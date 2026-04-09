@@ -18,7 +18,11 @@ import { useState } from "react";
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItems = ["Home", "Project", "Blog"];
+  const navItems = [
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/project" },
+    { name: "Blog", href: "/blog" },
+  ];
 
   return (
     <HeroUINavbar
@@ -27,32 +31,43 @@ export const Navbar = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       className="
-      relative 
-      border-b border-gray-200
-      bg-gradient-to-r from-white via-white to-[#aef3d9]
+      
+      fixed top-0 left-0 w-full z-50
+      
+      bg-white/10 
       backdrop-blur-xl
+      
+      border-b border-white/20
+      
+      shadow-[0_8px_30px_rgba(0,0,0,0.05)]
+      
+      before:absolute before:inset-0
+      before:bg-gradient-to-r 
+      before:from-white/20 
+      before:via-transparent 
+      before:to-white/20
+      before:opacity-40
       "
     >
-
-      {/* LEFT LOGO */}
+      {/* 🔹 LOGO */}
       <NavbarContent justify="start">
         <NavbarBrand>
           <NextLink href="/" className="flex items-center gap-2">
-            <Image src={image} alt="logo" width={32} height={32} />
-            <span className="font-bold text-xl text-black">Jewel</span>
+            <Image src={image} alt="logo" width={34} height={34} />
+            <span className="font-bold text-lg text-black">Jewel</span>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
 
-      {/* CENTER MENU (DESKTOP) */}
+      {/* 🔹 DESKTOP MENU */}
       <NavbarContent justify="center" className="hidden md:flex gap-8">
         {navItems.map((item) => (
-          <NavbarItem key={item}>
+          <NavbarItem key={item.name}>
             <NextLink
-              href="#"
+              href={item.href}
               className="
               relative 
-              text-black/80 
+            text-main
               font-medium 
               transition-all duration-300
               hover:text-main
@@ -65,34 +80,35 @@ export const Navbar = () => {
               hover:after:w-full
               "
             >
-              {item}
+              {item.name}
             </NextLink>
           </NavbarItem>
         ))}
       </NavbarContent>
 
-      {/* RIGHT SIDE */}
+      {/* 🔹 RIGHT SIDE */}
       <NavbarContent justify="end" className="gap-3">
-
-        {/* 🔥 PREMIUM HAMBURGER */}
+        {/* MOBILE TOGGLE */}
         <NavbarMenuToggle
           className="
           md:hidden 
           text-black 
-          border border-gray-300 
+          border border-white/30 
           rounded-full 
           p-2
+          backdrop-blur-md
           transition-all duration-300
-          hover:bg-main hover:text-white hover:border-main
+          hover:bg-main hover:text-white
           "
         />
 
-        {/* DESKTOP BUTTON */}
+        {/* CTA */}
         <Button
           className="
           hidden md:flex
           bg-main text-white 
           rounded-full px-6
+          font-semibold
           transition-all duration-300
           hover:scale-105
           hover:shadow-[0_10px_25px_rgba(40,233,140,0.3)]
@@ -100,52 +116,52 @@ export const Navbar = () => {
         >
           Download CV →
         </Button>
-
       </NavbarContent>
 
-      {/* 🔥 PREMIUM MOBILE MENU */}
-      <NavbarMenu className="pt-10 px-6 bg-white/95 backdrop-blur-xl">
-
+      {/* 🔹 MOBILE MENU */}
+      <NavbarMenu
+        className="
+        pt-16 px-6 
+        
+        bg-white/30 
+        backdrop-blur-2xl
+        
+        min-h-screen
+      "
+      >
         <div className="flex flex-col gap-6">
-
-          {navItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+          {navItems.map((item) => (
+            <NavbarMenuItem key={item.name}>
               <NextLink
-                href="#"
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
                 className="
-                text-xl font-semibold 
+                text-2xl font-semibold 
                 text-black/80
                 transition-all duration-300
                 hover:text-main
                 "
-                onClick={() => setIsMenuOpen(false)}
               >
-                {item}
+                {item.name}
               </NextLink>
             </NavbarMenuItem>
           ))}
 
-          {/* Divider */}
-          <div className="border-t border-gray-200 my-4" />
+          <div className="border-t border-white/30 my-4" />
 
-          {/* Button */}
           <Button
             className="
             w-full bg-main text-white 
             rounded-full py-3
-            text-base font-medium
+            text-base font-semibold
             transition-all duration-300
-            hover:scale-[1.02]
-            hover:shadow-[0_10px_25px_rgba(40,233,140,0.3)]
+            hover:scale-[1.03]
             "
           >
             Download CV →
           </Button>
-
         </div>
-
       </NavbarMenu>
-
     </HeroUINavbar>
   );
 };
