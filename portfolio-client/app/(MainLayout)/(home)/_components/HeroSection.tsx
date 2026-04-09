@@ -6,6 +6,8 @@ import heroImg from "@/assets/hero/1.png";
 import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
 
 const HeroSection = () => {
+  console.log('');
+  
   return (
     <section className="relative bg-[#0c0f14] text-white overflow-hidden  pt-16">
       {/* BG Glow */}

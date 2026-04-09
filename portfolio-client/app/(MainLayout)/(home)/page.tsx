@@ -12,17 +12,16 @@ const page = () => {
   return (
     <div>
       <div className="">
-      <HeroSection />
-
+        <HeroSection />
       </div>
 
       <div className=" mx-auto max-w-7xl px-4 ">
         <About />
       </div>
       <Skills />
+      <Project />
       <Experience />
 
-      <Project />
 
       <Process />
 
