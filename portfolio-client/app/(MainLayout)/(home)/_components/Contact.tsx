@@ -8,40 +8,56 @@ import img from "@/assets/hero/jewel_rana.jpg";
 const Contact = () => {
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (e: any) => {
+  e.preventDefault();
+  setLoading(true);
 
-    const formData = {
-      name: e.target.name.value,
-      phone: e.target.phone.value,
-      email: e.target.email.value,
-      message: e.target.message.value,
-    };
+  const formData = {
+    name: e.target.name.value,
+    phone: e.target.phone.value,
+    email: e.target.email.value,
+    message: e.target.message.value,
+  };
+
+  try {
+    const res = await fetch("http://localhost:5000/api/contacts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    // 🔥 First get raw text
+    const text = await res.text();
+
+    let data;
 
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        alert("Message sent successfully ✅");
-        e.target.reset();
-      } else {
-        alert("Failed to send ❌");
-      }
+      // 🔥 Try parse JSON
+      data = JSON.parse(text);
     } catch (err) {
-      alert("Something went wrong ❌");
-    } finally {
-      setLoading(false);
+      console.error("❌ Not JSON response:", text);
+      throw new Error("Server did not return JSON");
     }
-  };
+
+    if (!res.ok) {
+      throw new Error(data?.message || "Request failed");
+    }
+
+    if (data.success) {
+      alert("Message sent successfully ✅");
+      e.target.reset();
+    } else {
+      alert(data.message || "Failed to send ❌");
+    }
+  } catch (err: any) {
+    console.error("🔥 Error:", err.message);
+    alert(err.message || "Something went wrong ❌");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="py-16 bg-[#1C1D20] text-white ">
