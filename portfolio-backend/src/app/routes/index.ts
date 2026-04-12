@@ -2,6 +2,7 @@ import { Router } from "express";
  
 import { ProjectRoutes } from "../module/project/project.route";
 import { BlogRoutes } from "../module/blog/blog.route";
+import { ContactRoutes } from "../module/contact/contact.route";
  
 
 const router = Router();
@@ -15,6 +16,10 @@ const moduleRoutes = [
   {
     path: "/blogs",
     route: BlogRoutes,
+  },
+  {
+    path: "/contacts",
+    route: ContactRoutes,
   },
 ];
 
