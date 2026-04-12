@@ -12,7 +12,9 @@ import {
 import { Button } from "@heroui/button";
 import NextLink from "next/link";
 import Image from "next/image";
-import image from "@/assets/logo/logo1.jpg";
+import image from "@/assets/logo/logo.png";
+ 
+
 import { useState } from "react";
 
 export const Navbar = () => {
@@ -50,14 +52,20 @@ export const Navbar = () => {
       "
     >
       {/* 🔹 LOGO */}
-      <NavbarContent justify="start">
-        <NavbarBrand>
-          <NextLink href="/" className="flex items-center gap-2">
-            <Image src={image} alt="logo" width={34} height={34} />
-            <span className="font-bold text-lg text-black">Jewel</span>
-          </NextLink>
-        </NavbarBrand>
-      </NavbarContent>
+<NavbarContent justify="start">
+  <NavbarBrand>
+    <NextLink href="/" className="flex items-center gap-2">
+      <Image
+        src={image}
+        alt="logo"
+        width={150}
+        height={50}
+        className="h-10 w-auto object-contain rounded-sm"
+        priority
+      />
+    </NextLink>
+  </NavbarBrand>
+</NavbarContent>
 
       {/* 🔹 DESKTOP MENU */}
       <NavbarContent justify="center" className="hidden md:flex gap-8">

@@ -7,6 +7,9 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 
+import logo from "@/assets/logo/logo.png"
+import Image from "next/image";
+
 const Footer = () => {
   const year = new Date().getFullYear();
 
@@ -30,10 +33,16 @@ const Footer = () => {
         {/* Top section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 py-6">
           {/* Logo */}
-          <div>
-            <p className="text-xl font-semibold text-main">Jewel</p>
-          </div>
-
+         {/* Logo */}
+<div>
+  <Image
+    src={logo}
+    alt="logo"
+    width={120}
+    height={60}
+    className="h-12 w-auto object-contain"
+  />
+</div>
           <div className="flex flex-wrap justify-center gap-6 text-gray-300">
             {navigationData.map((item) => (
               <Link
