@@ -1,38 +1,34 @@
 "use client";
 
 import { useState } from "react";
-
-import React from "react";
 import ProjectTable from "./_components/ProjectTable";
-import ProjectFormModal from "./_components/ProjectFormModal";
+import ProjectForm from "./_components/ProjectForm";
 
-const page = () => {
-  const [open, setOpen] = useState(false);
+export default function Page() {
+  const [showForm, setShowForm] = useState(false);
   const [projects, setProjects] = useState([]);
 
-  const handleCreate = async (data) => {
-    // API call
-    setProjects((prev) => [...prev, data]);
+  const handleCreate = (data: any) => {
+    setProjects((prev) => [...prev, { ...data, _id: Date.now().toString() }]);
+    setShowForm(false);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string) => {
     setProjects((prev) => prev.filter((p) => p._id !== id));
   };
+
   return (
     <div className="space-y-6">
       <button
-        onClick={() => setOpen(true)}
+        onClick={() => setShowForm(!showForm)}
         className="bg-indigo-600 px-4 py-2 rounded"
       >
-        + Add Project
+        {showForm ? "Close Form" : "+ Add Project"}
       </button>
 
-      <ProjectTable projects={projects} onDelete={handleDelete} />
+      {showForm && <ProjectForm onSubmit={handleCreate} />}
 
-   
-   
+      <ProjectTable projects={projects} onDelete={handleDelete} />
     </div>
   );
-};
-
-export default page;
+}
