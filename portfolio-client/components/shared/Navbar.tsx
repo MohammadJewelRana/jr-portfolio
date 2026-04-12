@@ -12,6 +12,7 @@ import {
 import { Button } from "@heroui/button";
 import NextLink from "next/link";
 import Image from "next/image";
+// import image from "@/assets/logo/favicon.png";
 import image from "@/assets/logo/logo.png";
  
 
