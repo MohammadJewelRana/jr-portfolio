@@ -7,6 +7,6 @@ export const baseApi = createApi({
     baseUrl: envConfig.baseUrl,
     credentials: "include",
   }),
-  tagTypes: ["Projects", "Blogs"],
+  tagTypes: ["Projects", "Blogs","Contacts"],
   endpoints: () => ({}),
 });

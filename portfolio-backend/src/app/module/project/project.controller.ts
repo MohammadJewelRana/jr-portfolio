@@ -31,9 +31,9 @@ const getAllProjects = catchAsync(async (req: Request, res: Response) => {
 
 // 🔹 Get Single Project
 const getSingleProject = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id as string;
+  const slug = req.params.slug as string;
 
-  const result = await ProjectServices.getSingleProject(id);
+  const result = await ProjectServices.getSingleProject(slug);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

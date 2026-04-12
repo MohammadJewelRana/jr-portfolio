@@ -49,3 +49,61 @@ export interface IProject {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export interface IProject1 {
+  // 🔹 Basic Info
+  title: string;
+  slug: string;
+  category: string;
+  description: string;
+
+  
+  images?: string[]; // gallery
+ 
+
+  // 🔹 Tech Info
+  technologies: string[];
+  stackType?: "frontend" | "backend" | "fullstack" | "mobile";
+
+  // 🔹 Links
+  liveLink?: string;
+  githubClient?: string;
+  githubServer?: string;
+
+  // 🔹 Project Details
+  features?: string[]; // bullet points
+  
+  
+ 
+  // 🔹 Status
+  status: "ongoing" | "completed" | "planned";
+
+  // 🔹 Highlight Control
+  featured?: boolean;
+ 
+
+ 
+   
+ 
+
+  // 🔹 Analytics (future use)
+  views?: number;
+  likes?: number;
+
+  
+}

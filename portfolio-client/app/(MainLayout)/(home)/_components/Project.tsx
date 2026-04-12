@@ -6,15 +6,12 @@ import { FaStar } from "react-icons/fa";
 import ProjectCard from "@/components/Project/ProjectCard";
 import { useGetAllProjects } from "@/store/hooks/project.hook";
 import Link from "next/link";
+import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
 
 const Project = () => {
   const { projects: allProject, isLoading } = useGetAllProjects(undefined);
 
-  if (isLoading) {
-    return (
-      <div className="text-center py-20 text-gray-500">Loading projects...</div>
-    );
-  }
+ 
 
   // 👉 Ensure max 4 project for layout (optional)
   const displayProjects = allProject?.slice(0, 4) || [];
@@ -35,37 +32,45 @@ const Project = () => {
         </div>
 
         {/* 🔥 GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
-          {/* LEFT */}
-          <div className="flex flex-col gap-6">
-            {displayProjects[0] && (
-              <div className="h-[250px] md:h-[66.666%]">
-                <ProjectCard project={displayProjects[0]} />
-              </div>
-            )}
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
+  {/* LEFT */}
+  <div className="flex flex-col gap-6">
+    <div className="h-[250px] md:h-[66.666%]">
+      {isLoading ? (
+        <ProjectCardSkeleton />
+      ) : displayProjects[0] ? (
+        <ProjectCard project={displayProjects[0]} />
+      ) : null}
+    </div>
 
-            {displayProjects[2] && (
-              <div className="h-[250px] md:h-[33.333%]">
-                <ProjectCard project={displayProjects[2]} />
-              </div>
-            )}
-          </div>
+    <div className="h-[250px] md:h-[33.333%]">
+      {isLoading ? (
+        <ProjectCardSkeleton />
+      ) : displayProjects[2] ? (
+        <ProjectCard project={displayProjects[2]} />
+      ) : null}
+    </div>
+  </div>
 
-          {/* RIGHT */}
-          <div className="flex flex-col gap-6">
-            {displayProjects[1] && (
-              <div className="h-[250px] md:h-[33.333%]">
-                <ProjectCard project={displayProjects[1]} />
-              </div>
-            )}
+  {/* RIGHT */}
+  <div className="flex flex-col gap-6">
+    <div className="h-[250px] md:h-[33.333%]">
+      {isLoading ? (
+        <ProjectCardSkeleton />
+      ) : displayProjects[1] ? (
+        <ProjectCard project={displayProjects[1]} />
+      ) : null}
+    </div>
 
-            {displayProjects[3] && (
-              <div className="h-[250px] md:h-[66.666%]">
-                <ProjectCard project={displayProjects[3]} />
-              </div>
-            )}
-          </div>
-        </div>
+    <div className="h-[250px] md:h-[66.666%]">
+      {isLoading ? (
+        <ProjectCardSkeleton />
+      ) : displayProjects[3] ? (
+        <ProjectCard project={displayProjects[3]} />
+      ) : null}
+    </div>
+  </div>
+</div>
 
         {/* 🔥 Button */}
         <div className="text-center mt-12">

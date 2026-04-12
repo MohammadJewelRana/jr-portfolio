@@ -16,7 +16,7 @@ router.post(
 router.get("/", ProjectControllers.getAllProjects);
 
 // 🔹 Get Single Project (id OR slug)
-router.get("/:id", ProjectControllers.getSingleProject);
+router.get("/:slug", ProjectControllers.getSingleProject);
 
 // 🔹 Update Project
 router.patch(
