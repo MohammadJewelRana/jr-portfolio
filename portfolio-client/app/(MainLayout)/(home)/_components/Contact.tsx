@@ -4,13 +4,16 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { FaStar, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
 import img from "@/assets/hero/jewel_rana.jpg";
+import { useCreateContact } from "@/store/hooks/contact.hook";
+import toast from "react-hot-toast";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
 
- const handleSubmit = async (e: any) => {
+  const { create, isLoading } = useCreateContact();
+
+const handleSubmit = async (e: any) => {
   e.preventDefault();
-  setLoading(true);
 
   const formData = {
     name: e.target.name.value,
@@ -19,50 +22,14 @@ const Contact = () => {
     message: e.target.message.value,
   };
 
-  try {
-    const res = await fetch("http://localhost:5000/api/contacts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+ 
+  await create(formData);
 
-    // 🔥 First get raw text
-    const text = await res.text();
-
-    let data;
-
-    try {
-      // 🔥 Try parse JSON
-      data = JSON.parse(text);
-    } catch (err) {
-      console.error("❌ Not JSON response:", text);
-      throw new Error("Server did not return JSON");
-    }
-
-    if (!res.ok) {
-      throw new Error(data?.message || "Request failed");
-    }
-
-    if (data.success) {
-      alert("Message sent successfully ✅");
-      e.target.reset();
-    } else {
-      alert(data.message || "Failed to send ❌");
-    }
-  } catch (err: any) {
-    console.error("🔥 Error:", err.message);
-    alert(err.message || "Something went wrong ❌");
-  } finally {
-    setLoading(false);
-  }
+  e.target.reset();
 };
-
   return (
     <div className="py-16 bg-[#1C1D20] text-white ">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-
         {/* LEFT (UNCHANGED) */}
         <div className="space-y-4">
           <div className="inline-flex items-center gap-2 text-main text-sm px-4 py-1.5 rounded-full border border-main bg-main/10">
@@ -116,7 +83,7 @@ const Contact = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 name="name"
-                required
+                 
                 type="text"
                 placeholder="Enter Your Name"
                 className="w-full px-4 py-3 rounded-lg bg-transparent border border-white/10 text-sm outline-none focus:border-main transition"
@@ -124,7 +91,7 @@ const Contact = () => {
 
               <input
                 name="phone"
-                required
+                 
                 type="text"
                 placeholder="Enter Your Number"
                 className="w-full px-4 py-3 rounded-lg bg-transparent border border-white/10 text-sm outline-none focus:border-main transition"
@@ -133,7 +100,7 @@ const Contact = () => {
 
             <input
               name="email"
-              required
+               required
               type="email"
               placeholder="Enter Your Email"
               className="w-full px-4 py-3 rounded-lg bg-transparent border border-white/10 text-sm outline-none focus:border-main transition"
