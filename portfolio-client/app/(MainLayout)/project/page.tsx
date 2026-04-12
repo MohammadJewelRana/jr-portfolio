@@ -19,43 +19,36 @@ const page = () => {
     setVisibleCount(4);
   }, [active]);
 
-  if (isLoading) return <p>Loading...</p>;
-
   const filtered =
     active === "All"
       ? projects
       : projects?.filter(
-          (p: any) =>
-            p.stackType?.toLowerCase() === active.toLowerCase()
+          (p: any) => p.stackType?.toLowerCase() === active.toLowerCase(),
         );
 
   const visibleProjects = filtered?.slice(0, visibleCount);
 
   return (
-    <div>
-
-   <div className="">
+    <div className="">
+      <div className="">
         <ProjectHero total={projects?.length || 0} />
-   </div>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 pb-8">
-
         <ProjectFilter
           active={active}
           setActive={setActive}
           categories={categories}
         />
 
-        <ProjectGrid projects={visibleProjects} />
+        <ProjectGrid projects={visibleProjects} loading={isLoading} />
 
         <LoadMoreButton
           visibleCount={visibleCount}
           total={filtered?.length}
           onClick={() => setVisibleCount((prev) => prev + 4)}
         />
-
       </div>
-
     </div>
   );
 };
