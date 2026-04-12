@@ -8,11 +8,8 @@ import { blogs } from "../(home)/_components/Blog";
 
 const Page = () => {
   const [visibleCount, setVisibleCount] = useState(3);
- 
 
   const isLoading = false; // Simulate loading state (replace with real loading logic if needed)
-
- 
 
   return (
     <div>
