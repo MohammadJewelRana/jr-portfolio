@@ -7,7 +7,7 @@ import BlogCard from "@/components/blog/BlogCard";
 import Link from "next/link";
 import BlogCardSkeleton from "@/components/blog/BlogCardSkeleton";
 
-const blogs = [
+export const blogs = [
   {
     title: "Mastering MERN Stack in 2026",
     slug: "mastering-mern-stack-2026",

@@ -11,8 +11,6 @@ import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
 const Project = () => {
   const { projects: allProject, isLoading } = useGetAllProjects(undefined);
 
- 
-
   // 👉 Ensure max 4 project for layout (optional)
   const displayProjects = allProject?.slice(0, 4) || [];
 
@@ -32,45 +30,45 @@ const Project = () => {
         </div>
 
         {/* 🔥 GRID */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
-  {/* LEFT */}
-  <div className="flex flex-col gap-6">
-    <div className="h-[250px] md:h-[66.666%]">
-      {isLoading ? (
-        <ProjectCardSkeleton />
-      ) : displayProjects[0] ? (
-        <ProjectCard project={displayProjects[0]} />
-      ) : null}
-    </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:h-[600px]">
+          {/* LEFT */}
+          <div className="flex flex-col gap-6">
+            <div className="h-[250px] md:h-[66.666%]">
+              {isLoading ? (
+                <ProjectCardSkeleton />
+              ) : displayProjects[0] ? (
+                <ProjectCard project={displayProjects[0]} />
+              ) : null}
+            </div>
 
-    <div className="h-[250px] md:h-[33.333%]">
-      {isLoading ? (
-        <ProjectCardSkeleton />
-      ) : displayProjects[2] ? (
-        <ProjectCard project={displayProjects[2]} />
-      ) : null}
-    </div>
-  </div>
+            <div className="h-[250px] md:h-[33.333%]">
+              {isLoading ? (
+                <ProjectCardSkeleton />
+              ) : displayProjects[2] ? (
+                <ProjectCard project={displayProjects[2]} />
+              ) : null}
+            </div>
+          </div>
 
-  {/* RIGHT */}
-  <div className="flex flex-col gap-6">
-    <div className="h-[250px] md:h-[33.333%]">
-      {isLoading ? (
-        <ProjectCardSkeleton />
-      ) : displayProjects[1] ? (
-        <ProjectCard project={displayProjects[1]} />
-      ) : null}
-    </div>
+          {/* RIGHT */}
+          <div className="flex flex-col gap-6">
+            <div className="h-[250px] md:h-[33.333%]">
+              {isLoading ? (
+                <ProjectCardSkeleton />
+              ) : displayProjects[1] ? (
+                <ProjectCard project={displayProjects[1]} />
+              ) : null}
+            </div>
 
-    <div className="h-[250px] md:h-[66.666%]">
-      {isLoading ? (
-        <ProjectCardSkeleton />
-      ) : displayProjects[3] ? (
-        <ProjectCard project={displayProjects[3]} />
-      ) : null}
-    </div>
-  </div>
-</div>
+            <div className="h-[250px] md:h-[66.666%]">
+              {isLoading ? (
+                <ProjectCardSkeleton />
+              ) : displayProjects[3] ? (
+                <ProjectCard project={displayProjects[3]} />
+              ) : null}
+            </div>
+          </div>
+        </div>
 
         {/* 🔥 Button */}
         <div className="text-center mt-12">

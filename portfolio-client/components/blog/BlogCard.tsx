@@ -4,16 +4,12 @@ import { FaArrowUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { IBlog } from "@/types/Blog.types";
+
+ 
 
 type BlogCardProps = {
-  blog: {
-    _id: string;
-    title: string;
-    thumbnail: string;
-    category: string;
-    createdAt: string;
-    slug: string;
-  };
+  blog: IBlog;
 };
 
 const BlogCard = ({ blog }: BlogCardProps) => {
@@ -42,8 +38,8 @@ const BlogCard = ({ blog }: BlogCardProps) => {
           className="w-full h-full"
         >
           <Image
-            src={blog.thumbnail}
-            alt="blog"
+            src={blog.thumbnail || "/fallback.jpg"} // ✅ safe fallback
+            alt={blog.title}
             fill
             className="object-cover"
           />
@@ -54,14 +50,24 @@ const BlogCard = ({ blog }: BlogCardProps) => {
       <div className="p-5 space-y-3">
         {/* Category + Date */}
         <div className="flex items-center gap-3 text-xs text-gray-500">
-          <span className="text-main font-medium">{blog.category}</span>
-          <span>• {new Date(blog.createdAt).toDateString()}</span>
+          <span className="text-main font-medium">
+            {blog.category || "General"}
+          </span>
+
+          {blog.createdAt && (
+            <span>• {new Date(blog.createdAt).toDateString()}</span>
+          )}
         </div>
 
         {/* Title */}
-        <h3 className="text-base sm:text-lg font-semibold text-gray-800 leading-snug">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-800 leading-snug line-clamp-2">
           {blog.title}
         </h3>
+
+        {/* Optional Excerpt */}
+        {blog.excerpt && (
+          <p className="text-sm text-gray-500 line-clamp-2">{blog.excerpt}</p>
+        )}
 
         {/* Bottom */}
         <div className="flex items-center gap-3 pt-4">
