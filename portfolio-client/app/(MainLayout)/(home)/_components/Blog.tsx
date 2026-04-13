@@ -6,8 +6,9 @@ import { motion } from "framer-motion";
 import BlogCard from "@/components/blog/BlogCard";
 import Link from "next/link";
 import BlogCardSkeleton from "@/components/blog/BlogCardSkeleton";
+import { IBlog } from "@/types/Blog.types";
 
-export const blogs = [
+export const blogs :IBlog[]= [
   {
     title: "Mastering MERN Stack in 2026",
     slug: "mastering-mern-stack-2026",

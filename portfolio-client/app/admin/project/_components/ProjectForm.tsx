@@ -1,216 +1,199 @@
- "use client";
+"use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 
-const IMG_API_KEY = 546546545516;
-// const IMG_API_KEY = import.meta.env.VITE_Image_Upload_Token;
+type FormValues = {
+  title: string;
+  slug: string;
+  category: string;
+  description: string;
 
-const ProjectForm = () => {
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  thumbnail: FileList;
+  images: { file: FileList }[];
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-  } = useForm({
+  stackType: string;
+  technologies: string;
+
+  features: { value: string }[];
+};
+
+const ProjectForm = ({ onClose }: { onClose: () => void }) => {
+  const { register, handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: {
+      images: [{ file: undefined }],
       features: [{ value: "" }],
-      challenges: [{ value: "" }],
-      solutions: [{ value: "" }],
     },
   });
 
-  // 🔹 Dynamic Fields
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "images",
+  });
+
   const { fields: featureFields, append: addFeature, remove: removeFeature } =
     useFieldArray({ control, name: "features" });
 
-  const { fields: challengeFields, append: addChallenge, remove: removeChallenge } =
-    useFieldArray({ control, name: "challenges" });
+  const thumbnail = watch("thumbnail");
+  const images = watch("images");
 
-  const { fields: solutionFields, append: addSolution, remove: removeSolution } =
-    useFieldArray({ control, name: "solutions" });
-
-  // 🔹 Upload Image using fetch
-  const uploadImage = async (file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-
-    const res = await fetch(
-      `https://api.imgbb.com/1/upload?key=${IMG_API_KEY}`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await res.json();
-    return data.data.url;
-  };
-
-  // 🔹 Thumbnail Preview
-  const handleThumbnail = (e: any) => {
-    const file = e.target.files[0];
-    if (file) {
-      setThumbnailPreview(URL.createObjectURL(file));
-    }
-  };
-
-  // 🔹 Multiple Image Preview
-  const handleImages = (e: any) => {
-    const files = Array.from(e.target.files);
-
-    const previews = files.map((file: any) => URL.createObjectURL(file));
-    setImagePreviews((prev) => [...prev, ...previews]);
-  };
-
-  const removeImage = (index: number) => {
-    const updated = [...imagePreviews];
-    updated.splice(index, 1);
-    setImagePreviews(updated);
-  };
-
-  // 🔥 Submit
-  const onSubmit = async (data: any) => {
-    try {
-      // Upload Thumbnail
-      const thumbnailFile = data.thumbnail[0];
-      const thumbnailUrl = await uploadImage(thumbnailFile);
-
-      // Upload Images
-      let imageUrls: string[] = [];
-
-      if (data.images?.length) {
-        imageUrls = await Promise.all(
-          Array.from(data.images).map((file: any) => uploadImage(file))
-        );
-      }
-
-      const payload = {
-        ...data,
-        thumbnail: thumbnailUrl,
-        images: imageUrls,
-        features: data.features.map((f: any) => f.value),
-        challenges: data.challenges.map((c: any) => c.value),
-        solutions: data.solutions.map((s: any) => s.value),
-      };
-
-      console.log("FINAL DATA:", payload);
-
-      alert("Project Added Successfully 🚀");
-
-      reset();
-      setImagePreviews([]);
-      setThumbnailPreview(null);
-    } catch (err) {
-      console.error(err);
-      alert("Upload Failed ❌");
-    }
+  const onSubmit = (data: FormValues) => {
+    console.log(data);
+    onClose();
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white shadow-xl rounded-2xl  bg-black">
-      <h2 className="text-2xl font-bold mb-6">Add Project</h2>
+    <div className="bg-[#1e293b] border border-gray-700 rounded-2xl shadow-xl p-6 md:p-10 space-y-10">
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
-      >
-        {/* Title */}
-        <input {...register("title")} placeholder="Title" className="input" />
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-white">🚀 Create Project</h2>
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-red-400 text-lg"
+        >
+          ✕
+        </button>
+      </div>
 
-        {/* Slug */}
-        <input {...register("slug")} placeholder="Slug" className="input" />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
 
-        {/* Category */}
-        <input {...register("category")} placeholder="Category" className="input" />
+        {/* 🔹 Basic Info */}
+        <Section title="Basic Information">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        {/* Stack */}
-        <select {...register("stackType")} className="input">
-          <option value="">Select Stack</option>
-          <option value="frontend">Frontend</option>
-          <option value="backend">Backend</option>
-          <option value="fullstack">Fullstack</option>
-          <option value="mobile">Mobile</option>
-        </select>
+            <FormField label="Project Title">
+              <input {...register("title")} className={inputClass} />
+            </FormField>
 
-        {/* Description */}
-        <textarea
-          {...register("description")}
-          placeholder="Description"
-          className="input col-span-2"
-        />
+            <FormField label="Slug">
+              <input {...register("slug")} className={inputClass} />
+            </FormField>
 
-        {/* Technologies */}
-        <input
-          {...register("technologies")}
-          placeholder="React, Node, MongoDB"
-          className="input col-span-2"
-        />
+            <FormField label="Category">
+              <input {...register("category")} className={inputClass} />
+            </FormField>
 
-        {/* Thumbnail */}
-        <div>
-          <input type="file" {...register("thumbnail")} onChange={handleThumbnail} />
-          {thumbnailPreview && (
-            <img src={thumbnailPreview} className="h-24 mt-2 rounded" />
-          )}
-        </div>
+            <FormField label="Stack Type">
+              <select {...register("stackType")} className={inputClass}>
+                <option value="">Select Type</option>
+                <option value="frontend">Frontend</option>
+                <option value="backend">Backend</option>
+                <option value="fullstack">Fullstack</option>
+                <option value="mobile">Mobile</option>
+              </select>
+            </FormField>
 
-        {/* Images */}
-        <div>
-          <input type="file" multiple {...register("images")} onChange={handleImages} />
-          <div className="flex flex-wrap gap-2 mt-2">
-            {imagePreviews.map((img, i) => (
-              <div key={i} className="relative">
-                <img src={img} className="h-20 w-20 rounded" />
+          </div>
+
+          <div className="mt-6">
+            <FormField label="Description">
+              <textarea
+                {...register("description")}
+                className={`${inputClass} h-32`}
+              />
+            </FormField>
+          </div>
+        </Section>
+
+        {/* 🔹 Thumbnail */}
+        <Section title="Thumbnail">
+          <div className="space-y-3">
+            <input
+              type="file"
+              {...register("thumbnail")}
+              className="w-full border border-dashed border-gray-600 rounded-lg px-3 py-2 text-sm bg-[#0f172a] text-gray-300 cursor-pointer"
+            />
+
+            {thumbnail?.[0] && (
+              <img
+                src={URL.createObjectURL(thumbnail[0])}
+                className="h-40 rounded-xl object-cover border border-gray-600"
+              />
+            )}
+          </div>
+        </Section>
+
+        {/* 🔹 Gallery */}
+        <Section title="Gallery Images">
+          <div className="space-y-4">
+            {fields.map((item, index) => (
+              <div
+                key={item.id}
+                className="flex flex-col md:flex-row md:items-center gap-3"
+              >
+                <input
+                  type="file"
+                  {...register(`images.${index}.file`)}
+                  className="w-full border border-dashed border-gray-600 rounded-lg px-3 py-2 text-sm bg-[#0f172a] text-gray-300"
+                />
+
                 <button
                   type="button"
-                  onClick={() => removeImage(i)}
-                  className="absolute top-0 right-0 bg-red-500 text-white px-1"
+                  onClick={() => remove(index)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
                 >
-                  X
+                  Remove
+                </button>
+
+                {images?.[index]?.file?.[0] && (
+                  <img
+                    src={URL.createObjectURL(images[index].file[0])}
+                    className="h-16 w-16 rounded-lg object-cover border border-gray-600"
+                  />
+                )}
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => append({ file: undefined })}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
+            >
+              + Add Image
+            </button>
+          </div>
+        </Section>
+
+        {/* 🔹 Technologies */}
+        <Section title="Technologies">
+          <FormField label="Technologies (comma separated)">
+            <input {...register("technologies")} className={inputClass} />
+          </FormField>
+        </Section>
+
+        {/* 🔹 Features */}
+        <Section title="Features">
+          <div className="space-y-3">
+            {featureFields.map((item, index) => (
+              <div key={item.id} className="flex gap-3">
+                <input
+                  {...register(`features.${index}.value`)}
+                  className={`${inputClass} flex-1`}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => removeFeature(index)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
+                >
+                  Remove
                 </button>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Links */}
-        <input {...register("liveLink")} placeholder="Live Link" className="input" />
-        <input {...register("githubClient")} placeholder="GitHub Client" className="input" />
-        <input {...register("githubServer")} placeholder="GitHub Server" className="input" />
-
-        {/* Status */}
-        <select {...register("status")} className="input">
-          <option value="completed">Completed</option>
-          <option value="ongoing">Ongoing</option>
-          <option value="planned">Planned</option>
-        </select>
-
-        {/* Featured */}
-        <select {...register("featured")} className="input">
-          <option value="false">Not Featured</option>
-          <option value="true">Featured</option>
-        </select>
-
-        {/* Features */}
-        <div className="col-span-2">
-          <h3 className="font-semibold">Features</h3>
-          {featureFields.map((item, index) => (
-            <div key={item.id} className="flex gap-2">
-              <input {...register(`features.${index}.value`)} className="input flex-1" />
-              <button type="button" onClick={() => removeFeature(index)}>❌</button>
-            </div>
-          ))}
-          <button type="button" onClick={() => addFeature({ value: "" })}>
+          <button
+            type="button"
+            onClick={() => addFeature({ value: "" })}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm mt-3"
+          >
             + Add Feature
           </button>
-        </div>
+        </Section>
 
-        {/* Submit */}
-        <button className="col-span-2 bg-black text-white py-3 rounded-xl">
+        {/* 🔹 Submit */}
+        <button className="w-full bg-green-600 hover:bg-green-700 py-3 rounded-xl font-semibold transition">
           Submit Project
         </button>
       </form>
@@ -219,3 +202,27 @@ const ProjectForm = () => {
 };
 
 export default ProjectForm;
+
+
+/// 🔹 Reusable UI
+
+const Section = ({ title, children }: any) => (
+  <div>
+    <h2 className="text-lg font-semibold text-gray-200 border-b border-gray-700 pb-2 mb-5">
+      {title}
+    </h2>
+    {children}
+  </div>
+);
+
+const FormField = ({ label, children }: any) => (
+  <div className="flex flex-col gap-2">
+    <label className="text-sm font-medium text-gray-300">
+      {label}
+    </label>
+    {children}
+  </div>
+);
+
+const inputClass =
+  "w-full bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition";

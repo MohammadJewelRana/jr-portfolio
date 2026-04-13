@@ -62,21 +62,24 @@ const BlogSidebar = ({ blogs }: any) => {
       <div className="bg-gray-50 p-6 rounded-2xl">
         <h3 className="font-semibold text-black mb-4">Tags</h3>
 
-        <div className="flex flex-wrap gap-2">
-          {[...new Set(blogs.flatMap((b: any) => b.tags || []))].map(
-            (tag: string) => (
-              <span
-                key={tag}
-                className="px-3 py-1 text-xs bg-white rounded-full text-gray-600"
-              >
-                {tag}
-              </span>
-            )
-          )}
-        </div>
+{/* <div className="flex flex-wrap gap-2">
+  {Array.from(
+    new Set(blogs.flatMap((b: any) => b.tags || []))
+  ).map((tag: string) => (
+    <span
+      key={tag}
+      className="px-3 py-1 text-xs bg-white rounded-full text-gray-600"
+    >
+      {tag}
+    </span>
+  ))} */}
+
+</div>
+
+
       </div>
 
-    </div>
+     
   );
 };
 
