@@ -1,7 +1,7 @@
 "use client";
 
 import { useCreateProject } from "@/store/hooks/project.hook";
-import React from "react";
+import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { uploadMultipleImages, uploadSingleImage } from "./ImageUpload";
 
@@ -70,17 +70,16 @@ const categoryOptions = [
 ];
 
 const ProjectForm = ({ onClose }: { onClose: () => void }) => {
- 
+  const [isUploading, setIsUploading] = useState(false);
+  const { create, isLoading } = useCreateProject();
 
-const { create, isLoading } = useCreateProject();
-
-const { register, handleSubmit, control, watch, setValue } =
-  useForm<FormValues>({
-    defaultValues: {
-      images: [{ file: undefined }],
-      features: [{ value: "" }],
-    },
-  });
+  const { register, handleSubmit, control, watch, setValue } =
+    useForm<FormValues>({
+      defaultValues: {
+        images: [{ file: undefined }],
+        features: [{ value: "" }],
+      },
+    });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -96,78 +95,83 @@ const { register, handleSubmit, control, watch, setValue } =
   const thumbnail = watch("thumbnail");
   const images = watch("images");
 
-const onSubmit = async (data: FormValues) => {
-  try {
-    // 🔹 Upload Thumbnail
-    let thumbnailUrl = "";
-    if (data.thumbnail?.[0]) {
-      thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
+  const isProcessing = isUploading || isLoading;
+
+  const onSubmit = async (data: FormValues) => {
+    try {
+      // 🔹 Upload Thumbnail
+      setIsUploading(true);
+      let thumbnailUrl = "";
+      if (data.thumbnail?.[0]) {
+        thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
+      }
+
+      // 🔹 Upload Gallery Images
+      const galleryFiles = data.images
+        ?.map((img) => img.file?.[0])
+        .filter(Boolean);
+
+      const galleryUrls = galleryFiles?.length
+        ? await uploadMultipleImages(galleryFiles as File[])
+        : [];
+
+      // 🔹 Convert Arrays
+      const features = data.features?.map((f) => f.value).filter(Boolean);
+
+      // 🔹 Convert Technologies
+      const technologies = data.technologies
+        ?.split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+
+      setIsUploading(false);
+      // 🔹 Final Payload
+      const payload: any = {
+        // ✅ Required
+        title: data.title,
+        slug: data.slug,
+        category: data.category,
+        description: data.description,
+        thumbnail: thumbnailUrl,
+        technologies,
+        status: data.status || "completed",
+
+        // ✅ Optional (only if exists)
+        ...(galleryUrls.length && { images: galleryUrls }),
+        ...(features?.length && { features }),
+
+        ...(data.liveLink && { liveLink: data.liveLink }),
+
+        ...(data.stackType && { stackType: data.stackType }),
+
+        ...(data.priority && { priority: Number(data.priority) }),
+
+        ...(data.githubClient && { githubClient: data.githubClient }),
+        ...(data.githubServer && { githubServer: data.githubServer }),
+
+        ...(data.metaTitle && { metaTitle: data.metaTitle }),
+        ...(data.metaDescription && {
+          metaDescription: data.metaDescription,
+        }),
+
+        ...(data.client && { client: data.client }),
+        ...(data.duration && { duration: data.duration }),
+        ...(data.teamSize && { teamSize: Number(data.teamSize) }),
+
+        ...(data.featured && { featured: data.featured }),
+      };
+
+      console.log("FINAL PAYLOAD:", payload);
+
+      // 🔹 API Call
+      // await create(payload);
+
+      // onClose();
+    } catch (err) {
+      console.error(err);
+      setIsUploading(false);
     }
-
-    // 🔹 Upload Gallery Images
-    const galleryFiles = data.images
-      ?.map((img) => img.file?.[0])
-      .filter(Boolean);
-
-    const galleryUrls = galleryFiles?.length
-      ? await uploadMultipleImages(galleryFiles as File[])
-      : [];
-
-    // 🔹 Convert Arrays
-    const features = data.features?.map((f) => f.value).filter(Boolean);
-
-    // 🔹 Convert Technologies
-    const technologies = data.technologies
-      ?.split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-
-    // 🔹 Final Payload
-    const payload: any = {
-      // ✅ Required
-      title: data.title,
-      slug: data.slug,
-      category: data.category,
-      description: data.description,
-      thumbnail: thumbnailUrl,
-      technologies,
-      status: data.status || "completed",
-
-      // ✅ Optional (only if exists)
-      ...(galleryUrls.length && { images: galleryUrls }),
-      ...(features?.length && { features }),
-
-      ...(data.liveLink && { liveLink: data.liveLink }),
-
-      ...(data.stackType && { stackType: data.stackType }),
-
-      ...(data.priority && { priority: Number(data.priority) }),
-
-      ...(data.githubClient && { githubClient: data.githubClient }),
-      ...(data.githubServer && { githubServer: data.githubServer }),
-
-      ...(data.metaTitle && { metaTitle: data.metaTitle }),
-      ...(data.metaDescription && {
-        metaDescription: data.metaDescription,
-      }),
-
-      ...(data.client && { client: data.client }),
-      ...(data.duration && { duration: data.duration }),
-      ...(data.teamSize && { teamSize: Number(data.teamSize) }),
-
-      ...(data.featured && { featured: data.featured }),
-    };
-
-    console.log("FINAL PAYLOAD:", payload);
-
-    // 🔹 API Call
-    // await create(payload);
-
-    // onClose();
-  } catch (err) {
-    console.error(err);
-  }
-};
+  };
 
   return (
     <div className="bg-[#1e293b] border border-gray-700 rounded-2xl shadow-xl p-6 md:p-10 space-y-10">
@@ -454,8 +458,27 @@ const onSubmit = async (data: FormValues) => {
         </Section>
 
         {/* 🔹 Submit */}
-        <button className="w-full bg-green-600 hover:bg-green-700 py-3 rounded-xl font-semibold transition">
-          Submit Project
+        <button
+          type="submit"
+          disabled={isProcessing}
+          className={`w-full py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2
+    ${
+      isProcessing
+        ? "bg-gray-500 cursor-not-allowed"
+        : "bg-green-600 hover:bg-green-700"
+    }`}
+        >
+          {/* Spinner */}
+          {isProcessing && (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          )}
+
+          {/* Dynamic Text */}
+          {isUploading
+            ? "Uploading Images..."
+            : isLoading
+              ? "Saving Project..."
+              : "Submit Project"}
         </button>
       </form>
     </div>

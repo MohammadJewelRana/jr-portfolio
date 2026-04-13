@@ -1,13 +1,15 @@
+import envConfig from "@/config/envConfig";
+
 export const uploadSingleImage = async (file: File) => {
   const formData = new FormData();
   formData.append("image", file);
 
   const res = await fetch(
-    `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Image_Upload_Token}`,
+    `https://api.imgbb.com/1/upload?key=${envConfig.imageUploadToken}`,
     {
       method: "POST",
       body: formData,
-    }
+    },
   );
 
   const data = await res.json();
