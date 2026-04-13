@@ -1,7 +1,9 @@
 "use client";
 
+import { useCreateProject } from "@/store/hooks/project.hook";
 import React from "react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { uploadMultipleImages, uploadSingleImage } from "./ImageUpload";
 
 type FormValues = {
   title: string;
@@ -12,14 +14,68 @@ type FormValues = {
   thumbnail: FileList;
   images: { file: FileList }[];
 
+  liveLink: string;
+  githubClient: string;
+  githubServer: string;
+
+  metaTitle: string;
+  metaDescription: string;
+  status: string;
+
+  client: string;
+  duration: string;
+  teamSize: number;
+
+  featured: boolean;
+  priority: number;
+
   stackType: string;
   technologies: string;
 
   features: { value: string }[];
 };
 
+const categoryOptions = [
+  { label: "Web Application", value: "web" },
+  { label: "Website", value: "website" },
+  { label: "Landing Page", value: "landing" },
+  { label: "Portfolio", value: "portfolio" },
+
+  { label: "Mobile App", value: "mobile" },
+  { label: "Desktop Application", value: "desktop" },
+
+  { label: "SaaS", value: "saas" },
+  { label: "CRM System", value: "crm" },
+  { label: "ERP System", value: "erp" },
+  { label: "Dashboard / Admin Panel", value: "dashboard" },
+
+  { label: "E-commerce", value: "ecommerce" },
+  { label: "Marketplace", value: "marketplace" },
+  { label: "Booking System", value: "booking" },
+
+  { label: "Education Platform", value: "education" },
+  { label: "LMS (Learning System)", value: "lms" },
+
+  { label: "Analytics Tool", value: "analytics" },
+  { label: "AI / ML Project", value: "ai" },
+  { label: "API / Backend Service", value: "api" },
+
+  { label: "Game", value: "game" },
+  { label: "IoT System", value: "iot" },
+  { label: "Blockchain / Web3", value: "blockchain" },
+
+  { label: "Personal Project", value: "personal" },
+  { label: "Experimental", value: "experimental" },
+  { label: "Other", value: "other" },
+];
+
 const ProjectForm = ({ onClose }: { onClose: () => void }) => {
-  const { register, handleSubmit, control, watch } = useForm<FormValues>({
+ 
+
+const { create, isLoading } = useCreateProject();
+
+const { register, handleSubmit, control, watch, setValue } =
+  useForm<FormValues>({
     defaultValues: {
       images: [{ file: undefined }],
       features: [{ value: "" }],
@@ -31,20 +87,90 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
     name: "images",
   });
 
-  const { fields: featureFields, append: addFeature, remove: removeFeature } =
-    useFieldArray({ control, name: "features" });
+  const {
+    fields: featureFields,
+    append: addFeature,
+    remove: removeFeature,
+  } = useFieldArray({ control, name: "features" });
 
   const thumbnail = watch("thumbnail");
   const images = watch("images");
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    onClose();
-  };
+const onSubmit = async (data: FormValues) => {
+  try {
+    // 🔹 Upload Thumbnail
+    let thumbnailUrl = "";
+    if (data.thumbnail?.[0]) {
+      thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
+    }
+
+    // 🔹 Upload Gallery Images
+    const galleryFiles = data.images
+      ?.map((img) => img.file?.[0])
+      .filter(Boolean);
+
+    const galleryUrls = galleryFiles?.length
+      ? await uploadMultipleImages(galleryFiles as File[])
+      : [];
+
+    // 🔹 Convert Arrays
+    const features = data.features?.map((f) => f.value).filter(Boolean);
+
+    // 🔹 Convert Technologies
+    const technologies = data.technologies
+      ?.split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    // 🔹 Final Payload
+    const payload: any = {
+      // ✅ Required
+      title: data.title,
+      slug: data.slug,
+      category: data.category,
+      description: data.description,
+      thumbnail: thumbnailUrl,
+      technologies,
+      status: data.status || "completed",
+
+      // ✅ Optional (only if exists)
+      ...(galleryUrls.length && { images: galleryUrls }),
+      ...(features?.length && { features }),
+
+      ...(data.liveLink && { liveLink: data.liveLink }),
+
+      ...(data.stackType && { stackType: data.stackType }),
+
+      ...(data.priority && { priority: Number(data.priority) }),
+
+      ...(data.githubClient && { githubClient: data.githubClient }),
+      ...(data.githubServer && { githubServer: data.githubServer }),
+
+      ...(data.metaTitle && { metaTitle: data.metaTitle }),
+      ...(data.metaDescription && {
+        metaDescription: data.metaDescription,
+      }),
+
+      ...(data.client && { client: data.client }),
+      ...(data.duration && { duration: data.duration }),
+      ...(data.teamSize && { teamSize: Number(data.teamSize) }),
+
+      ...(data.featured && { featured: data.featured }),
+    };
+
+    console.log("FINAL PAYLOAD:", payload);
+
+    // 🔹 API Call
+    // await create(payload);
+
+    // onClose();
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div className="bg-[#1e293b] border border-gray-700 rounded-2xl shadow-xl p-6 md:p-10 space-y-10">
-
       {/* Header */}
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-white">🚀 Create Project</h2>
@@ -57,24 +183,31 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-
         {/* 🔹 Basic Info */}
-        <Section title="Basic Information">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <FormField label="Project Title">
+        <Section title="Basic Information ">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField label="Project Title *">
               <input {...register("title")} className={inputClass} />
             </FormField>
 
-            <FormField label="Slug">
+            <FormField label="Slug  *">
               <input {...register("slug")} className={inputClass} />
             </FormField>
 
-            <FormField label="Category">
-              <input {...register("category")} className={inputClass} />
+            <FormField label="Category *">
+              <select {...register("category")} className={inputClass}>
+                <option value="">Select Category</option>
+
+                {categoryOptions.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
             </FormField>
 
-            <FormField label="Stack Type">
+            <FormField label="Stack Type *">
               <select {...register("stackType")} className={inputClass}>
                 <option value="">Select Type</option>
                 <option value="frontend">Frontend</option>
@@ -83,14 +216,45 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
                 <option value="mobile">Mobile</option>
               </select>
             </FormField>
-
           </div>
 
           <div className="mt-6">
-            <FormField label="Description">
+            <FormField label="Description *">
               <textarea
                 {...register("description")}
                 className={`${inputClass} h-32`}
+              />
+            </FormField>
+          </div>
+        </Section>
+
+        {/* project link  */}
+        <Section title="Project Links">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Live Link */}
+            <FormField label="Live URL *">
+              <input
+                {...register("liveLink")}
+                placeholder="https://your-live-site.com"
+                className={inputClass}
+              />
+            </FormField>
+
+            {/* GitHub Client */}
+            <FormField label="GitHub Client">
+              <input
+                {...register("githubClient")}
+                placeholder="https://github.com/username/client-repo"
+                className={inputClass}
+              />
+            </FormField>
+
+            {/* GitHub Server */}
+            <FormField label="GitHub Server">
+              <input
+                {...register("githubServer")}
+                placeholder="https://github.com/username/server-repo"
+                className={inputClass}
               />
             </FormField>
           </div>
@@ -192,6 +356,103 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
           </button>
         </Section>
 
+        <Section title="SEO & Status">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+            {/* Meta Title */}
+            <FormField label="Meta Title">
+              <input
+                {...register("metaTitle")}
+                placeholder="SEO title for search engines"
+                className={inputClass}
+              />
+            </FormField>
+          </div>
+
+          {/* Meta Description (full width) */}
+          <div className="mt-6">
+            <FormField label="Meta Description">
+              <textarea
+                {...register("metaDescription")}
+                placeholder="Short description for SEO..."
+                className={`${inputClass} h-28`}
+              />
+            </FormField>
+          </div>
+        </Section>
+
+        <Section title="Client / Business Info">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Client Name */}
+            <FormField label="Client Name">
+              <input
+                {...register("client")}
+                placeholder="e.g. ABC Company"
+                className={inputClass}
+              />
+            </FormField>
+
+            {/* Duration */}
+            <FormField label="Project Duration">
+              <input
+                {...register("duration")}
+                placeholder="e.g. 2 months"
+                className={inputClass}
+              />
+            </FormField>
+
+            {/* Team Size */}
+            <FormField label="Team Size">
+              <input
+                type="number"
+                {...register("teamSize")}
+                placeholder="e.g. 3"
+                className={inputClass}
+              />
+            </FormField>
+          </div>
+        </Section>
+
+        {/* others  */}
+        <Section title="Others">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField label="Project Status *">
+              <select {...register("status")} className={inputClass}>
+                <option value="completed">Completed</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="planned">Planned</option>
+              </select>
+            </FormField>
+
+            <FormField label="Priority (Sorting Order) *">
+              <input
+                type="number"
+                min={0}
+                {...register("priority")}
+                placeholder="e.g. 1 (top project)"
+                className={inputClass}
+              />
+            </FormField>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Featured */}
+            <div className="flex flex-col gap-2 mt-6">
+              <label className="text-sm font-medium text-gray-300">
+                Featured Project *
+              </label>
+
+              <label className="flex items-center gap-3 bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  {...register("featured")}
+                  className="w-4 h-4 accent-green-500"
+                />
+                <span className="text-sm text-gray-300">Mark as Featured</span>
+              </label>
+            </div>
+          </div>
+        </Section>
+
         {/* 🔹 Submit */}
         <button className="w-full bg-green-600 hover:bg-green-700 py-3 rounded-xl font-semibold transition">
           Submit Project
@@ -202,7 +463,6 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
 };
 
 export default ProjectForm;
-
 
 /// 🔹 Reusable UI
 
@@ -217,9 +477,7 @@ const Section = ({ title, children }: any) => (
 
 const FormField = ({ label, children }: any) => (
   <div className="flex flex-col gap-2">
-    <label className="text-sm font-medium text-gray-300">
-      {label}
-    </label>
+    <label className="text-sm font-medium text-gray-300">{label}</label>
     {children}
   </div>
 );

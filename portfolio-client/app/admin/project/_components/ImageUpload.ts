@@ -1,4 +1,4 @@
-const uploadImage = async (file: File) => {
+export const uploadSingleImage = async (file: File) => {
   const formData = new FormData();
   formData.append("image", file);
 
@@ -14,3 +14,7 @@ const uploadImage = async (file: File) => {
   return data.data.url;
 };
 
+export const uploadMultipleImages = async (files: File[]) => {
+  const urls = await Promise.all(files.map((file) => uploadSingleImage(file)));
+  return urls;
+};
