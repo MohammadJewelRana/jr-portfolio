@@ -3,63 +3,70 @@
 import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useUpdateProject } from "@/store/hooks/project.hook";
- 
 import { useRouter } from "next/navigation";
-import { uploadMultipleImages, uploadSingleImage } from "../../../_components/ImageUpload";
-import { categoryOptions, FormField, Section, TechSelect } from "../../../_components/ProjectForm";
-
-
+import {
+  uploadMultipleImages,
+  uploadSingleImage,
+} from "../../../_components/ImageUpload";
+import {
+  categoryOptions,
+  FormField,
+  Section,
+  TechSelect,
+} from "../../../_components/ProjectForm";
 
 export type FormValues = {
   title: string;
   slug: string;
   category: string;
+  stackType: string;
   description: string;
-
   thumbnail: FileList;
   images: { file: FileList }[];
-
+  technologies: string[];
+  status: string;
+  features: { value: string }[];
   liveLink: string;
   githubClient: string;
   githubServer: string;
-
   metaTitle: string;
   metaDescription: string;
-  status: string;
-
   client: string;
   duration: string;
   teamSize: number;
-
-  featured: boolean;
   priority: number;
-
-  stackType: string;
-  technologies: string;
-
-  features: { value: string }[];
+  featured: boolean;
 };
 
-
-const UpdateProjectForm = ({ project }: any) => {
+const UpdateProjectForm = ({ project, onClose }: any) => {
   const router = useRouter();
   const { update, isLoading } = useUpdateProject();
 
   const [isUploading, setIsUploading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
 
-  const { register, handleSubmit, control, watch, setValue, reset } =
-    useForm({
-      defaultValues: {
-        images: [{ file: undefined }],
-        features: [{ value: "" }],
-      },
-    });
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    reset,
+  } = useForm<FormValues>({
+    defaultValues: {
+      images: [{ file: undefined }],
+      features: [{ value: "" }],
+      technologies: [],
+    },
+  });
 
+  // field array (images)
   const { fields, append, remove } = useFieldArray({
     control,
     name: "images",
   });
 
+  // field array (features)
   const {
     fields: featureFields,
     append: addFeature,
@@ -72,12 +79,12 @@ const UpdateProjectForm = ({ project }: any) => {
   const thumbnail = watch("thumbnail");
   const images = watch("images");
 
-  // 🔥 Set default values from DB
+  // ✅ set default values
   useEffect(() => {
     if (project) {
       reset({
         ...project,
-        technologies: project?.technologies?.join(", "),
+        technologies: project?.technologies || [],
         features:
           project?.features?.map((f: string) => ({ value: f })) || [],
         images:
@@ -88,399 +95,252 @@ const UpdateProjectForm = ({ project }: any) => {
     }
   }, [project, reset]);
 
+  // ✅ thumbnail preview
+  useEffect(() => {
+    if (thumbnail?.[0] instanceof File) {
+      const url = URL.createObjectURL(thumbnail[0]);
+      setPreview(url);
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [thumbnail]);
+
   const isProcessing = isUploading || isLoading;
 
-  // 🔥 Submit (UPDATE)
-  const onSubmit = async (data: any) => {
+  // ✅ submit
+  const onSubmit = async (data: FormValues) => {
     try {
       setIsUploading(true);
 
-      // 🔹 Thumbnail (only if changed)
+      // thumbnail upload
       let thumbnailUrl = project?.thumbnail;
-      if (data.thumbnail?.[0]) {
+      if (data.thumbnail?.[0] instanceof File) {
         thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
       }
 
-      // 🔹 Gallery
-      const galleryFiles = data.images
-        ?.map((img: any) => img.file?.[0])
+      // gallery upload
+      let imageUrls = project?.images || [];
+      const files = data.images
+        .map((img) => img.file?.[0])
         .filter(Boolean);
 
-      const galleryUrls = galleryFiles.length
-        ? await uploadMultipleImages(galleryFiles)
-        : project?.images || [];
-
-      // 🔹 Convert
-      const features = data.features?.map((f: any) => f.value).filter(Boolean);
-
-      const technologies = data.technologies
-        ?.split(",")
-        .map((t: string) => t.trim());
-
-      setIsUploading(false);
+      if (files.length > 0) {
+        imageUrls = await uploadMultipleImages(files);
+      }
 
       const payload = {
-        title: data.title,
-        slug: data.slug,
-        category: data.category,
-        description: data.description,
+        ...data,
         thumbnail: thumbnailUrl,
-        technologies,
-        status: data.status,
-
-        ...(galleryUrls.length && { images: galleryUrls }),
-        ...(features.length && { features }),
-
-        ...(data.liveLink && { liveLink: data.liveLink }),
-        ...(data.stackType && { stackType: data.stackType }),
-        ...(data.priority && { priority: Number(data.priority) }),
-
-        ...(data.githubClient && { githubClient: data.githubClient }),
-        ...(data.githubServer && { githubServer: data.githubServer }),
-
-        ...(data.metaTitle && { metaTitle: data.metaTitle }),
-        ...(data.metaDescription && {
-          metaDescription: data.metaDescription,
-        }),
-
-        ...(data.client && { client: data.client }),
-        ...(data.duration && { duration: data.duration }),
-        ...(data.teamSize && { teamSize: Number(data.teamSize) }),
-
-        ...(data.featured && { featured: data.featured }),
+        images: imageUrls,
+        features: data.features.map((f) => f.value),
       };
 
-      console.log("UPDATE PAYLOAD:", payload);
-
-      // 🔥 Update API call
       await update(project._id, payload);
-
       router.push("/admin/project");
     } catch (err) {
       console.error(err);
+    } finally {
       setIsUploading(false);
     }
   };
 
   return (
-     <div className="bg-[#1e293b] border border-gray-700 rounded-2xl shadow-xl p-6 md:p-10 space-y-10">
-       {/* Header */}
-       <div className="flex justify-between items-center">
-         <h2 className="text-2xl font-bold text-white">🚀 Create Project</h2>
-         <button
-           onClick={onClose}
-           className="text-gray-400 hover:text-red-400 text-lg"
-         >
-           ✕
-         </button>
-       </div>
- 
-       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
-         {/* 🔹 Basic Info */}
- 
-         <Section title="Basic Information ">
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <FormField label="Project Title *">
-               <input {...register("title")} className={inputClass} />
-             </FormField>
- 
-             <FormField label="Slug  *">
-               <input {...register("slug")} className={inputClass} />
-             </FormField>
- 
-             <FormField label="Category *">
-               <select {...register("category")} className={inputClass}>
-                 <option value="">Select Category</option>
- 
-                 {categoryOptions.map((item) => (
-                   <option key={item.value} value={item.value}>
-                     {item.label}
-                   </option>
-                 ))}
-               </select>
-             </FormField>
- 
-             <FormField label="Stack Type *">
-               <select {...register("stackType")} className={inputClass}>
-                 <option value="">Select Type</option>
-                 <option value="frontend">Frontend</option>
-                 <option value="backend">Backend</option>
-                 <option value="fullstack">Fullstack</option>
-                 <option value="mobile">Mobile</option>
-               </select>
-             </FormField>
-           </div>
- 
-           <div className="mt-6">
-             <FormField label="Description *">
-               <textarea
-                 {...register("description")}
-                 className={`${inputClass} h-32`}
-               />
-             </FormField>
-           </div>
-         </Section>
- 
-         {/* project link  */}
-         <Section title="Project Links">
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-             {/* Live Link */}
-             <FormField label="Live URL *">
-               <input
-                 {...register("liveLink")}
-                 placeholder="https://your-live-site.com"
-                 className={inputClass}
-               />
-             </FormField>
- 
-             {/* GitHub Client */}
-             <FormField label="GitHub Client">
-               <input
-                 {...register("githubClient")}
-                 placeholder="https://github.com/username/client-repo"
-                 className={inputClass}
-               />
-             </FormField>
- 
-             {/* GitHub Server */}
-             <FormField label="GitHub Server">
-               <input
-                 {...register("githubServer")}
-                 placeholder="https://github.com/username/server-repo"
-                 className={inputClass}
-               />
-             </FormField>
-           </div>
-         </Section>
- 
-         {/* 🔹 Thumbnail */}
-         <Section title="Thumbnail">
-           <div className="space-y-3">
-             <input
-               type="file"
-               {...register("thumbnail")}
-               className="w-full border border-dashed border-gray-600 rounded-lg px-3 py-2 text-sm bg-[#0f172a] text-gray-300 cursor-pointer"
-             />
- 
-             {thumbnail?.[0] && (
-               <img
-                 src={URL.createObjectURL(thumbnail[0])}
-                 className="h-40 rounded-xl object-cover border border-gray-600"
-               />
-             )}
-           </div>
-         </Section>
- 
-         {/* 🔹 Gallery */}
-         <Section title="Gallery Images">
-           <div className="space-y-4">
-             {fields.map((item, index) => (
-               <div
-                 key={item.id}
-                 className="flex flex-col md:flex-row md:items-center gap-3"
-               >
-                 <input
-                   type="file"
-                   {...register(`images.${index}.file`)}
-                   className="w-full border border-dashed border-gray-600 rounded-lg px-3 py-2 text-sm bg-[#0f172a] text-gray-300"
-                 />
- 
-                 <button
-                   type="button"
-                   onClick={() => remove(index)}
-                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
-                 >
-                   Remove
-                 </button>
- 
-                 {images?.[index]?.file?.[0] && (
-                   <img
-                     src={URL.createObjectURL(images[index].file[0])}
-                     className="h-16 w-16 rounded-lg object-cover border border-gray-600"
-                   />
-                 )}
-               </div>
-             ))}
- 
-             <button
-               type="button"
-               onClick={() => append({ file: undefined })}
-               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
-             >
-               + Add Image
-             </button>
-           </div>
-         </Section>
- 
-         <Section title="Technologies">
-           <FormField label="Technologies *">
-             <TechSelect
-               value={watch("technologies")}
-               onChange={(val) => setValue("technologies", val)}
-             />
-           </FormField>
-         </Section>
- 
-         {/* 🔹 Technologies */}
-         <Section title="Technologies">
-           <FormField label="Technologies (comma separated)">
-             <input {...register("technologies")} className={inputClass} />
-           </FormField>
-         </Section>
- 
-         {/* 🔹 Features */}
-         <Section title="Features">
-           <div className="space-y-3">
-             {featureFields.map((item, index) => (
-               <div key={item.id} className="flex gap-3">
-                 <input
-                   {...register(`features.${index}.value`)}
-                   className={`${inputClass} flex-1`}
-                 />
- 
-                 <button
-                   type="button"
-                   onClick={() => removeFeature(index)}
-                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
-                 >
-                   Remove
-                 </button>
-               </div>
-             ))}
-           </div>
- 
-           <button
-             type="button"
-             onClick={() => addFeature({ value: "" })}
-             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm mt-3"
-           >
-             + Add Feature
-           </button>
-         </Section>
- 
-         <Section title="SEO & Status">
-           <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-             {/* Meta Title */}
-             <FormField label="Meta Title">
-               <input
-                 {...register("metaTitle")}
-                 placeholder="SEO title for search engines"
-                 className={inputClass}
-               />
-             </FormField>
-           </div>
- 
-           {/* Meta Description (full width) */}
-           <div className="mt-6">
-             <FormField label="Meta Description">
-               <textarea
-                 {...register("metaDescription")}
-                 placeholder="Short description for SEO..."
-                 className={`${inputClass} h-28`}
-               />
-             </FormField>
-           </div>
-         </Section>
- 
-         <Section title="Client / Business Info">
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-             {/* Client Name */}
-             <FormField label="Client Name">
-               <input
-                 {...register("client")}
-                 placeholder="e.g. ABC Company"
-                 className={inputClass}
-               />
-             </FormField>
- 
-             {/* Duration */}
-             <FormField label="Project Duration">
-               <input
-                 {...register("duration")}
-                 placeholder="e.g. 2 months"
-                 className={inputClass}
-               />
-             </FormField>
- 
-             {/* Team Size */}
-             <FormField label="Team Size">
-               <input
-                 type="number"
-                 {...register("teamSize")}
-                 placeholder="e.g. 3"
-                 className={inputClass}
-               />
-             </FormField>
-           </div>
-         </Section>
- 
-         {/* others  */}
-         <Section title="Others">
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <FormField label="Project Status *">
-               <select {...register("status")} className={inputClass}>
-                 <option value="completed">Completed</option>
-                 <option value="ongoing">Ongoing</option>
-                 <option value="planned">Planned</option>
-               </select>
-             </FormField>
- 
-             <FormField label="Priority (Sorting Order) *">
-               <input
-                 type="number"
-                 min={0}
-                 {...register("priority")}
-                 placeholder="e.g. 1 (top project)"
-                 className={inputClass}
-               />
-             </FormField>
-           </div>
- 
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             {/* Featured */}
-             <div className="flex flex-col gap-2 mt-6">
-               <label className="text-sm font-medium text-gray-300">
-                 Featured Project *
-               </label>
- 
-               <label className="flex items-center gap-3 bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 cursor-pointer">
-                 <input
-                   type="checkbox"
-                   {...register("featured")}
-                   className="w-4 h-4 accent-green-500"
-                 />
-                 <span className="text-sm text-gray-300">Mark as Featured</span>
-               </label>
-             </div>
-           </div>
-         </Section>
- 
-         {/* 🔹 Submit */}
-         <button
-           type="submit"
-           disabled={isProcessing}
-           className={`w-full py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2
-     ${
-       isProcessing
-         ? "bg-gray-500 cursor-not-allowed"
-         : "bg-green-600 hover:bg-green-700"
-     }`}
-         >
-           {/* Spinner */}
-           {isProcessing && (
-             <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-           )}
- 
-           {/* Dynamic Text */}
-           {isUploading
-             ? "Uploading Images..."
-             : isLoading
-               ? "Saving Project..."
-               : "Submit Project"}
-         </button>
-       </form>
-     </div>
-   );
+    <div className="bg-[#1e293b] border border-gray-700 rounded-2xl shadow-xl p-6 md:p-10 space-y-10">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-white">
+          ✏️ Update Project
+        </h2>
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-red-400 text-lg"
+        >
+          ✕
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+
+        {/* Basic Info */}
+        <Section title="Basic Information ">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <FormField label="Project Title *">
+              <input {...register("title")} className={inputClass} />
+            </FormField>
+
+            <FormField label="Slug *">
+              <input {...register("slug")} className={inputClass} />
+            </FormField>
+
+            <FormField label="Category *">
+              <select {...register("category")} className={inputClass}>
+                <option value="">Select Category</option>
+                {categoryOptions.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+
+            <FormField label="Stack Type *">
+              <select {...register("stackType")} className={inputClass}>
+                <option value="">Select Type</option>
+                <option value="frontend">Frontend</option>
+                <option value="backend">Backend</option>
+                <option value="fullstack">Fullstack</option>
+                <option value="mobile">Mobile</option>
+              </select>
+            </FormField>
+
+          </div>
+
+          <div className="mt-6">
+            <FormField label="Description *">
+              <textarea
+                {...register("description")}
+                className={`${inputClass} h-32`}
+              />
+            </FormField>
+          </div>
+        </Section>
+
+        {/* Links */}
+        <Section title="Project Links">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FormField label="Live URL *">
+              <input {...register("liveLink")} className={inputClass} />
+            </FormField>
+
+            <FormField label="GitHub Client">
+              <input {...register("githubClient")} className={inputClass} />
+            </FormField>
+
+            <FormField label="GitHub Server">
+              <input {...register("githubServer")} className={inputClass} />
+            </FormField>
+          </div>
+        </Section>
+
+        {/* Thumbnail */}
+        <Section title="Thumbnail">
+          <input type="file" {...register("thumbnail")} className={inputClass} />
+
+          {(preview || project?.thumbnail) && (
+            <img
+              src={preview || project?.thumbnail}
+              className="h-40 rounded-xl mt-3 object-cover"
+            />
+          )}
+        </Section>
+
+        {/* Gallery */}
+        <Section title="Gallery Images">
+          {fields.map((item, index) => (
+            <div key={item.id} className="flex gap-3 items-center mb-3">
+
+              <input
+                type="file"
+                {...register(`images.${index}.file`)}
+                className={inputClass}
+              />
+
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="bg-red-500 px-3 py-2 rounded"
+              >
+                Remove
+              </button>
+
+              {/* preview */}
+              {images?.[index]?.file?.[0] ? (
+                <img
+                  src={URL.createObjectURL(images[index].file[0])}
+                  className="h-16 w-16 object-cover"
+                />
+              ) : (
+                project?.images?.[index] && (
+                  <img
+                    src={project.images[index]}
+                    className="h-16 w-16 object-cover"
+                  />
+                )
+              )}
+            </div>
+          ))}
+
+          <button
+            type="button"
+            onClick={() => append({ file: undefined })}
+            className="bg-blue-600 px-4 py-2 rounded"
+          >
+            + Add Image
+          </button>
+        </Section>
+
+        {/* Technologies */}
+        <Section title="Technologies">
+          <TechSelect
+            value={watch("technologies")}
+            onChange={(val) => setValue("technologies", val)}
+          />
+        </Section>
+
+        {/* Features */}
+        <Section title="Features">
+          {featureFields.map((item, index) => (
+            <div key={item.id} className="flex gap-3 mb-2">
+              <input
+                {...register(`features.${index}.value`)}
+                className={inputClass}
+              />
+              <button
+                type="button"
+                onClick={() => removeFeature(index)}
+                className="bg-red-500 px-3 py-2 rounded"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+
+          <button
+            type="button"
+            onClick={() => addFeature({ value: "" })}
+            className="bg-blue-600 px-4 py-2 rounded"
+          >
+            + Add Feature
+          </button>
+        </Section>
+
+        {/* Status */}
+        <Section title="Others">
+          <select {...register("status")} className={inputClass}>
+            <option value="completed">Completed</option>
+            <option value="ongoing">Ongoing</option>
+            <option value="planned">Planned</option>
+          </select>
+
+          <input
+            type="number"
+            {...register("priority")}
+            className={`${inputClass} mt-3`}
+          />
+        </Section>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={isProcessing}
+          className="w-full bg-green-600 py-3 rounded-xl"
+        >
+          {isProcessing ? "Updating..." : "Update Project"}
+        </button>
+
+      </form>
+    </div>
+  );
 };
 
 export default UpdateProjectForm;
