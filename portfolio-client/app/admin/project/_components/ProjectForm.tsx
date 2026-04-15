@@ -4,6 +4,8 @@ import { useCreateProject } from "@/store/hooks/project.hook";
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { uploadMultipleImages, uploadSingleImage } from "./ImageUpload";
+import { FaChevronDown } from "react-icons/fa";
+import { RxCross2 } from "react-icons/rx";
 
 type FormValues = {
   title: string;
@@ -34,6 +36,104 @@ type FormValues = {
 
   features: { value: string }[];
 };
+
+const techOptions = [
+  // 🌐 Frontend
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "TypeScript",
+  "React",
+  "Next.js",
+  "Vue.js",
+  "Nuxt.js",
+  "Angular",
+  "Svelte",
+  "Redux",
+  "Zustand",
+
+  // 🎨 Styling
+  "Tailwind CSS",
+  "Bootstrap",
+  "Material UI",
+  "Chakra UI",
+  "ShadCN UI",
+  "SCSS",
+  "Styled Components",
+
+  // ⚙️ Backend
+  "Node.js",
+  "Express.js",
+  "NestJS",
+  "Django",
+  "Flask",
+  "Spring Boot",
+  "Laravel",
+
+  // 🗄️ Database
+  "MongoDB",
+  "PostgreSQL",
+  "MySQL",
+  "SQLite",
+  "Firebase",
+  "Supabase",
+  "Redis",
+
+  // 🔌 API / Data
+  "REST API",
+  "GraphQL",
+  "tRPC",
+
+  // 🔐 Auth / Security
+  "JWT",
+  "OAuth",
+  "Firebase Auth",
+  "Passport.js",
+
+  // ☁️ DevOps / Hosting
+  "Docker",
+  "Kubernetes",
+  "Vercel",
+  "Netlify",
+  "AWS",
+  "DigitalOcean",
+  "Nginx",
+
+  // 📦 Tools / Others
+  "Git",
+  "GitHub",
+  "GitLab",
+  "Postman",
+  "Swagger",
+  "Figma",
+
+  // 📱 Mobile
+  "React Native",
+  "Flutter",
+  "Swift",
+  "Kotlin",
+
+  // 🤖 AI / ML
+  "TensorFlow",
+  "PyTorch",
+  "OpenAI API",
+
+  // 🧠 Advanced / Modern
+  "Prisma",
+  "Drizzle ORM",
+  "Mongoose",
+  "Zod",
+  "Stripe",
+  "Socket.io",
+  "WebRTC",
+
+  // 🎮 Others
+  "Three.js",
+  "WebGL",
+
+  // 🧪 Misc
+  "Other",
+];
 
 const categoryOptions = [
   { label: "Web Application", value: "web" },
@@ -123,6 +223,8 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
         ?.split(",")
         .map((t) => t.trim())
         .filter(Boolean);
+
+
 
       setIsUploading(false);
       // 🔹 Final Payload
@@ -323,12 +425,33 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
           </div>
         </Section>
 
+
+
+<Section title="Technologies">
+  <FormField label="Technologies *">
+    <TechSelect
+      value={watch("technologies")}
+      onChange={(val) => setValue("technologies", val)}
+    />
+  </FormField>
+</Section>
+
+
+
+
         {/* 🔹 Technologies */}
         <Section title="Technologies">
           <FormField label="Technologies (comma separated)">
             <input {...register("technologies")} className={inputClass} />
           </FormField>
         </Section>
+
+
+
+
+
+
+
 
         {/* 🔹 Features */}
         <Section title="Features">
@@ -507,3 +630,83 @@ const FormField = ({ label, children }: any) => (
 
 const inputClass =
   "w-full bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition";
+
+
+
+
+const TechSelect = ({ value = [], onChange }: any) => {
+  const [open, setOpen] = useState(false);
+
+  const toggleTech = (tech: string) => {
+    if (value.includes(tech)) {
+      onChange(value.filter((t: string) => t !== tech));
+    } else {
+      onChange([...value, tech]);
+    }
+  };
+
+  const removeTech = (tech: string, e: any) => {
+    e.stopPropagation(); // prevent dropdown toggle
+    onChange(value.filter((t: string) => t !== tech));
+  };
+
+  return (
+    <div className="relative">
+
+      {/* Input Box */}
+      <div
+        onClick={() => setOpen(!open)}
+        className="w-full bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 text-sm text-white cursor-pointer flex items-center justify-between"
+      >
+        {/* Chips */}
+        <div className="flex flex-wrap gap-2 flex-1">
+          {value.length > 0 ? (
+            value.map((tech: string) => (
+              <span
+                key={tech}
+                className="flex items-center gap-1 bg-green-600/20 text-green-400 px-2 py-1 rounded-md text-xs"
+              >
+                {tech}
+                <button
+                  type="button"
+                  onClick={(e) => removeTech(tech, e)}
+                  className="hover:text-red-400"
+                >
+                  <RxCross2 size={12} />
+                </button>
+              </span>
+            ))
+          ) : (
+            <span className="text-gray-400">Select technologies</span>
+          )}
+        </div>
+
+        {/* Dropdown Icon */}
+        <FaChevronDown
+          size={14}
+          className={`text-gray-400 transition-transform ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </div>
+
+      {/* Dropdown */}
+      {open && (
+        <div className="absolute z-10 mt-2 w-full bg-[#0f172a] border border-gray-600 rounded-xl max-h-60 overflow-y-auto shadow-lg">
+
+          {techOptions.map((tech) => (
+            <div
+              key={tech}
+              onClick={() => toggleTech(tech)}
+              className="px-4 py-2 text-sm hover:bg-gray-700 cursor-pointer flex justify-between"
+            >
+              {tech}
+              {value.includes(tech) && "✔"}
+            </div>
+          ))}
+
+        </div>
+      )}
+    </div>
+  );
+};
