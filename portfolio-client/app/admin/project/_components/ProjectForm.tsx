@@ -7,7 +7,7 @@ import { uploadMultipleImages, uploadSingleImage } from "./ImageUpload";
 import { FaChevronDown } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 
-type FormValues = {
+export type FormValues = {
   title: string;
   slug: string;
   category: string;
@@ -37,7 +37,7 @@ type FormValues = {
   features: { value: string }[];
 };
 
-const techOptions = [
+export const techOptions = [
   // 🌐 Frontend
   "HTML",
   "CSS",
@@ -135,7 +135,7 @@ const techOptions = [
   "Other",
 ];
 
-const categoryOptions = [
+export const categoryOptions = [
   { label: "Web Application", value: "web" },
   { label: "Website", value: "website" },
   { label: "Landing Page", value: "landing" },
@@ -223,8 +223,6 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
         ?.split(",")
         .map((t) => t.trim())
         .filter(Boolean);
-
-
 
       setIsUploading(false);
       // 🔹 Final Payload
@@ -425,19 +423,14 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
           </div>
         </Section>
 
-
-
-<Section title="Technologies">
-  <FormField label="Technologies *">
-    <TechSelect
-      value={watch("technologies")}
-      onChange={(val) => setValue("technologies", val)}
-    />
-  </FormField>
-</Section>
-
-
-
+        <Section title="Technologies">
+          <FormField label="Technologies *">
+            <TechSelect
+              value={watch("technologies")}
+              onChange={(val) => setValue("technologies", val)}
+            />
+          </FormField>
+        </Section>
 
         {/* 🔹 Technologies */}
         <Section title="Technologies">
@@ -445,13 +438,6 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
             <input {...register("technologies")} className={inputClass} />
           </FormField>
         </Section>
-
-
-
-
-
-
-
 
         {/* 🔹 Features */}
         <Section title="Features">
@@ -612,7 +598,7 @@ export default ProjectForm;
 
 /// 🔹 Reusable UI
 
-const Section = ({ title, children }: any) => (
+export const Section = ({ title, children }: any) => (
   <div>
     <h2 className="text-lg font-semibold text-gray-200 border-b border-gray-700 pb-2 mb-5">
       {title}
@@ -621,7 +607,7 @@ const Section = ({ title, children }: any) => (
   </div>
 );
 
-const FormField = ({ label, children }: any) => (
+export const FormField = ({ label, children }: any) => (
   <div className="flex flex-col gap-2">
     <label className="text-sm font-medium text-gray-300">{label}</label>
     {children}
@@ -631,10 +617,7 @@ const FormField = ({ label, children }: any) => (
 const inputClass =
   "w-full bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition";
 
-
-
-
-const TechSelect = ({ value = [], onChange }: any) => {
+export const TechSelect = ({ value = [], onChange }: any) => {
   const [open, setOpen] = useState(false);
 
   const toggleTech = (tech: string) => {
@@ -645,14 +628,13 @@ const TechSelect = ({ value = [], onChange }: any) => {
     }
   };
 
-  const removeTech = (tech: string, e: any) => {
+   const removeTech = (tech: string, e: any) => {
     e.stopPropagation(); // prevent dropdown toggle
     onChange(value.filter((t: string) => t !== tech));
   };
 
   return (
     <div className="relative">
-
       {/* Input Box */}
       <div
         onClick={() => setOpen(!open)}
@@ -693,7 +675,6 @@ const TechSelect = ({ value = [], onChange }: any) => {
       {/* Dropdown */}
       {open && (
         <div className="absolute z-10 mt-2 w-full bg-[#0f172a] border border-gray-600 rounded-xl max-h-60 overflow-y-auto shadow-lg">
-
           {techOptions.map((tech) => (
             <div
               key={tech}
@@ -704,7 +685,6 @@ const TechSelect = ({ value = [], onChange }: any) => {
               {value.includes(tech) && "✔"}
             </div>
           ))}
-
         </div>
       )}
     </div>

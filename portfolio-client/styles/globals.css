@@ -1,8 +1,11 @@
+@import "sweetalert2/dist/sweetalert2.min.css";
+
 @import "tailwindcss";
 
 @plugin '../hero.ts';
 
 @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -73,4 +76,8 @@ body {
 ::selection {
   background: var(--main-color);
   color: #000;
+}
+
+.swal2-container {
+  z-index: 99999 !important;
 }
