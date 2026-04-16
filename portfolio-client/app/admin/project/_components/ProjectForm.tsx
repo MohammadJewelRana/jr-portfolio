@@ -628,7 +628,7 @@ export const TechSelect = ({ value = [], onChange }: any) => {
     }
   };
 
-   const removeTech = (tech: string, e: any) => {
+  const removeTech = (tech: string, e: any) => {
     e.stopPropagation(); // prevent dropdown toggle
     onChange(value.filter((t: string) => t !== tech));
   };

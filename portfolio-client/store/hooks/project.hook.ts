@@ -76,7 +76,9 @@ export const useUpdateProject = () => {
       await updateProject({ id, data }).unwrap();
       toast.success("Project updated successfully ✨");
     } catch (err) {
+      console.log(err);
       toast.error("Failed to update project!");
+      
     }
   };
 
