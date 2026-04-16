@@ -14,6 +14,7 @@ import {
   Section,
   TechSelect,
 } from "../../../_components/ProjectForm";
+import { handleImageUpdate } from "@/utils/imageUpdate";
 
 export type FormValues = {
   title: string;
@@ -22,7 +23,10 @@ export type FormValues = {
   stackType: string;
   description: string;
   thumbnail: FileList;
-  images: { file: FileList }[];
+images: {
+  file?: FileList;
+  url?: string;
+}[]
   technologies: string[];
   status: string;
   features: { value: string }[];
@@ -73,21 +77,23 @@ const UpdateProjectForm = ({ project, onClose }: any) => {
   });
 
   const thumbnail = watch("thumbnail");
-  const images = watch("images");
+  const images = watch("images") || [];
 
   // ✅ set default values
-  useEffect(() => {
-    if (project) {
-      reset({
-        ...project,
-        technologies: project?.technologies || [],
-        features: project?.features?.map((f: string) => ({ value: f })) || [],
-        images: project?.images?.map(() => ({ file: undefined })) || [
-          { file: undefined },
-        ],
-      });
-    }
-  }, [project, reset]);
+useEffect(() => {
+  if (project) {
+    reset({
+      ...project,
+      technologies: project?.technologies || [],
+      features:
+        project?.features?.map((f: string) => ({ value: f })) || [],
+      images:
+        project?.images?.map((img: string) => ({
+          url: img, // ✅ store url
+        })) || [{ file: undefined }],
+    });
+  }
+}, [project, reset]);
 
   // ✅ thumbnail preview
   useEffect(() => {
@@ -101,35 +107,32 @@ const UpdateProjectForm = ({ project, onClose }: any) => {
   const isProcessing = isUploading || isLoading;
 
   // ✅ submit
+
   const onSubmit = async (data: FormValues) => {
     try {
       setIsUploading(true);
 
-      // thumbnail upload
+      // ✅ thumbnail
       let thumbnailUrl = project?.thumbnail;
       if (data.thumbnail?.[0] instanceof File) {
         thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
       }
 
-      // gallery upload
-      let imageUrls = project?.images || [];
-      const files = data.images.map((img) => img.file?.[0]).filter(Boolean);
-
-      if (files.length > 0) {
-        imageUrls = await uploadMultipleImages(files);
-      }
-
+      // ✅ gallery (using utils)
+const imageUrls = await handleImageUpdate({
+  dataImages: data.images,
+  uploadMultipleImages,
+});
       const payload = {
         ...data,
         thumbnail: thumbnailUrl,
         images: imageUrls,
         features: data.features.map((f) => f.value),
+        priority: Number(data.priority),
+        teamSize: Number(data.teamSize),
       };
 
-      console.log(payload);
-
       await update(project._id, payload);
-      // router.push("/admin/project");
     } catch (err) {
       console.error(err);
     } finally {
@@ -228,48 +231,47 @@ const UpdateProjectForm = ({ project, onClose }: any) => {
         </Section>
 
         {/* Gallery */}
-        <Section title="Gallery Images">
-          {fields.map((item, index) => (
-            <div key={item.id} className="flex gap-3 items-center mb-3">
-              <input
-                type="file"
-                {...register(`images.${index}.file`)}
-                className={inputClass}
-              />
+    <Section title="Gallery Images">
+  {fields.map((item, index) => (
+    <div key={item.id} className="flex gap-3 items-center mb-3">
+      
+      <input
+        type="file"
+        {...register(`images.${index}.file`)}
+        className={inputClass}
+      />
 
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="bg-red-500 px-3 py-2 rounded"
-              >
-                Remove
-              </button>
+      <button
+        type="button"
+        onClick={() => remove(index)}
+        className="bg-red-500 px-3 py-2 rounded"
+      >
+        Remove
+      </button>
 
-              {/* preview */}
-              {images?.[index]?.file?.[0] ? (
-                <img
-                  src={URL.createObjectURL(images[index].file[0])}
-                  className="h-16 w-16 object-cover"
-                />
-              ) : (
-                project?.images?.[index] && (
-                  <img
-                    src={project.images[index]}
-                    className="h-16 w-16 object-cover"
-                  />
-                )
-              )}
-            </div>
-          ))}
+      {/* ✅ FIXED preview */}
+      {images[index]?.file?.[0] instanceof File ? (
+        <img
+          src={URL.createObjectURL(images[index].file[0])}
+          className="h-16 w-16 object-cover"
+        />
+      ) : images[index]?.url ? (
+        <img
+          src={images[index].url}
+          className="h-16 w-16 object-cover"
+        />
+      ) : null}
+    </div>
+  ))}
 
-          <button
-            type="button"
-            onClick={() => append({ file: undefined })}
-            className="bg-blue-600 px-4 py-2 rounded"
-          >
-            + Add Image
-          </button>
-        </Section>
+  <button
+    type="button"
+    onClick={() => append({})}
+    className="bg-blue-600 px-4 py-2 rounded"
+  >
+    + Add Image
+  </button>
+</Section>
 
         {/* Technologies */}
         <Section title="Technologies">
