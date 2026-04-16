@@ -2,9 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import heroImg from "@/assets/hero/1.png";
-import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
-import { TypeAnimation } from "react-type-animation";
+import heroImg from "@/assets/hero/j.png";
+// import heroImg from "@/assets/hero/1.png";
+
+
+
+import { FaLinkedinIn, FaGithub } from "react-icons/fa";
+
 import Typewriter from "typewriter-effect";
 import { smoothScrollTo } from "@/utils/smoothScroll.ts";
 
@@ -130,12 +134,12 @@ const HeroSection = () => {
 
             <div className="flex items-center gap-4 flex-wrap">
               {/* Hire Me Button */}
-         <button
-  onClick={() => smoothScrollTo("contact")}
-  className="px-6 py-3 bg-green-400 text-black rounded-full font-semibold transition-all duration-300 hover:bg-green-500 hover:scale-105 cursor-pointer"
->
-  Hire Me →
-</button>
+              <button
+                onClick={() => smoothScrollTo("contact")}
+                className="px-6 py-3 bg-green-400 text-black rounded-full font-semibold transition-all duration-300 hover:bg-green-500 hover:scale-105 cursor-pointer"
+              >
+                Hire Me →
+              </button>
 
               {/* Social Icons */}
               <div className="flex gap-3">
@@ -164,13 +168,15 @@ const HeroSection = () => {
           <div className="relative flex justify-center mt-10">
             <div className="absolute w-48 h-48 bg-green-400 rotate-45 rounded-2xl blur-xl opacity-70" />
 
-            <Image
-              src={heroImg}
-              alt="Jewel Rana"
-              width={350}
-              height={420}
-              className="relative z-10"
-            />
+       <Image
+  src={heroImg}
+  alt="Jewel Rana"
+  width={450}
+  height={420}
+  quality={100}
+  priority
+  className="relative z-10"
+ />
 
             {/* ✅ TECH STACK CARD (UPPER ALIGN FIXED) */}
             <div className="absolute right-0 top-[35%] -translate-y-1/2 pr-2">
