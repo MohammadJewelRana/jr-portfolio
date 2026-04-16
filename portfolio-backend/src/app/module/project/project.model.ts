@@ -19,8 +19,50 @@ const projectSchema = new Schema<IProject>(
     category: {
       type: String,
       required: [true, "Category is required"],
+      enum: [
+        // 🌐 Web
+        "web",
+        "website",
+        "landing",
+        "portfolio",
+
+        // 📱 Apps
+        "mobile",
+        "desktop",
+
+        // 💼 Business
+        "saas",
+        "crm",
+        "erp",
+        "dashboard",
+
+        // 🛒 Commerce
+        "ecommerce",
+        "marketplace",
+        "booking",
+
+        // 🎓 Education
+        "education",
+        "lms",
+
+        // 📊 Tools
+        "analytics",
+        "ai",
+        "api",
+
+        // 🎮 Others
+        "game",
+        "iot",
+        "blockchain",
+
+        // 🧪 Misc
+        "personal",
+        "experimental",
+        "other",
+      ],
       trim: true,
     },
+
     description: {
       type: String,
       required: [true, "Description is required"],
@@ -117,7 +159,6 @@ const projectSchema = new Schema<IProject>(
     versionKey: false,
   }
 );
-
 
 // 🔍 Indexing (IMPORTANT for search)
 projectSchema.index({
