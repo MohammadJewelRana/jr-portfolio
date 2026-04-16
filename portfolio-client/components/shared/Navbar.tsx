@@ -12,14 +12,14 @@ import {
 import { Button } from "@heroui/button";
 import NextLink from "next/link";
 import Image from "next/image";
-// import image from "@/assets/logo/favicon.png";
 import image from "@/assets/logo/logo.png";
- 
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -34,80 +34,76 @@ export const Navbar = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       className="
-      
       fixed top-0 left-0 w-full z-50
       
-      bg-white/10 
-      backdrop-blur-xl
+      bg-[linear-gradient(90deg,#0c0f14_0%,#0c0f14_40%,rgba(0,255,150,0.08)_100%)]
       
-      border-b border-white/20
+      shadow-[0_6px_25px_rgba(0,0,0,0.4)]
       
-      shadow-[0_8px_30px_rgba(0,0,0,0.05)]
+      before:absolute before:top-0 before:left-0 before:w-full before:h-[1px]
+      before:bg-gradient-to-r before:from-transparent before:via-main/40 before:to-transparent
       
-      before:absolute before:inset-0
-      before:bg-gradient-to-r 
-      before:from-white/20 
-      before:via-transparent 
-      before:to-white/20
-      before:opacity-40
+      transition-all duration-300
       "
     >
       {/* 🔹 LOGO */}
-<NavbarContent justify="start">
-  <NavbarBrand>
-    <NextLink href="/" className="flex items-center gap-2">
-      <Image
-        src={image}
-        alt="logo"
-        width={150}
-        height={50}
-        className="h-10 w-auto object-contain rounded-sm"
-        priority
-      />
-    </NextLink>
-  </NavbarBrand>
-</NavbarContent>
+      <NavbarContent justify="start">
+        <NavbarBrand>
+          <NextLink href="/" className="flex items-center gap-2">
+            <Image
+              src={image}
+              alt="logo"
+              width={140}
+              height={40}
+              className="h-8 md:h-10 w-auto object-contain"
+              priority
+            />
+          </NextLink>
+        </NavbarBrand>
+      </NavbarContent>
 
       {/* 🔹 DESKTOP MENU */}
-      <NavbarContent justify="center" className="hidden md:flex gap-8">
-        {navItems.map((item) => (
-          <NavbarItem key={item.name}>
-            <NextLink
-              href={item.href}
-              className="
-              relative 
-            text-main
-              font-medium 
-              transition-all duration-300
-              hover:text-main
-              
-              after:content-['']
-              after:absolute after:left-0 after:-bottom-1
-              after:h-[2px] after:w-0
-              after:bg-main
-              after:transition-all after:duration-300
-              hover:after:w-full
-              "
-            >
-              {item.name}
-            </NextLink>
-          </NavbarItem>
-        ))}
+      <NavbarContent justify="center" className="hidden md:flex gap-10">
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+
+          return (
+            <NavbarItem key={item.name}>
+              <NextLink
+                href={item.href}
+                className={`
+relative text-sm font-semibold tracking-wide
+transition-all duration-300
+
+${isActive ? "text-main" : "text-white/70 hover:text-main"}
+
+after:absolute after:left-0 after:-bottom-1
+after:h-[2px] after:w-0
+after:bg-main
+after:shadow-[0_0_10px_rgba(0,255,150,0.6)]
+after:transition-all after:duration-300
+
+hover:after:w-full
+`}
+              >
+                {item.name}
+              </NextLink>
+            </NavbarItem>
+          );
+        })}
       </NavbarContent>
 
       {/* 🔹 RIGHT SIDE */}
       <NavbarContent justify="end" className="gap-3">
-        {/* MOBILE TOGGLE */}
+        {/* 🔥 HAMBURGER */}
         <NavbarMenuToggle
           className="
           md:hidden 
-          text-black 
-          border border-white/30 
-          rounded-full 
-          p-2
-          backdrop-blur-md
+          text-white
+          p-2.5
+          rounded-md
           transition-all duration-300
-          hover:bg-main hover:text-white
+          hover:bg-white/10
           "
         />
 
@@ -115,59 +111,64 @@ export const Navbar = () => {
         <Button
           className="
           hidden md:flex
-          bg-main text-white 
-          rounded-full px-6
-          font-semibold
+          bg-main
+          text-white 
+          rounded-full px-6 py-2
+          text-sm font-semibold
+          
           transition-all duration-300
           hover:scale-105
-          hover:shadow-[0_10px_25px_rgba(40,233,140,0.3)]
+          hover:shadow-[0_10px_25px_rgba(0,255,150,0.3)]
           "
         >
-          Download CV →
+          Download CV
         </Button>
       </NavbarContent>
 
       {/* 🔹 MOBILE MENU */}
       <NavbarMenu
         className="
-        pt-16 px-6 
+        pt-20 px-6 
         
-        bg-white/30 
-        backdrop-blur-2xl
+        bg-[#0c0f14]
         
         min-h-screen
       "
       >
-        <div className="flex flex-col gap-6">
-          {navItems.map((item) => (
-            <NavbarMenuItem key={item.name}>
-              <NextLink
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="
-                text-2xl font-semibold 
-                text-black/80
-                transition-all duration-300
-                hover:text-main
-                "
-              >
-                {item.name}
-              </NextLink>
-            </NavbarMenuItem>
-          ))}
+        <div className="flex flex-col gap-8">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
 
-          <div className="border-t border-white/30 my-4" />
+            return (
+              <NavbarMenuItem key={item.name}>
+                <NextLink
+                  href={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`
+                  text-lg font-medium
+                  
+                  ${isActive ? "text-main" : "text-white/80 hover:text-main"}
+                  `}
+                >
+                  {item.name}
+                </NextLink>
+              </NavbarMenuItem>
+            );
+          })}
 
           <Button
             className="
-            w-full bg-main text-white 
-            rounded-full py-3
-            text-base font-semibold
+            w-full 
+            bg-main
+            text-white 
+            rounded-full py-2
+            font-medium
+            
             transition-all duration-300
-            hover:scale-[1.03]
+            hover:scale-[1.05]
             "
           >
-            Download CV →
+            Download CV
           </Button>
         </div>
       </NavbarMenu>

@@ -30,7 +30,7 @@ const page = () => {
 
   return (
     <div className="">
-      <div className="">
+      <div className="pt-12">
         <ProjectHero total={projects?.length || 0} />
       </div>
 

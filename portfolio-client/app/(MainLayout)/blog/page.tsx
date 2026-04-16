@@ -14,7 +14,10 @@ const Page = () => {
   return (
     <div>
       {/* 🔥 Hero */}
+      <div className="pt-12">
+
       <BlogHero total={blogs.length} />
+      </div>
 
       {/* 🔥 Section Intro (Premium feel) */}
       <div className="max-w-4xl mx-auto text-center mt-12 px-4">

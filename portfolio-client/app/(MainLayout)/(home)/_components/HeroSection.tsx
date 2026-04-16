@@ -5,8 +5,6 @@ import Link from "next/link";
 import heroImg from "@/assets/hero/j.png";
 // import heroImg from "@/assets/hero/1.png";
 
-
-
 import { FaLinkedinIn, FaGithub } from "react-icons/fa";
 
 import Typewriter from "typewriter-effect";
@@ -168,15 +166,15 @@ const HeroSection = () => {
           <div className="relative flex justify-center mt-10">
             <div className="absolute w-48 h-48 bg-green-400 rotate-45 rounded-2xl blur-xl opacity-70" />
 
-       <Image
-  src={heroImg}
-  alt="Jewel Rana"
-  width={450}
-  height={420}
-  quality={100}
-  priority
-  className="relative z-10"
- />
+            <Image
+              src={heroImg}
+              alt="Jewel Rana"
+              width={450}
+              height={420}
+              quality={100}
+              priority
+              className="relative z-10"
+            />
 
             {/* ✅ TECH STACK CARD (UPPER ALIGN FIXED) */}
             <div className="absolute right-0 top-[35%] -translate-y-1/2 pr-2">
