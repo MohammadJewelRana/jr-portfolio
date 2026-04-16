@@ -106,12 +106,12 @@ const Experience = () => {
       grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-center"
       >
         {[
-          { val: "95%", name: "React / Next.js" },
-          { val: "92%", name: "Node / NestJS" },
-          { val: "90%", name: "MongoDB" },
-          { val: "88%", name: "PostgreSQL" },
-          { val: "85%", name: "React Native" },
-        ].map((skill, i) => (
+  { val: "90%", name: "React / Next.js" },
+  { val: "85%", name: "Node / NestJS" },
+  { val: "80%", name: "MongoDB" },
+  { val: "65%", name: "PostgreSQL" },
+  { val: "60%", name: "React Native" },
+].map((skill, i) => (
           <div
             key={i}
             className="transition-all duration-300 ease-out hover:scale-110"

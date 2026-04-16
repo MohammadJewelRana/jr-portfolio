@@ -12,23 +12,22 @@ const Contact = () => {
 
   const { create, isLoading } = useCreateContact();
 
-const handleSubmit = async (e: any) => {
-  e.preventDefault();
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
-  const formData = {
-    name: e.target.name.value,
-    phone: e.target.phone.value,
-    email: e.target.email.value,
-    message: e.target.message.value,
+    const formData = {
+      name: e.target.name.value,
+      phone: e.target.phone.value,
+      email: e.target.email.value,
+      message: e.target.message.value,
+    };
+
+    await create(formData);
+
+    e.target.reset();
   };
-
- 
-  await create(formData);
-
-  e.target.reset();
-};
   return (
-    <div className="py-16 bg-[#1C1D20] text-white ">
+    <div id="contact" className="py-16 bg-[#1C1D20] text-white ">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* LEFT (UNCHANGED) */}
         <div className="space-y-4">
@@ -37,15 +36,17 @@ const handleSubmit = async (e: any) => {
             <span>Stay connected</span>
           </div>
 
-          <h1 className="text-3xl sm:text-2xl md:text-4xl font-bold leading-tight">
-            Building Something Great Together
+          <h1 className="text-3xl sm:text-2xl md:text-4xl font-bold leading-snug py-4 max-w-lg">
+            Let’s Work Together on Your Next Project
           </h1>
 
-          <p className="text-gray-400 text-sm sm:text-base max-w-md leading-relaxed ">
-            Each demo built with Teba will look different. You customize almost
+          <p className="text-gray-400 text-sm sm:text-base max-w-md leading-relaxed">
+            I’m a Full Stack Developer focused on building scalable and
+            user-friendly applications. Feel free to reach out for
+            collaboration, freelance work, or any project ideas.
           </p>
 
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-4 pt-4">
             <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-main">
               <Image src={img} alt="Jewel Rana" className="object-cover" />
             </div>
@@ -83,7 +84,6 @@ const handleSubmit = async (e: any) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 name="name"
-                 
                 type="text"
                 placeholder="Enter Your Name"
                 className="w-full px-4 py-3 rounded-lg bg-transparent border border-white/10 text-sm outline-none focus:border-main transition"
@@ -91,7 +91,6 @@ const handleSubmit = async (e: any) => {
 
               <input
                 name="phone"
-                 
                 type="text"
                 placeholder="Enter Your Number"
                 className="w-full px-4 py-3 rounded-lg bg-transparent border border-white/10 text-sm outline-none focus:border-main transition"
@@ -100,7 +99,7 @@ const handleSubmit = async (e: any) => {
 
             <input
               name="email"
-               required
+              required
               type="email"
               placeholder="Enter Your Email"
               className="w-full px-4 py-3 rounded-lg bg-transparent border border-white/10 text-sm outline-none focus:border-main transition"
