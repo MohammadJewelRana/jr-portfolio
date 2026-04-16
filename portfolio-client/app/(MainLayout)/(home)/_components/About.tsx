@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import CountUp from "react-countup";
 
 const About = () => {
   return (
@@ -32,25 +33,27 @@ const About = () => {
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 max-w-xl mx-auto md:mx-0 pt-4">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                2+
-              </h2>
-              <p className="text-xs sm:text-sm text-gray-500">
-                Years Experience
-              </p>
-            </div>
+<div className="grid grid-cols-3 gap-6 max-w-xl mx-auto md:mx-0 pt-4">
+  
+  <div>
+    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+      <CountUp end={2} duration={4} />+
+    </h2>
+    <p className="text-xs sm:text-sm text-gray-500">
+      Years Experience
+    </p>
+  </div>
 
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                10+
-              </h2>
-              <p className="text-xs sm:text-sm text-gray-500">
-                Projects Completed
-              </p>
-            </div>
-          </div>
+  <div>
+    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+      <CountUp end={10} duration={4} />+
+    </h2>
+    <p className="text-xs sm:text-sm text-gray-500">
+      Projects Completed
+    </p>
+  </div>
+
+</div>
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
@@ -116,7 +119,7 @@ const About = () => {
             </motion.div>
 
             {/* Highlight */}
-            <div className="p-6 rounded-2xl bg-main text-white">
+            <div className="p-6 rounded-2xl bg-main text-black">
               <p className="text-sm leading-relaxed">
                 🚀 Passionate about building scalable systems and solving
                 real-world problems using modern technologies.

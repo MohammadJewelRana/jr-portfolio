@@ -1,169 +1,102 @@
 "use client";
 
-import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
+import React, { useState } from "react";
+import { useDeleteProject } from "@/store/hooks/project.hook";
 
-export default function ProjectTable({ projects, onDelete }: any) {
+const ProjectTable = ({ projects }: any) => {
+  const [editData, setEditData] = useState<any>(null);
 
-  const columns = [
-    // 🔹 Image
-    {
-      id: "thumbnail",
-      header: "Image",
-      cell: ({ row }: any) => (
-        <img
-          src={row.original.thumbnail}
-          className="h-12 w-16 object-cover rounded"
-        />
-      ),
-    },
+  const { remove, isLoading } = useDeleteProject();
 
-    // 🔹 Title + Slug
-    {
-      accessorKey: "title",
-      header: "Project",
-      cell: ({ row }: any) => (
-        <div>
-          <p className="font-medium">{row.original.title}</p>
-          <p className="text-xs text-gray-400">{row.original.slug}</p>
-        </div>
-      ),
-    },
+  // 🔥 Delete Handler (FIXED)
+  const handleDelete = async (id: string) => {
+    console.log("Attempting to delete project with ID:", id);
 
-    // 🔹 Category
-    {
-      accessorKey: "category",
-      header: "Category",
-    },
+    // 🔥 dynamic import (best for Next.js)
+    const Swal = (await import("sweetalert2")).default;
 
-    // 🔹 Stack Type
-    {
-      accessorKey: "stackType",
-      header: "Stack",
-      cell: ({ row }: any) => (
-        <span className="px-2 py-1 text-xs bg-indigo-600 rounded">
-          {row.original.stackType || "N/A"}
-        </span>
-      ),
-    },
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This project will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#64748b",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-    // 🔹 Technologies (Top 3 show)
-    {
-      accessorKey: "technologies",
-      header: "Tech",
-      cell: ({ row }: any) => (
-        <div className="flex flex-wrap gap-1">
-          {row.original.technologies?.slice(0, 3).map((tech: string, i: number) => (
-            <span key={i} className="text-xs bg-gray-700 px-2 py-1 rounded">
-              {tech}
-            </span>
-          ))}
-        </div>
-      ),
-    },
+    if (result.isConfirmed) {
+      await remove(id);
 
-    // 🔹 Status
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }: any) => {
-        const status = row.original.status;
-
-        const color =
-          status === "completed"
-            ? "bg-green-600"
-            : status === "ongoing"
-            ? "bg-yellow-500"
-            : "bg-gray-500";
-
-        return (
-          <span className={`px-2 py-1 text-xs rounded ${color}`}>
-            {status}
-          </span>
-        );
-      },
-    },
-
-    // 🔹 Featured
-    {
-      accessorKey: "featured",
-      header: "Featured",
-      cell: ({ row }: any) => (
-        <span className={`text-xs px-2 py-1 rounded ${
-          row.original.featured ? "bg-purple-600" : "bg-gray-600"
-        }`}>
-          {row.original.featured ? "Yes" : "No"}
-        </span>
-      ),
-    },
-
-    // 🔹 Links
-    {
-      id: "links",
-      header: "Links",
-      cell: ({ row }: any) => (
-        <div className="flex gap-2 text-xs">
-          {row.original.liveLink && (
-            <a href={row.original.liveLink} target="_blank" className="text-blue-400">
-              Live
-            </a>
-          )}
-          {row.original.githubClient && (
-            <a href={row.original.githubClient} target="_blank" className="text-gray-300">
-              Client
-            </a>
-          )}
-        </div>
-      ),
-    },
-
-    // 🔹 Actions
-    {
-      id: "action",
-      header: "Action",
-      cell: ({ row }: any) => (
-        <button
-          onClick={() => onDelete(row.original._id)}
-          className="text-red-500 hover:text-red-700 text-sm"
-        >
-          Delete
-        </button>
-      ),
-    },
-  ];
-
-  const table = useReactTable({
-    data: projects,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+      // optional success alert
+      Swal.fire({
+        title: "Deleted!",
+        text: "Project has been deleted.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    }
+  };
 
   return (
-    <div className="overflow-x-auto border border-white/5 rounded-xl bg-[#111C2D]">
-      <table className="w-full text-sm">
-        <thead className="bg-[#0F172A]">
-          {table.getHeaderGroups().map((h) => (
-            <tr key={h.id}>
-              {h.headers.map((head) => (
-                <th key={head.id} className="p-4 text-left">
-                  {flexRender(head.column.columnDef.header, head.getContext())}
-                </th>
-              ))}
+    <div className="space-y-6">
+      {/* TABLE */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-300 border border-gray-700 rounded-xl overflow-hidden">
+          <thead className="bg-[#1e293b] text-gray-400">
+            <tr>
+              <th className="px-4 py-3">Title</th>
+              <th className="px-4 py-3">Category</th>
+              <th className="px-4 py-3">Tech</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Featured</th>
+              <th className="px-4 py-3 text-center">Actions</th>
             </tr>
-          ))}
-        </thead>
+          </thead>
 
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t border-white/5 hover:bg-white/5">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-4">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          <tbody>
+            {projects?.map((project: any) => (
+              <tr
+                key={project._id}
+                className="border-t border-gray-700 hover:bg-[#0f172a]"
+              >
+                <td className="px-4 py-3">{project.title}</td>
+
+                <td className="px-4 py-3 capitalize">
+                  {project.category}
                 </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+                <td className="px-4 py-3">
+                  {project.technologies?.slice(0, 2).join(", ")}
+                </td>
+
+                <td className="px-4 py-3">
+                  <span className="px-2 py-1 rounded text-xs bg-blue-500/20 text-blue-400">
+                    {project.status}
+                  </span>
+                </td>
+
+                <td className="px-4 py-3">
+                  {project.featured ? "⭐" : "-"}
+                </td>
+
+                <td className="px-4 py-3 text-center">
+                  <button
+                    onClick={() => handleDelete(project._id)}
+                    disabled={isLoading}
+                    className="bg-red-500 px-3 py-1 rounded text-xs"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
-}
+};
+
+export default ProjectTable;

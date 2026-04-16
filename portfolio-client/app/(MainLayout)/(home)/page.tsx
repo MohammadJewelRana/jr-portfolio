@@ -22,7 +22,6 @@ const page = () => {
       <Project />
       <Experience />
 
-
       <Process />
 
       <Blog />

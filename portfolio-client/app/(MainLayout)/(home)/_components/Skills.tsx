@@ -21,6 +21,7 @@ import {
   SiFigma,
 } from "react-icons/si";
 import { motion } from "framer-motion";
+import { smoothScrollTo } from "@/utils/smoothScroll.ts";
 
 const skills = [
   { name: "React", icon: <FaReact /> },
@@ -75,17 +76,16 @@ const item = {
 const Skills = () => {
   return (
     <div className="bg-[#1C1D20] text-white py-16 sm:py-20">
-      
       <div className="mx-auto max-w-7xl px-4">
-
         {/* Heading */}
         <div className="text-center space-y-3 sm:space-y-4 mb-10 sm:mb-14">
-
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 
+          <div
+            className="inline-flex items-center gap-2 
           text-main text-xs sm:text-sm 
           px-3 sm:px-4 py-1 sm:py-1.5 
-          rounded-full border border-main bg-main/10">
+          rounded-full border border-main bg-main/10"
+          >
             <FaStar />
             <span>Experience</span>
           </div>
@@ -94,7 +94,6 @@ const Skills = () => {
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold">
             Skills & Tools
           </h1>
-
         </div>
 
         {/* Skills */}
@@ -106,7 +105,6 @@ const Skills = () => {
           className="w-full flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4"
         >
           {skills.map((skill, i) => (
-            
             <motion.div
               key={i}
               variants={item}
@@ -123,7 +121,6 @@ const Skills = () => {
               hover:border-main hover:text-main hover:shadow-[0_0_20px_rgba(40,233,140,0.3)]
               "
             >
-              
               {/* Icon or fallback */}
               {skill.icon ? (
                 <span className="text-sm sm:text-lg text-main">
@@ -134,20 +131,20 @@ const Skills = () => {
               )}
 
               <span>{skill.name}</span>
-
             </motion.div>
-
           ))}
         </motion.div>
 
         {/* Bottom */}
         <div className="text-center mt-8 sm:mt-12 text-xs sm:text-sm text-gray-400">
           You’ve Got A Challenge?{" "}
-          <span className="text-main font-medium cursor-pointer hover:underline">
-            Let’s Talk!
-          </span>
+        <span
+  onClick={() => smoothScrollTo("contact")}
+  className="text-main font-medium cursor-pointer hover:underline"
+>
+  Let’s Talk!
+</span>
         </div>
-
       </div>
     </div>
   );

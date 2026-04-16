@@ -2,12 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import heroImg from "@/assets/hero/1.png";
-import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
+import heroImg from "@/assets/hero/j.png";
+// import heroImg from "@/assets/hero/1.png";
+
+import { FaLinkedinIn, FaGithub } from "react-icons/fa";
+
+import Typewriter from "typewriter-effect";
+import { smoothScrollTo } from "@/utils/smoothScroll.ts";
 
 const HeroSection = () => {
-  console.log('');
-  
   return (
     <section className="relative bg-[#0c0f14] text-white overflow-hidden  pt-16">
       {/* BG Glow */}
@@ -21,9 +24,27 @@ const HeroSection = () => {
             ✨ Hi, I’m Md. Jewel Rana
           </div>
 
-          <h1 className="text-3xl font-bold leading-snug">
-            Full Stack Developer Building <br />
-            Scalable Web & Mobile Apps
+          <h1 className="text-xl font-bold leading-snug">
+            {/* 🔹 First Line (Loop) */}
+            <div className="inline">
+              <Typewriter
+                options={{
+                  strings: [
+                    "Full Stack Developer",
+                    "Frontend Developer",
+                    "Backend Developer",
+                    "App Developer",
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  deleteSpeed: 100,
+                  delay: 100,
+                }}
+              />
+            </div>
+
+            {/* 🔹 Second Line (One time only) */}
+            <p>Building Scalable Web Applications</p>
           </h1>
 
           <p className="text-gray-400 text-sm">
@@ -78,35 +99,62 @@ const HeroSection = () => {
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-3xl mx-auto">
-            Building Modern Web & Mobile Applications
+
+          <h1 className="text-2xl lg:text-5xl md:text-3xl font-bold leading-tight max-w-4xl mx-auto">
+            {/* 🔹 First Line (Loop) */}
+            <div className="inline">
+              <Typewriter
+                options={{
+                  strings: [
+                    "Full Stack Developer",
+                    "Frontend Developer",
+                    "Backend Developer",
+                    "App Developer",
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  deleteSpeed: 100,
+                  delay: 100,
+                }}
+              />
+            </div>
+
+            {/* 🔹 Second Line (One time only) */}
+            <p>Building Scalable Web Applications</p>
           </h1>
 
           {/* LEFT CONTENT */}
-          <div className="absolute left-0 top-[55%] -translate-y-1/2 text-left max-w-sm px-2">
+          <div className="absolute left-0 top-[55%] -translate-y-1/2 text-left max-w-sm px-2   z-20">
             <p className="text-gray-400 text-sm mb-6">
               I build scalable web and mobile applications using MERN, Next.js,
               and NestJS with modern UI and secure APIs.
             </p>
 
             <div className="flex items-center gap-4 flex-wrap">
-              <Link
-                href="/contact"
-                className="px-6 py-3 bg-green-400 text-black rounded-full font-semibold"
+              {/* Hire Me Button */}
+              <button
+                onClick={() => smoothScrollTo("contact")}
+                className="px-6 py-3 bg-green-400 text-black rounded-full font-semibold transition-all duration-300 hover:bg-green-500 hover:scale-105 cursor-pointer"
               >
                 Hire Me →
-              </Link>
+              </button>
 
+              {/* Social Icons */}
               <div className="flex gap-3">
                 <Link
-                  href="#"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10"
+                  href="https://www.linkedin.com/in/md-jewel-rana-05808b273"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 transition-all duration-300 hover:bg-green-400 hover:text-black hover:scale-110"
                 >
                   <FaLinkedinIn />
                 </Link>
+
                 <Link
                   href="https://github.com/MohammadJewelRana"
-                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 transition-all duration-300 hover:bg-green-400 hover:text-black hover:scale-110"
                 >
                   <FaGithub />
                 </Link>
@@ -121,8 +169,10 @@ const HeroSection = () => {
             <Image
               src={heroImg}
               alt="Jewel Rana"
-              width={350}
+              width={450}
               height={420}
+              quality={100}
+              priority
               className="relative z-10"
             />
 

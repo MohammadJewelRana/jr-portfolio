@@ -11,6 +11,7 @@ import { Navbar } from "@/components/shared/Navbar";
 
 import AnimatedCursor from "react-animated-cursor";
 import { Providers } from "./providers";
+import FloatingActions from "@/components/shared/FloatingActions";
 
 export const metadata: Metadata = {
   title: {
@@ -56,6 +57,7 @@ export default function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="     ">
             {/* <main className="container mx-auto max-w-7xl   flex-grow"> */}
+                <FloatingActions /> 
             {children}
           </div>
         </Providers>

@@ -1,37 +1,121 @@
 "use client";
 
 import React from "react";
-import { FaArrowUp } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Image from "next/image";
+import BlogCard from "@/components/blog/BlogCard";
+import Link from "next/link";
+import BlogCardSkeleton from "@/components/blog/BlogCardSkeleton";
+import { IBlog } from "@/types/Blog.types";
 
-const blogs = [
+export const blogs :IBlog[]= [
   {
-    id: "1",
-    img: "https://images.unsplash.com/photo-1559028012-481c04fa702d",
-    category: "UI/UX Design",
-    date: "4 Apr 26",
-    title: "The Importance Of User In UI/UX Design",
+    title: "Mastering MERN Stack in 2026",
+    slug: "mastering-mern-stack-2026",
+    excerpt:
+      "Learn how to build scalable applications using MERN stack with modern tools.",
+    content:
+      "In this guide, we will explore how to build scalable full-stack applications using MongoDB, Express, React, and Node.js...",
+    thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+    coverImage: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    images: [
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+      "https://images.unsplash.com/photo-1581090700227-1e8a1d0f8b8c",
+    ],
+    authorName: "Jewel Rana",
+    authorImage: "https://i.pravatar.cc/150?img=3",
+    category: "Development",
+    tags: ["MERN", "React", "Node", "MongoDB"],
+    metaTitle: "Master MERN Stack",
+    metaDescription:
+      "Complete MERN stack development guide for beginners and advanced developers.",
+    status: "published",
+    featured: true,
+    views: 250,
+    likes: 40,
+    isDeleted: false,
   },
   {
-    id: "2",
-    img: "https://images.unsplash.com/photo-1559027615-cd4628902d4a",
-    category: "Visual Design",
-    date: "4 Apr 26",
-    title: "The Behind Color Choices In UI/UX Design",
+    title: "Next.js Performance Optimization Tips",
+    slug: "nextjs-performance-optimization-tips",
+    excerpt:
+      "Boost your Next.js app performance with these advanced techniques.",
+    content:
+      "Performance is critical in modern web applications. In this blog, we will cover lazy loading, image optimization, SSR strategies...",
+    thumbnail: "https://images.unsplash.com/photo-1559028012-481c04fa702d",
+    coverImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
+    images: [],
+    authorName: "Jewel Rana",
+    category: "Next.js",
+    tags: ["Next.js", "Optimization", "Performance"],
+    metaTitle: "Next.js Optimization Guide",
+    metaDescription: "Learn how to optimize Next.js apps for speed and SEO.",
+    status: "published",
+    featured: false,
+    views: 180,
+    likes: 22,
+    isDeleted: false,
   },
   {
-    id: "3",
-    img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
-    category: "Web Design",
-    date: "4 Apr 26",
-    title: "The Role Of Prototyping In UI/UX Design",
+    title: "Backend Architecture with NestJS",
+    slug: "nestjs-backend-architecture",
+    excerpt: "Build scalable backend systems using NestJS and PostgreSQL.",
+    content:
+      "NestJS is a powerful framework for building scalable backend systems. In this article, we will explore module architecture...",
+    thumbnail: "https://images.unsplash.com/photo-1559027615-cd4628902d4a",
+    coverImage: "https://images.unsplash.com/photo-1537432376769-00a6c7e1c5aa",
+    images: [],
+    authorName: "Jewel Rana",
+    category: "Backend",
+    tags: ["NestJS", "PostgreSQL", "Architecture"],
+    status: "draft",
+    featured: false,
+    views: 60,
+    likes: 5,
+    isDeleted: false,
+  },
+  {
+    title: "Understanding JWT Authentication",
+    slug: "understanding-jwt-authentication",
+    excerpt: "A complete guide to JWT authentication in modern applications.",
+    content:
+      "JWT (JSON Web Token) is widely used for secure authentication. In this blog, we will break down access token, refresh token...",
+    thumbnail: "https://images.unsplash.com/photo-1559027615-cd4628902d4a",
+    coverImage: "https://images.unsplash.com/photo-1563013544-824ae1b704d3",
+    images: [],
+    authorName: "Jewel Rana",
+    category: "Security",
+    tags: ["JWT", "Authentication", "Security"],
+    metaTitle: "JWT Authentication Guide",
+    metaDescription:
+      "Learn JWT authentication step by step with real examples.",
+    status: "published",
+    featured: true,
+    views: 320,
+    likes: 55,
+    isDeleted: false,
+  },
+  {
+    title: "React Best Practices for Clean Code",
+    slug: "react-best-practices-clean-code",
+    excerpt: "Write clean and maintainable React code with best practices.",
+    content:
+      "Writing clean code in React is essential for scalability. In this blog, we will cover component structure, hooks usage...",
+    thumbnail: "https://images.unsplash.com/photo-1518779578993-ec3579fee39f",
+    coverImage: "https://images.unsplash.com/photo-1492724441997-5dc865305da7",
+    images: [],
+    authorName: "Jewel Rana",
+    category: "Frontend",
+    tags: ["React", "Clean Code", "Best Practices"],
+    status: "published",
+    featured: false,
+    views: 210,
+    likes: 30,
+    isDeleted: false,
   },
 ];
-
 const Blog = () => {
-  const router = useRouter();
+  const isLoading = false; // 🔥 initial loading
 
   return (
     <div className="bg-white py-16 sm:py-20">
@@ -49,110 +133,38 @@ const Blog = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {blogs.map((blog, i) => (
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <BlogCardSkeleton key={i} />
+              ))
+            : blogs
+                .slice(0, 3)
+                .map((blog, index) => (
+                  <BlogCard key={blog.slug || index} blog={blog} />
+                ))}
+        </div>
+
+        {/* Button (Only if blogs > 2 & not loading) */}
+        {!isLoading && blogs.length > 2 && (
+          <div className="text-center mt-10">
             <motion.div
-              key={i}
-              onClick={() => router.push(`/blog/${blog.id}`)}
-              initial="rest"
-              whileHover="hover"
-              animate="rest"
-              className="group cursor-pointer bg-white rounded-xl overflow-hidden border border-gray-200 
-              transition-shadow duration-300 hover:bg-[#28e98c0e]"
+              whileHover={{ scale: 0.98 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20,
+              }}
             >
-              {/* Image */}
-              <div className="relative h-52 overflow-hidden rounded-t-xl">
-                <motion.div
-                  variants={{
-                    rest: { scale: 1, filter: "brightness(1)" },
-                    hover: { scale: 1.1, filter: "brightness(1.1)" },
-                  }}
-                  transition={{
-                    duration: 0.9,
-                    ease: [0.25, 1, 0.5, 1],
-                  }}
-                  className="w-full h-full"
-                >
-                  <Image
-                    src={blog.img}
-                    alt="blog"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    priority={i === 0}
-                  />
-                </motion.div>
-              </div>
-
-              {/* Content */}
-              <div className="p-5 space-y-3">
-                {/* Category + Date */}
-                <div className="flex items-center gap-3 text-xs text-gray-500">
-                  <span className="text-main font-medium">{blog.category}</span>
-                  <span>• {blog.date}</span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800 leading-snug">
-                  {blog.title}
-                </h3>
-
-                {/* Bottom Row */}
-                <div className="flex items-center gap-3 pt-4">
-                  {/* Arrow */}
-                  <motion.div
-                    variants={{
-                      rest: { rotate: 45, scale: 1 },
-                      hover: { rotate: 45, scale: 1.1 },
-                    }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="w-9 h-9 flex items-center justify-center rounded-full border border-main text-main 
-                    transition-all duration-300 group-hover:bg-main group-hover:text-white"
-                  >
-                    <FaArrowUp className="text-sm" />
-                  </motion.div>
-
-                  {/* Read Blog */}
-                  <motion.span
-                    variants={{
-                      rest: { opacity: 0, x: -15 },
-                      hover: { opacity: 1, x: 0 },
-                    }}
-                    transition={{
-                      duration: 0.45,
-                      delay: 0.05,
-                      ease: [0.25, 1, 0.5, 1],
-                    }}
-                    className="text-sm text-main font-medium whitespace-nowrap"
-                  >
-                    Read Blog →
-                  </motion.span>
-                </div>
-              </div>
+              <Link
+                href="/blog"
+                className="inline-block px-6 py-3 rounded-full bg-main text-black font-medium text-sm sm:text-base"
+              >
+                View All Blog ↗
+              </Link>
             </motion.div>
-          ))}
-        </div>
-
-        {/* Bottom Button */}
-        <div className="text-center mt-10">
-          <motion.button
-            onClick={() => router.push("/blog")}
-            whileHover={{
-              scale: 1.08,
-              boxShadow: "0px 15px 40px rgba(40,233,140,0.35)",
-            }}
-            whileTap={{
-              scale: 0.96,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 20,
-            }}
-            className="px-6 py-3 rounded-full bg-main text-black font-medium text-sm sm:text-base cursor-pointer"
-          >
-            View All Blog ↗
-          </motion.button>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
