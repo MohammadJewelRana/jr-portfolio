@@ -8,39 +8,13 @@ import {
   uploadMultipleImages,
   uploadSingleImage,
 } from "../../../_components/ImageUpload";
-import {
-  categoryOptions,
-  FormField,
-  Section,
-  TechSelect,
-} from "../../../_components/ProjectForm";
+ 
 import { handleImageUpdate } from "@/utils/imageUpdate";
-
-export type FormValues = {
-  title: string;
-  slug: string;
-  category: string;
-  stackType: string;
-  description: string;
-  thumbnail: FileList;
-images: {
-  file?: FileList;
-  url?: string;
-}[]
-  technologies: string[];
-  status: string;
-  features: { value: string }[];
-  liveLink: string;
-  githubClient: string;
-  githubServer: string;
-  metaTitle: string;
-  metaDescription: string;
-  client: string;
-  duration: string;
-  teamSize: number;
-  priority: number;
-  featured: boolean;
-};
+import { FormValues } from "@/types/FormTypeValue";
+import { categoryOptions } from "@/app/constant/categoryOptions";
+import { Section } from "@/components/form/Section";
+import { FormField } from "@/components/form/FormField";
+import { TechSelect } from "@/components/form/TechSelect";
 
 const UpdateProjectForm = ({ project, onClose }: any) => {
   const router = useRouter();
@@ -80,20 +54,18 @@ const UpdateProjectForm = ({ project, onClose }: any) => {
   const images = watch("images") || [];
 
   // ✅ set default values
-useEffect(() => {
-  if (project) {
-    reset({
-      ...project,
-      technologies: project?.technologies || [],
-      features:
-        project?.features?.map((f: string) => ({ value: f })) || [],
-      images:
-        project?.images?.map((img: string) => ({
+  useEffect(() => {
+    if (project) {
+      reset({
+        ...project,
+        technologies: project?.technologies || [],
+        features: project?.features?.map((f: string) => ({ value: f })) || [],
+        images: project?.images?.map((img: string) => ({
           url: img, // ✅ store url
         })) || [{ file: undefined }],
-    });
-  }
-}, [project, reset]);
+      });
+    }
+  }, [project, reset]);
 
   // ✅ thumbnail preview
   useEffect(() => {
@@ -119,10 +91,10 @@ useEffect(() => {
       }
 
       // ✅ gallery (using utils)
-const imageUrls = await handleImageUpdate({
-  dataImages: data.images,
-  uploadMultipleImages,
-});
+      const imageUrls = await handleImageUpdate({
+        dataImages: data.images,
+        uploadMultipleImages,
+      });
       const payload = {
         ...data,
         thumbnail: thumbnailUrl,
@@ -168,7 +140,7 @@ const imageUrls = await handleImageUpdate({
             <FormField label="Category *">
               <select {...register("category")} className={inputClass}>
                 <option value="">Select Category</option>
-                {categoryOptions.map((item) => (
+                {categoryOptions?.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
                   </option>
@@ -231,47 +203,46 @@ const imageUrls = await handleImageUpdate({
         </Section>
 
         {/* Gallery */}
-    <Section title="Gallery Images">
-  {fields.map((item, index) => (
-    <div key={item.id} className="flex gap-3 items-center mb-3">
-      
-      <input
-        type="file"
-        {...register(`images.${index}.file`)}
-        className={inputClass}
-      />
+        <Section title="Gallery Images">
+          {fields.map((item, index) => (
+            <div key={item.id} className="flex gap-3 items-center mb-3">
+              <input
+                type="file"
+                {...register(`images.${index}.file`)}
+                className={inputClass}
+              />
 
-      <button
-        type="button"
-        onClick={() => remove(index)}
-        className="bg-red-500 px-3 py-2 rounded"
-      >
-        Remove
-      </button>
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="bg-red-500 px-3 py-2 rounded"
+              >
+                Remove
+              </button>
 
-      {/* ✅ FIXED preview */}
-      {images[index]?.file?.[0] instanceof File ? (
-        <img
-          src={URL.createObjectURL(images[index].file[0])}
-          className="h-16 w-16 object-cover"
-        />
-      ) : images[index]?.url ? (
-        <img
-          src={images[index].url}
-          className="h-16 w-16 object-cover"
-        />
-      ) : null}
-    </div>
-  ))}
+              {/* ✅ FIXED preview */}
+              {images[index]?.file?.[0] instanceof File ? (
+                <img
+                  src={URL.createObjectURL(images[index].file[0])}
+                  className="h-16 w-16 object-cover"
+                />
+              ) : images[index]?.url ? (
+                <img
+                  src={images[index].url}
+                  className="h-16 w-16 object-cover"
+                />
+              ) : null}
+            </div>
+          ))}
 
-  <button
-    type="button"
-    onClick={() => append({})}
-    className="bg-blue-600 px-4 py-2 rounded"
-  >
-    + Add Image
-  </button>
-</Section>
+          <button
+            type="button"
+            onClick={() => append({})}
+            className="bg-blue-600 px-4 py-2 rounded"
+          >
+            + Add Image
+          </button>
+        </Section>
 
         {/* Technologies */}
         <Section title="Technologies">

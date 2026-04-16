@@ -6,178 +6,25 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { uploadMultipleImages, uploadSingleImage } from "./ImageUpload";
 import { FaChevronDown } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
+import { categoryOptions } from "@/app/constant/categoryOptions";
+import { techOptions } from "@/app/constant/techOptions";
+import { FormValuesCreateProject } from "@/types/FormTypeValue";
+import { FormField } from "@/components/form/FormField";
+import { Section } from "@/components/form/Section";
+import { TechSelect } from "@/components/form/TechSelect";
 
-export type FormValues = {
-  title: string;
-  slug: string;
-  category: string;
-  description: string;
-
-  thumbnail: FileList;
-  images: { file: FileList }[];
-
-  liveLink: string;
-  githubClient: string;
-  githubServer: string;
-
-  metaTitle: string;
-  metaDescription: string;
-  status: string;
-
-  client: string;
-  duration: string;
-  teamSize: number;
-
-  featured: boolean;
-  priority: number;
-
-  stackType: string;
-  technologies: string;
-
-  features: { value: string }[];
-};
-
-export const techOptions = [
-  // 🌐 Frontend
-  "HTML",
-  "CSS",
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Next.js",
-  "Vue.js",
-  "Nuxt.js",
-  "Angular",
-  "Svelte",
-  "Redux",
-  "Zustand",
-
-  // 🎨 Styling
-  "Tailwind CSS",
-  "Bootstrap",
-  "Material UI",
-  "Chakra UI",
-  "ShadCN UI",
-  "SCSS",
-  "Styled Components",
-
-  // ⚙️ Backend
-  "Node.js",
-  "Express.js",
-  "NestJS",
-  "Django",
-  "Flask",
-  "Spring Boot",
-  "Laravel",
-
-  // 🗄️ Database
-  "MongoDB",
-  "PostgreSQL",
-  "MySQL",
-  "SQLite",
-  "Firebase",
-  "Supabase",
-  "Redis",
-
-  // 🔌 API / Data
-  "REST API",
-  "GraphQL",
-  "tRPC",
-
-  // 🔐 Auth / Security
-  "JWT",
-  "OAuth",
-  "Firebase Auth",
-  "Passport.js",
-
-  // ☁️ DevOps / Hosting
-  "Docker",
-  "Kubernetes",
-  "Vercel",
-  "Netlify",
-  "AWS",
-  "DigitalOcean",
-  "Nginx",
-
-  // 📦 Tools / Others
-  "Git",
-  "GitHub",
-  "GitLab",
-  "Postman",
-  "Swagger",
-  "Figma",
-
-  // 📱 Mobile
-  "React Native",
-  "Flutter",
-  "Swift",
-  "Kotlin",
-
-  // 🤖 AI / ML
-  "TensorFlow",
-  "PyTorch",
-  "OpenAI API",
-
-  // 🧠 Advanced / Modern
-  "Prisma",
-  "Drizzle ORM",
-  "Mongoose",
-  "Zod",
-  "Stripe",
-  "Socket.io",
-  "WebRTC",
-
-  // 🎮 Others
-  "Three.js",
-  "WebGL",
-
-  // 🧪 Misc
-  "Other",
-];
-
-export const categoryOptions = [
-  { label: "Web Application", value: "web" },
-  { label: "Website", value: "website" },
-  { label: "Landing Page", value: "landing" },
-  { label: "Portfolio", value: "portfolio" },
-
-  { label: "Mobile App", value: "mobile" },
-  { label: "Desktop Application", value: "desktop" },
-
-  { label: "SaaS", value: "saas" },
-  { label: "CRM System", value: "crm" },
-  { label: "ERP System", value: "erp" },
-  { label: "Dashboard / Admin Panel", value: "dashboard" },
-
-  { label: "E-commerce", value: "ecommerce" },
-  { label: "Marketplace", value: "marketplace" },
-  { label: "Booking System", value: "booking" },
-
-  { label: "Education Platform", value: "education" },
-  { label: "LMS (Learning System)", value: "lms" },
-
-  { label: "Analytics Tool", value: "analytics" },
-  { label: "AI / ML Project", value: "ai" },
-  { label: "API / Backend Service", value: "api" },
-
-  { label: "Game", value: "game" },
-  { label: "IoT System", value: "iot" },
-  { label: "Blockchain / Web3", value: "blockchain" },
-
-  { label: "Personal Project", value: "personal" },
-  { label: "Experimental", value: "experimental" },
-  { label: "Other", value: "other" },
-];
+ 
 
 const ProjectForm = ({ onClose }: { onClose: () => void }) => {
   const [isUploading, setIsUploading] = useState(false);
   const { create, isLoading } = useCreateProject();
 
   const { register, handleSubmit, control, watch, setValue } =
-    useForm<FormValues>({
+    useForm<FormValuesCreateProject>({
       defaultValues: {
-        images: [{ file: undefined }],
+        images: [{}], // ✅ no undefined needed
         features: [{ value: "" }],
+        technologies: [],
       },
     });
 
@@ -197,7 +44,7 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
 
   const isProcessing = isUploading || isLoading;
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: FormValuesCreateProject) => {
     try {
       // 🔹 Upload Thumbnail
       setIsUploading(true);
@@ -209,20 +56,16 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
       // 🔹 Upload Gallery Images
       const galleryFiles = data.images
         ?.map((img) => img.file?.[0])
-        .filter(Boolean);
+        .filter((file): file is File => file instanceof File);
 
-      const galleryUrls = galleryFiles?.length
-        ? await uploadMultipleImages(galleryFiles as File[])
+      const galleryUrls = galleryFiles.length
+        ? await uploadMultipleImages(galleryFiles)
         : [];
 
       // 🔹 Convert Arrays
       const features = data.features?.map((f) => f.value).filter(Boolean);
 
       // 🔹 Convert Technologies
-      const technologies = data.technologies
-        ?.split(",")
-        .map((t) => t.trim())
-        .filter(Boolean);
 
       setIsUploading(false);
       // 🔹 Final Payload
@@ -233,7 +76,7 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
         category: data.category,
         description: data.description,
         thumbnail: thumbnailUrl,
-        technologies,
+        technologies: data.technologies,
         status: data.status || "completed",
 
         // ✅ Optional (only if exists)
@@ -303,7 +146,7 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
               <select {...register("category")} className={inputClass}>
                 <option value="">Select Category</option>
 
-                {categoryOptions.map((item) => (
+                {categoryOptions?.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}
                   </option>
@@ -415,7 +258,7 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
 
             <button
               type="button"
-              onClick={() => append({ file: undefined })}
+              onClick={() => append({})} // ✅ clean
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
             >
               + Add Image
@@ -426,8 +269,8 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
         <Section title="Technologies">
           <FormField label="Technologies *">
             <TechSelect
-              value={watch("technologies")}
-              onChange={(val) => setValue("technologies", val)}
+              value={watch("technologies") || []}
+              onChange={(val: string[]) => setValue("technologies", val)}
             />
           </FormField>
         </Section>
@@ -598,95 +441,8 @@ export default ProjectForm;
 
 /// 🔹 Reusable UI
 
-export const Section = ({ title, children }: any) => (
-  <div>
-    <h2 className="text-lg font-semibold text-gray-200 border-b border-gray-700 pb-2 mb-5">
-      {title}
-    </h2>
-    {children}
-  </div>
-);
-
-export const FormField = ({ label, children }: any) => (
-  <div className="flex flex-col gap-2">
-    <label className="text-sm font-medium text-gray-300">{label}</label>
-    {children}
-  </div>
-);
-
+ 
+ 
 const inputClass =
   "w-full bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition";
-
-export const TechSelect = ({ value = [], onChange }: any) => {
-  const [open, setOpen] = useState(false);
-
-  const toggleTech = (tech: string) => {
-    if (value.includes(tech)) {
-      onChange(value.filter((t: string) => t !== tech));
-    } else {
-      onChange([...value, tech]);
-    }
-  };
-
-  const removeTech = (tech: string, e: any) => {
-    e.stopPropagation(); // prevent dropdown toggle
-    onChange(value.filter((t: string) => t !== tech));
-  };
-
-  return (
-    <div className="relative">
-      {/* Input Box */}
-      <div
-        onClick={() => setOpen(!open)}
-        className="w-full bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 text-sm text-white cursor-pointer flex items-center justify-between"
-      >
-        {/* Chips */}
-        <div className="flex flex-wrap gap-2 flex-1">
-          {value.length > 0 ? (
-            value.map((tech: string) => (
-              <span
-                key={tech}
-                className="flex items-center gap-1 bg-green-600/20 text-green-400 px-2 py-1 rounded-md text-xs"
-              >
-                {tech}
-                <button
-                  type="button"
-                  onClick={(e) => removeTech(tech, e)}
-                  className="hover:text-red-400"
-                >
-                  <RxCross2 size={12} />
-                </button>
-              </span>
-            ))
-          ) : (
-            <span className="text-gray-400">Select technologies</span>
-          )}
-        </div>
-
-        {/* Dropdown Icon */}
-        <FaChevronDown
-          size={14}
-          className={`text-gray-400 transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
-        />
-      </div>
-
-      {/* Dropdown */}
-      {open && (
-        <div className="absolute z-10 mt-2 w-full bg-[#0f172a] border border-gray-600 rounded-xl max-h-60 overflow-y-auto shadow-lg">
-          {techOptions.map((tech) => (
-            <div
-              key={tech}
-              onClick={() => toggleTech(tech)}
-              className="px-4 py-2 text-sm hover:bg-gray-700 cursor-pointer flex justify-between"
-            >
-              {tech}
-              {value.includes(tech) && "✔"}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+ 
