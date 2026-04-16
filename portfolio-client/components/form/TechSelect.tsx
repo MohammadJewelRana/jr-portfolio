@@ -1,4 +1,5 @@
-import { techOptions } from "@/app/constant/techOptions";
+ 
+import { techOptions } from "@/constant/techOptions";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";

@@ -4,20 +4,21 @@ import React from "react";
 import { FaCode, FaRocket, FaCogs } from "react-icons/fa";
 import { motion } from "framer-motion";
 
+
 const steps = [
   {
-    title: "Development",
-    desc: "We provide cutting-edge development solutions, including web, mobile.",
+    title: "Planning & Strategy",
+    desc: "Focused on understanding requirements, defining goals, and selecting the most suitable technologies for scalable solutions.",
     icon: <FaCode />,
   },
   {
-    title: "Deployment & Launch",
-    desc: "We ensure a smooth deployment and launch by setting up servers, optimizing performance.",
+    title: "Development & Implementation",
+    desc: "Building high-performance applications with modern technologies, clean architecture, and best coding practices.",
     icon: <FaRocket />,
   },
   {
-    title: "Maintenance & Support",
-    desc: "We provide ongoing maintenance and support, including updates, security patches.",
+    title: "Deployment & Maintenance",
+    desc: "Ensuring smooth deployment, continuous improvements, and reliable long-term support.",
     icon: <FaCogs />,
   },
 ];
@@ -53,10 +54,9 @@ const Process = () => {
         </div>
 
         {/* Heading */}
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-12">
-          Our Development Process
-        </h2>
-
+  <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-12">
+  My Development Process
+</h2>
         {/* Timeline */}
         <motion.div
           variants={container}

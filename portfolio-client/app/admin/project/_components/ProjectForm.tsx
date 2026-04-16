@@ -6,14 +6,12 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { uploadMultipleImages, uploadSingleImage } from "./ImageUpload";
 import { FaChevronDown } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { categoryOptions } from "@/app/constant/categoryOptions";
-import { techOptions } from "@/app/constant/techOptions";
+
 import { FormValuesCreateProject } from "@/types/FormTypeValue";
 import { FormField } from "@/components/form/FormField";
 import { Section } from "@/components/form/Section";
 import { TechSelect } from "@/components/form/TechSelect";
-
- 
+import { categoryOptions } from "@/constant/categoryOptions";
 
 const ProjectForm = ({ onClose }: { onClose: () => void }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -441,8 +439,5 @@ export default ProjectForm;
 
 /// 🔹 Reusable UI
 
- 
- 
 const inputClass =
   "w-full bg-[#0f172a] border border-gray-600 rounded-xl px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition";
- 

@@ -11,10 +11,11 @@ import {
  
 import { handleImageUpdate } from "@/utils/imageUpdate";
 import { FormValues } from "@/types/FormTypeValue";
-import { categoryOptions } from "@/app/constant/categoryOptions";
+ 
 import { Section } from "@/components/form/Section";
 import { FormField } from "@/components/form/FormField";
 import { TechSelect } from "@/components/form/TechSelect";
+import { categoryOptions } from "@/constant/categoryOptions";
 
 const UpdateProjectForm = ({ project, onClose }: any) => {
   const router = useRouter();

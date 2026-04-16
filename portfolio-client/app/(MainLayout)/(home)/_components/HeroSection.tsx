@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import heroImg from "@/assets/hero/1.png";
 import { FaFacebookF, FaLinkedinIn, FaGithub } from "react-icons/fa";
+import { TypeAnimation } from "react-type-animation";
+import Typewriter from "typewriter-effect";
 
 const HeroSection = () => {
-  
-  
   return (
     <section className="relative bg-[#0c0f14] text-white overflow-hidden  pt-16">
       {/* BG Glow */}
@@ -21,9 +21,27 @@ const HeroSection = () => {
             ✨ Hi, I’m Md. Jewel Rana
           </div>
 
-          <h1 className="text-3xl font-bold leading-snug">
-            Full Stack Developer Building <br />
-            Scalable Web & Mobile Apps
+          <h1 className="text-xl font-bold leading-snug">
+          {/* 🔹 First Line (Loop) */}
+            <div className="inline">
+              <Typewriter
+                options={{
+                  strings: [
+                    "Full Stack Developer",
+                    "Frontend Developer",
+                    "Backend Developer",
+                    "App Developer",
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  deleteSpeed: 100,
+                  delay: 100,
+                }}
+              />
+            </div>
+
+            {/* 🔹 Second Line (One time only) */}
+            <p>Building Scalable Web Applications</p>
           </h1>
 
           <p className="text-gray-400 text-sm">
@@ -78,8 +96,28 @@ const HeroSection = () => {
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight max-w-3xl mx-auto">
-            Building Modern Web & Mobile Applications
+
+          <h1 className="text-2xl lg:text-5xl md:text-3xl font-bold leading-tight max-w-4xl mx-auto">
+            {/* 🔹 First Line (Loop) */}
+            <div className="inline">
+              <Typewriter
+                options={{
+                  strings: [
+                    "Full Stack Developer",
+                    "Frontend Developer",
+                    "Backend Developer",
+                    "App Developer",
+                  ],
+                  autoStart: true,
+                  loop: true,
+                  deleteSpeed: 100,
+                  delay: 100,
+                }}
+              />
+            </div>
+
+            {/* 🔹 Second Line (One time only) */}
+            <p>Building Scalable Web Applications</p>
           </h1>
 
           {/* LEFT CONTENT */}
