@@ -10,6 +10,8 @@ import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
 
 const Project = () => {
   const { projects: allProject, isLoading } = useGetAllProjects(undefined);
+  console.log(allProject);
+  
 
   // 👉 Ensure max 4 project for layout (optional)
   const displayProjects = allProject?.slice(0, 4) || [];
