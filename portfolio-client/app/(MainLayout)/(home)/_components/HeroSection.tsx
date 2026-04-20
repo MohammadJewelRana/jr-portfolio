@@ -11,6 +11,8 @@ import Typewriter from "typewriter-effect";
 import { smoothScrollTo } from "@/utils/smoothScroll.ts";
 
 const HeroSection = () => {
+  console.log('');
+  
   return (
     <section className="relative bg-[#0c0f14] text-white overflow-hidden  pt-16">
       {/* BG Glow */}
