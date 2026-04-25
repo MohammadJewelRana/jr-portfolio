@@ -7,10 +7,11 @@ import ProjectCard from "@/components/Project/ProjectCard";
 import { useGetAllProjects } from "@/store/hooks/project.hook";
 import Link from "next/link";
 import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
-
+import envConfig from "@/config/envConfig";
+console.log("BASE URL:", envConfig.baseUrl);
 const Project = () => {
   const { projects: allProject, isLoading } = useGetAllProjects(undefined);
-  console.log(allProject);
+  console.log("all==>",allProject);
   
 
   // 👉 Ensure max 4 project for layout (optional)
