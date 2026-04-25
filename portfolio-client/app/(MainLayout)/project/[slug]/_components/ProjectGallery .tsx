@@ -1,9 +1,11 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
+import ProjectGallerySkeleton from "@/components/Project/ProjectDetails/ProjectGallerySkeleton";
 
 const fallbackImg = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d";
 
-const ProjectGallery = ({ project }: any) => {
+const ProjectGallery = ({ project, isLoading }: any) => {
+  if (isLoading || !project) return <ProjectGallerySkeleton />;
   const images = [fallbackImg, fallbackImg, fallbackImg];
   //   const images =
   //     project?.images?.length > 0

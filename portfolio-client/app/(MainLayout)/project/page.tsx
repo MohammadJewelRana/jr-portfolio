@@ -14,7 +14,7 @@ const page = () => {
   const [visibleCount, setVisibleCount] = useState(4);
 
   const { projects, isLoading } = useGetAllProjects(undefined);
-  console.log(projects);
+  // console.log(projects);
   
 
   useEffect(() => {

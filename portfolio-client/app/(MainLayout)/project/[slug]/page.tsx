@@ -15,36 +15,30 @@ const Page = () => {
 
   const { project, isLoading } = useGetSingleProject(slug);
 
-  if (isLoading) {
-    return (
-      <div className="text-center py-20 text-gray-500 animate-pulse">
-        🚀 Loading project...
-      </div>
-    );
-  }
-
-  if (!project) {
-    return (
-      <div className="text-center py-20 text-red-500">
-        ❌ Project not found
-      </div>
-    );
-  }
-
   return (
-    <div className=" ">
-
-      <ProjectHero project={project} />
+    <div>
+      {/* HERO */}
+      <ProjectHero project={project} isLoading={isLoading} />
 
       <section className="max-w-7xl mx-auto px-4 py-8 md:py-16 grid md:grid-cols-3 gap-16">
-        <div className="md:col-span-2 space-y-12 md:space-y-12">
-          <ProjectOverview project={project} />
-          <ProjectFeatures project={project} />
-          <ProjectGallery project={project} />
+        
+        {/* LEFT */}
+        <div className="md:col-span-2 space-y-12">
+          <ProjectOverview project={project} isLoading={isLoading} />
+          <ProjectFeatures project={project} isLoading={isLoading} />
+          <ProjectGallery project={project} isLoading={isLoading} />
         </div>
 
-        <ProjectSidebar project={project} />
+        {/* RIGHT */}
+        <ProjectSidebar project={project} isLoading={isLoading} />
       </section>
+
+      {/* ❗ Not found (only after loading) */}
+      {!isLoading && !project && (
+        <div className="text-center py-20 text-red-500">
+          ❌ Project not found
+        </div>
+      )}
     </div>
   );
 };

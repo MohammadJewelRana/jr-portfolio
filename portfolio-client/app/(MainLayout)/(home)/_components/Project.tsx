@@ -7,12 +7,12 @@ import ProjectCard from "@/components/Project/ProjectCard";
 import { useGetAllProjects } from "@/store/hooks/project.hook";
 import Link from "next/link";
 import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
-import envConfig from "@/config/envConfig";
-console.log("BASE URL:", envConfig.baseUrl);
+
+// console.log("BASE URL:", envConfig.baseUrl);
+
 const Project = () => {
   const { projects: allProject, isLoading } = useGetAllProjects(undefined);
-  console.log("all==>",allProject);
-  
+  // console.log("all==>",allProject);
 
   // 👉 Ensure max 4 project for layout (optional)
   const displayProjects = allProject?.slice(0, 4) || [];
@@ -74,25 +74,28 @@ const Project = () => {
         </div>
 
         {/* 🔥 Button */}
-        <div className="text-center mt-12">
-          <Link href="/project">
-            <motion.button
-              whileHover={{
-                scale: 1.08,
-                boxShadow: "0px 15px 40px rgba(40,233,140,0.35)",
-              }}
-              whileTap={{ scale: 0.96 }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 20,
-              }}
-              className="px-8 py-3 rounded-full bg-main text-black font-semibold text-sm sm:text-base cursor-pointer"
-            >
-              All Projects ↗
-            </motion.button>
-          </Link>
-        </div>
+        {/* 🔥 Button */}
+        {allProject && allProject.length > 0 && (
+          <div className="text-center mt-12">
+            <Link href="/project">
+              <motion.button
+                whileHover={{
+                  scale: 1.08,
+                  boxShadow: "0px 15px 40px rgba(40,233,140,0.35)",
+                }}
+                whileTap={{ scale: 0.96 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                }}
+                className="px-8 py-3 rounded-full bg-main text-black font-semibold text-sm sm:text-base cursor-pointer"
+              >
+                All Projects ↗
+              </motion.button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

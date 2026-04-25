@@ -30,7 +30,7 @@ export const useCreateProject = () => {
 export const useGetAllProjects = (filters: any) => {
   const { data, error, isLoading } = useGetAllProjectsQuery(filters);
 
-  console.log(data);
+  // console.log(data);
   
   let projects: any[] = [];
 
