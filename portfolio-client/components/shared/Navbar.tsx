@@ -108,8 +108,12 @@ hover:after:w-full
         />
 
         {/* CTA */}
-        <Button
-          className="
+        <a
+          href="/cv/Md_Jewel_Rana_Full_Stack_Develope(01533850435).pdf"
+          download="Md_Jewel_Rana_Full_Stack_Developer(01533850435).pdf"
+        >
+          <Button
+            className="
           hidden md:flex
           bg-main
           text-white 
@@ -120,9 +124,10 @@ hover:after:w-full
           hover:scale-105
           hover:shadow-[0_10px_25px_rgba(0,255,150,0.3)]
           "
-        >
-          Download CV
-        </Button>
+          >
+            Download CV
+          </Button>
+        </a>
       </NavbarContent>
 
       {/* 🔹 MOBILE MENU */}
@@ -155,21 +160,26 @@ hover:after:w-full
               </NavbarMenuItem>
             );
           })}
-
-          <Button
-            className="
-            w-full 
-            bg-main
-            text-white 
-            rounded-full py-2
-            font-medium
-            
-            transition-all duration-300
-            hover:scale-[1.05]
-            "
+          <a
+            href="/cv/Md_Jewel_Rana_Full_Stack_Develope(01533850435).pdf"
+            download="Md_Jewel_Rana_Full_Stack_Developer(01533850435).pdf"
           >
-            Download CV
-          </Button>
+            <Button
+              className="
+      w-full
+      bg-main
+      text-white
+      rounded-full
+      py-2
+      font-medium
+      transition-all
+      duration-300
+      hover:scale-[1.05]
+    "
+            >
+              Download CV
+            </Button>
+          </a>
         </div>
       </NavbarMenu>
     </HeroUINavbar>

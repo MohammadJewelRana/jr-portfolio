@@ -43,7 +43,7 @@ const About = () => {
               </p>
             </div>
 
-            <div   >
+            <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
                 <CountUp end={10} duration={4} />+
               </h2>
@@ -51,19 +51,19 @@ const About = () => {
                 Projects Completed
               </p>
             </div>
-
-
           </div>
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start  ">
-            <button className="px-6 py-3 rounded-full bg-main text-black font-medium cursor-pointer transition ">
-              Download CV ↗
-            </button>
+            <a
+              href="/cv/Md_Jewel_Rana_Full_Stack_Develope(01533850435).pdf"
+              download="Md_Jewel_Rana_Full_Stack_Developer(01533850435).pdf"
+            >
+              <button className="px-6 py-3 rounded-full bg-main text-black font-medium cursor-pointer transition ">
+                Download CV ↗
+              </button>
+            </a>
           </div>
-
-
-
         </div>
 
         {/* ================= RIGHT ================= */}
