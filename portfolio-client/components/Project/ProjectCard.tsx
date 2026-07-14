@@ -27,7 +27,7 @@ const ProjectCard = ({ project }: any) => {
           className="w-full h-full"
         >
           <Image
-            src={"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d"}
+            src={project.thumbnail}
             // src={project.img}
             alt={project.title}
             fill
