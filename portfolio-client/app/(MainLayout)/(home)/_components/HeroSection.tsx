@@ -5,14 +5,14 @@ import Link from "next/link";
 import heroImg from "@/assets/hero/j.png";
 // import heroImg from "@/assets/hero/1.png";
 
-import { FaLinkedinIn, FaGithub } from "react-icons/fa";
+import { FaLinkedinIn, FaGithub, FaEnvelope } from "react-icons/fa";
 
 import Typewriter from "typewriter-effect";
 import { smoothScrollTo } from "@/utils/smoothScroll.ts";
 
 const HeroSection = () => {
-  console.log('');
-  
+  console.log("");
+
   return (
     <section className="relative bg-[#0c0f14] text-white overflow-hidden  pt-16">
       {/* BG Glow */}
@@ -143,6 +143,15 @@ const HeroSection = () => {
 
               {/* Social Icons */}
               <div className="flex gap-3">
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=js.rana0326@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 transition-all duration-300 hover:bg-green-400 hover:text-black hover:scale-110"
+                >
+                  <FaEnvelope />
+                </a>
+
                 <Link
                   href="https://www.linkedin.com/in/md-jewel-rana-05808b273"
                   target="_blank"
