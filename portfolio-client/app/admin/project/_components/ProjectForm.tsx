@@ -42,77 +42,171 @@ const ProjectForm = ({ onClose }: { onClose: () => void }) => {
 
   const isProcessing = isUploading || isLoading;
 
+
   const onSubmit = async (data: FormValuesCreateProject) => {
-    try {
-      // 🔹 Upload Thumbnail
-      setIsUploading(true);
-      let thumbnailUrl = "";
-      if (data.thumbnail?.[0]) {
-        thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
-      }
+  try {
+    setIsUploading(true);
 
-      // 🔹 Upload Gallery Images
-      const galleryFiles = data.images
+    let thumbnailUrl = "";
+
+    if (data.thumbnail?.[0]) {
+      thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
+    }
+
+    const galleryFiles =
+      data.images
         ?.map((img) => img.file?.[0])
-        .filter((file): file is File => file instanceof File);
+        .filter((file): file is File => file instanceof File) || [];
 
-      const galleryUrls = galleryFiles.length
+    const galleryUrls =
+      galleryFiles.length > 0
         ? await uploadMultipleImages(galleryFiles)
         : [];
 
-      // 🔹 Convert Arrays
-      const features = data.features?.map((f) => f.value).filter(Boolean);
+    const features =
+      data.features
+        ?.map((f) => f.value.trim())
+        .filter(Boolean) || [];
 
-      // 🔹 Convert Technologies
+    const payload = {
+      title: data.title,
+      slug: data.slug,
+      category: data.category,
+      description: data.description,
+      thumbnail: thumbnailUrl,
+      technologies: data.technologies,
+      status: data.status || "completed",
 
-      setIsUploading(false);
-      // 🔹 Final Payload
-      const payload: any = {
-        // ✅ Required
-        title: data.title,
-        slug: data.slug,
-        category: data.category,
-        description: data.description,
-        thumbnail: thumbnailUrl,
-        technologies: data.technologies,
-        status: data.status || "completed",
+      ...(galleryUrls.length > 0 && { images: galleryUrls }),
 
-        // ✅ Optional (only if exists)
-        ...(galleryUrls.length && { images: galleryUrls }),
-        ...(features?.length && { features }),
+      ...(features.length > 0 && { features }),
 
-        ...(data.liveLink && { liveLink: data.liveLink }),
+      ...(data.liveLink && {
+        liveLink: data.liveLink,
+      }),
 
-        ...(data.stackType && { stackType: data.stackType }),
+      ...(data.stackType && {
+        stackType: data.stackType,
+      }),
 
-        ...(data.priority && { priority: Number(data.priority) }),
+      ...(data.priority && {
+        priority: Number(data.priority),
+      }),
 
-        ...(data.githubClient && { githubClient: data.githubClient }),
-        ...(data.githubServer && { githubServer: data.githubServer }),
+      ...(data.githubClient && {
+        githubClient: data.githubClient,
+      }),
 
-        ...(data.metaTitle && { metaTitle: data.metaTitle }),
-        ...(data.metaDescription && {
-          metaDescription: data.metaDescription,
-        }),
+      ...(data.githubServer && {
+        githubServer: data.githubServer,
+      }),
 
-        ...(data.client && { client: data.client }),
-        ...(data.duration && { duration: data.duration }),
-        ...(data.teamSize && { teamSize: Number(data.teamSize) }),
+      ...(data.metaTitle && {
+        metaTitle: data.metaTitle,
+      }),
 
-        ...(data.featured && { featured: data.featured }),
-      };
+      ...(data.metaDescription && {
+        metaDescription: data.metaDescription,
+      }),
 
-      console.log("FINAL PAYLOAD:", payload);
+      ...(data.client && {
+        client: data.client,
+      }),
 
-      // 🔹 API Call
-      // await create(payload);
+      ...(data.duration && {
+        duration: data.duration,
+      }),
 
-      // onClose();
-    } catch (err) {
-      console.error(err);
-      setIsUploading(false);
-    }
-  };
+      ...(data.teamSize && {
+        teamSize: Number(data.teamSize),
+      }),
+
+      featured: !!data.featured,
+    };
+
+    console.log(payload);
+
+    await create(payload);
+
+    onClose();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setIsUploading(false);
+  }
+};
+
+  // const onSubmit = async (data: FormValuesCreateProject) => {
+  //   try {
+  //     // 🔹 Upload Thumbnail
+  //     setIsUploading(true);
+  //     let thumbnailUrl = "";
+  //     if (data.thumbnail?.[0]) {
+  //       thumbnailUrl = await uploadSingleImage(data.thumbnail[0]);
+  //     }
+
+  //     // 🔹 Upload Gallery Images
+  //     const galleryFiles = data.images
+  //       ?.map((img) => img.file?.[0])
+  //       .filter((file): file is File => file instanceof File);
+
+  //     const galleryUrls = galleryFiles.length
+  //       ? await uploadMultipleImages(galleryFiles)
+  //       : [];
+
+  //     // 🔹 Convert Arrays
+  //     const features = data.features?.map((f) => f.value).filter(Boolean);
+
+  //     // 🔹 Convert Technologies
+
+  //     setIsUploading(false);
+  //     // 🔹 Final Payload
+  //     const payload: any = {
+  //       // ✅ Required
+  //       title: data.title,
+  //       slug: data.slug,
+  //       category: data.category,
+  //       description: data.description,
+  //       thumbnail: thumbnailUrl,
+  //       technologies: data.technologies,
+  //       status: data.status || "completed",
+
+  //       // ✅ Optional (only if exists)
+  //       ...(galleryUrls.length && { images: galleryUrls }),
+  //       ...(features?.length && { features }),
+
+  //       ...(data.liveLink && { liveLink: data.liveLink }),
+
+  //       ...(data.stackType && { stackType: data.stackType }),
+
+  //       ...(data.priority && { priority: Number(data.priority) }),
+
+  //       ...(data.githubClient && { githubClient: data.githubClient }),
+  //       ...(data.githubServer && { githubServer: data.githubServer }),
+
+  //       ...(data.metaTitle && { metaTitle: data.metaTitle }),
+  //       ...(data.metaDescription && {
+  //         metaDescription: data.metaDescription,
+  //       }),
+
+  //       ...(data.client && { client: data.client }),
+  //       ...(data.duration && { duration: data.duration }),
+  //       ...(data.teamSize && { teamSize: Number(data.teamSize) }),
+
+  //       ...(data.featured && { featured: data.featured }),
+  //     };
+
+  //     console.log("FINAL PAYLOAD:", payload);
+
+  //     // 🔹 API Call
+  //     // await create(payload);
+
+  //     // onClose();
+  //   } catch (err) {
+  //     console.error(err);
+  //     setIsUploading(false);
+  //   }
+  // };
 
   return (
     <div className="bg-[#1e293b] border border-gray-700 rounded-2xl shadow-xl p-6 md:p-10 space-y-10">

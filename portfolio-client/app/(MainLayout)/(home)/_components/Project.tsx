@@ -12,7 +12,7 @@ import ProjectCardSkeleton from "@/components/Project/ProjectCardSkeleton";
 
 const Project = () => {
   const { projects: allProject, isLoading } = useGetAllProjects(undefined);
-  // console.log("all==>",allProject);
+  console.log("all==>",allProject);
 
   // 👉 Ensure max 4 project for layout (optional)
   const displayProjects = allProject?.slice(0, 4) || [];
@@ -73,7 +73,7 @@ const Project = () => {
           </div>
         </div>
 
-        {/* 🔥 Button */}
+        
         {/* 🔥 Button */}
         {allProject && allProject.length > 0 && (
           <div className="text-center mt-12">
