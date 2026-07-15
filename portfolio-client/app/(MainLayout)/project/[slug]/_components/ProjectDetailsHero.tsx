@@ -16,7 +16,7 @@ const ProjectHero = ({ project, isLoading }: any) => {
       <section className="block md:hidden relative h-[55vh] overflow-hidden">
         {/* Background Image */}
         <Image
-          src={fallbackImg}
+          src={project?.thumbnail || fallbackImg}
           alt="bg"
           fill
           priority
@@ -81,7 +81,12 @@ const ProjectHero = ({ project, isLoading }: any) => {
 
       {/* ================= DESKTOP VERSION ================= */}
       <section className="hidden md:block relative lg:h-[70vh] md:h-[50vh] overflow-hidden">
-        <Image src={heroImg} alt="hero" fill className="object-cover" />
+        <Image
+          src={project?.thumbnail || fallbackImg}
+          alt="hero"
+          fill
+          className="object-fill"
+        />
 
         <div className="absolute inset-0 bg-black/60" />
 
