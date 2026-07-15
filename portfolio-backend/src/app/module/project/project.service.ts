@@ -77,7 +77,7 @@ const getAllProjects = async (query: Record<string, unknown>) => {
 // 🔹 Get Single Project (by ID or slug)
 const getSingleProject = async (idOrSlug: string) => {
   if (!idOrSlug) throw new Error("Project identifier missing");
-  console.log(idOrSlug);
+  // console.log(idOrSlug);
 
   const result = await ProjectModel.findOne({
     slug: idOrSlug,
