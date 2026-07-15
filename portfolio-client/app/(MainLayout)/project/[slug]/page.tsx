@@ -21,10 +21,9 @@ const Page = () => {
       <ProjectHero project={project} isLoading={isLoading} />
 
       <section className="max-w-7xl mx-auto px-4 py-8 md:py-16 grid md:grid-cols-3 gap-16">
-        
         {/* LEFT */}
         <div className="md:col-span-2 space-y-12">
-          <ProjectOverview project={project} isLoading={isLoading} />
+          {/* <ProjectOverview project={project} isLoading={isLoading} /> */}
           <ProjectFeatures project={project} isLoading={isLoading} />
           <ProjectGallery project={project} isLoading={isLoading} />
         </div>
