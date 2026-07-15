@@ -33,8 +33,8 @@ const ProjectHero = ({ project, isLoading }: any) => {
             transition={{ duration: 0.7 }}
           >
             {/* Category */}
-            <span className="inline-flex items-center rounded-full bg-main/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-main">
-              {project?.category}
+            <span className="inline-flex items-center rounded-full bg-main/10  py-2 text-xs font-semibold uppercase tracking-[0.2em] text-main">
+              Category : {project?.category}
             </span>
 
             {/* Title */}
@@ -160,7 +160,7 @@ const ProjectHero = ({ project, isLoading }: any) => {
                 Category
               </p>
 
-              <h3 className="mt-1 font-bold text-gray-800">
+              <h3 className="mt-1 font-bold text-gray-800 capitalize">
                 {project?.category}
               </h3>
             </motion.div>

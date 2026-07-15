@@ -6,9 +6,12 @@ import { motion } from "framer-motion";
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
+import "yet-another-react-lightbox/styles.css";
+
 import ProjectGallerySkeleton from "@/components/Project/ProjectDetails/ProjectGallerySkeleton";
 
-const fallbackImg = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d";
+const fallbackImg =
+  "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d";
 
 const ProjectGallery = ({ project, isLoading }: any) => {
   const [open, setOpen] = useState(false);
