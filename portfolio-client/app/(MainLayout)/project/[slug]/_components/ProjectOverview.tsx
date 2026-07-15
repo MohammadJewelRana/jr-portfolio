@@ -1,4 +1,7 @@
-const ProjectOverview = ({ project }: any) => {
+import ProjectOverviewSkeleton from "@/components/Project/ProjectDetails/ProjectOverviewSkeleton";
+
+const ProjectOverview = ({ project, isLoading }: any) => {
+    if (isLoading || !project) return <ProjectOverviewSkeleton />;
   const description =
     project?.description || "No description available for this project.";
 

@@ -5,12 +5,12 @@ const contactSchema = new Schema<IContact>(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      
       trim: true,
     },
     phone: {
       type: String,
-      required: [true, "Phone is required"],
+      
     },
     email: {
       type: String,

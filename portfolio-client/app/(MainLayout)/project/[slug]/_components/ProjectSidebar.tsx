@@ -1,16 +1,19 @@
-const ProjectSidebar = ({ project }: any) => {
+import ProjectSidebarSkeleton from "@/components/Project/ProjectDetails/ProjectSidebarSkeleton";
+
+const ProjectSidebar = ({ project, isLoading }: any) => {
+  if (isLoading || !project) return <ProjectSidebarSkeleton />;
   return (
     <div className="space-y-6 sticky top-24 h-fit">
 
       {/* Tech */}
-      {project.technologies?.length > 0 && (
+      {project?.technologies?.length > 0 && (
         <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm">
           <h3 className="font-semibold mb-3 text-gray-800">
             Tech Stack
           </h3>
 
           <div className="flex flex-wrap gap-2">
-            {project.technologies.map((tech: string, i: number) => (
+            {project?.technologies.map((tech: string, i: number) => (
               <span
                 key={i}
                 className="px-3 py-1 text-sm rounded-full 
@@ -19,16 +22,17 @@ const ProjectSidebar = ({ project }: any) => {
               >
                 {tech}
               </span>
+
             ))}
           </div>
         </div>
       )}
 
       {/* Status */}
-      {(project.status || project.featured) && (
+      {(project?.status || project?.featured) && (
         <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm text-sm">
 
-          {project.status && (
+          {project?.status && (
             <div className="flex justify-between items-center">
               <span className="text-gray-500">Status</span>
               <span className="text-main font-medium capitalize">
@@ -37,7 +41,7 @@ const ProjectSidebar = ({ project }: any) => {
             </div>
           )}
 
-          {project.featured && (
+          {project?.featured && (
             <div className="mt-3 px-3 py-1 bg-main/10 text-main rounded-full inline-block text-xs font-medium">
               ⭐ Featured Project
             </div>
@@ -46,16 +50,16 @@ const ProjectSidebar = ({ project }: any) => {
       )}
 
       {/* Actions */}
-      {(project.liveLink ||
-        project.githubClient ||
-        project.githubServer) && (
+      {(project?.liveLink ||
+        project?.githubClient ||
+        project?.githubServer) && (
         <div className="p-5 rounded-2xl bg-gradient-to-br from-main to-green-400 text-black shadow-lg space-y-3">
 
           <h3 className="font-bold text-lg">Explore</h3>
 
-          {project.liveLink && (
+          {project?.liveLink && (
             <a
-              href={project.liveLink}
+              href={project?.liveLink}
               target="_blank"
               className="block text-center py-2.5 bg-black text-white rounded-full 
               hover:scale-105 transition font-medium"
@@ -64,9 +68,9 @@ const ProjectSidebar = ({ project }: any) => {
             </a>
           )}
 
-          {project.githubClient && (
+          {project?.githubClient && (
             <a
-              href={project.githubClient}
+              href={project?.githubClient}
               target="_blank"
               className="block text-center py-2.5 bg-white/80 text-black rounded-full 
               hover:bg-white transition font-medium"
@@ -75,9 +79,9 @@ const ProjectSidebar = ({ project }: any) => {
             </a>
           )}
 
-          {project.githubServer && (
+          {project?.githubServer && (
             <a
-              href={project.githubServer}
+              href={project?.githubServer}
               target="_blank"
               className="block text-center py-2.5 bg-black/10 text-black rounded-full 
               hover:bg-black/20 transition font-medium"

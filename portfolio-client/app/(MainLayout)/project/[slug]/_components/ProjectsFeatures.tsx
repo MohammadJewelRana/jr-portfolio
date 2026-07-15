@@ -1,6 +1,8 @@
+import ProjectFeaturesSkeleton from "@/components/Project/ProjectDetails/ProjectFeaturesSkeleton";
 import { motion } from "framer-motion";
 
-const ProjectFeatures = ({ project }: any) => {
+const ProjectFeatures = ({ project, isLoading }: any) => {
+  if (isLoading || !project) return <ProjectFeaturesSkeleton />;
   const features =
     project?.features?.length > 0
       ? project.features
